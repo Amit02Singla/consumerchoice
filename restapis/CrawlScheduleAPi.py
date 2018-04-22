@@ -7,10 +7,10 @@
 
 from flask import Flask, Response
 from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
+from restapis.Login import getUrl
 import json
 from functools import wraps
 
-from restapis.CronJob import cronjob
 
 app = Flask(__name__)
 
@@ -63,5 +63,12 @@ def do_schedule():
         crontime = request['Crontime']
         resp = Response(status="ok", message=cronjob(time, crontime) , code = 200, mimetype='application/json')
 
+
+@app.route('/schedule', methods=['GET'])
+@requires_auth
+def crawl():
+    getUrl()
+    resp = Response(status="ok", message="Crawling Scheduled" , code = 200, mimetype='application/json')
+    return resp
 if __name__ == "__main__":
-    cronjob("2018-04-12 01:38:00", "hourly")
+    app.run()
