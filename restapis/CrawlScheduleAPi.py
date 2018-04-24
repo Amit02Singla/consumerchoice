@@ -11,7 +11,6 @@ from restapis.Login import getUrl
 import json
 from functools import wraps
 
-
 app = Flask(__name__)
 
 
@@ -64,6 +63,7 @@ def do_schedule():
         resp = Response(status="ok", message=cronjob(time, crontime) , code = 200, mimetype='application/json')
 
 
+
 @app.route('/schedule', methods=['GET'])
 @requires_auth
 def crawl():
@@ -71,4 +71,4 @@ def crawl():
     resp = Response(status="ok", message="Crawling Scheduled" , code = 200, mimetype='application/json')
     return resp
 if __name__ == "__main__":
-    app.run()
+    #app.run()

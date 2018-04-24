@@ -10,7 +10,7 @@ class webHostingmedia():
         reviews = []
         self.category = category
         self.servicename = servicename
-        print("review from webHostingmedia.com")
+        #print("review from webHostingmedia.com")
         # https://webhostingmedia.net/bluehost-reviews/
         for node in response.xpath("//div[@class='testimonial']"):
             reviews.append(node.xpath('string()').extract());

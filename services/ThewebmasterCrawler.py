@@ -29,7 +29,7 @@ class ThewebmasterCrawler():
         if next_page is not None and "#" not in next_page:
             next_page_url = "".join(next_page)
             if next_page_url and next_page_url.strip():
-                print(type(next_page_url))
-                print(next_page_url, "    url")
+                #print(type(next_page_url))
+                #print(next_page_url, "    url")
                 yield response.follow(url=next_page_url, callback=self.parsing)
 

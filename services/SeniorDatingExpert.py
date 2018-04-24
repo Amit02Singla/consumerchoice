@@ -1,7 +1,7 @@
 from model.Servicemodel import ServiceRecord
 
 
-class ProductreviewCrawler():
+class SeniorDatingExpert():
     def parsing(self, response):
         return self.crawl(response,self.category,self.servicename)
 
@@ -9,15 +9,13 @@ class ProductreviewCrawler():
         reviews = []
         self.category = category
         self.servicename = servicename
-        print("review from productreview.com")
+        print("review from seniordatingexpert.com")
         # https://www.productreview.com.au/p/smart-fares.html
-        #TODO date missing--done
-        for node in response.xpath("//div[@class='review-overall']"):
+        for node in response.xpath("//div/table[@class='showcomment']/tbody/tr[2]/td[@class='contcomment']"):
             reviews.append(node.xpath('string()').extract());
-        ratings =  response.xpath("//div[@class='rating-md']/p/span/span[@itemprop='ratingValue']/@content").extract()
+        ratings = response.xpath("//div[@class='rating-md']/p/span/span[@itemprop='ratingValue']/@content").extract()
         headings = response.xpath("//div[@class='review-content']/h3/text()").extract()
-        dates =  response.xpath("//div[@class='review-content']/div[@class='rating-md']/p/meta/@content").extract()
-        authors = response.xpath("//div[@class='review-author']/h6/a/text()").extract()
+        authors = response.xpath("//div/table[@class='showcomment']/tbody/tr[1]/td[@class='commentid']/i/text()").extract()
         img_src =  response.xpath("//div[@class='item-header-img']/span[@class='item-header-img-container']/img/@src").extract()
         website_name =  response.xpath("/html/head/meta[7]/@content").extract()
         dates = response.xpath("//div[@class='review-content']/div[@class='rating-md']/p/meta/@content").extract()

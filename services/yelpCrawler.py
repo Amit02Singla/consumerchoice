@@ -18,12 +18,12 @@ class yelpCrawler():
         dates =  response.xpath("//div[@class='biz-rating biz-rating-large clearfix']/span[@class='rating-qualifier']/text()").extract()
         authors =  response.xpath("//div[@class='media-story']/ul[@class='user-passport-info']/li[@class='user-name']/a[@id='dropdown_user-name']/text()").extract()
         website_name =  response.xpath("//html/head/meta[6]/@content").extract()
-        print(" Ratings ", len(ratings), ratings)
-        print("dates ", len(dates), dates)
-        print(" Reviews ", len(reviews), reviews)
+        #print(" Ratings ", len(ratings), ratings)
+        #print("dates ", len(dates), dates)
+        #print(" Reviews ", len(reviews), reviews)
         # print(" headings ", len(headings), headings)
-        print(" authors ", len(authors), authors)
-        print(" website_name ", len(website_name), website_name)
+        #print(" authors ", len(authors), authors)
+        #print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url,ratings[item],None,dates[item],authors[item],category,servicename,reviews[item],"",website_name);
             servicename1.save()

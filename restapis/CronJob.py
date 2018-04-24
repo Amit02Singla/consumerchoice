@@ -18,3 +18,15 @@ def cronjob(time, cronTime):
     resp = "Scheduling Done"
     return resp
 
+def cronjob1():
+    cron = CronTab(user=True)
+    cron.remove_all()
+    job = cron.new( command = 'python ApplicationController.py')
+    # dt = datetime.strptime(datetime.today(), '%Y-%m-%d %H:%M:%S')
+    # job.setall(datetime(dt.year, dt.month, dt.day, dt.hour, dt.minute))
+    job.run()
+    #job.hour.every('3')
+    cron.write('output.tab')
+    resp = "Scheduling Done"
+    return resp
+

@@ -10,7 +10,7 @@ class vpnRanks():
         reviews = []
         self.category = category
         self.servicename = servicename
-        print("review from vpnranks.com")
+        #print("review from vpnranks.com")
         # https://www.highya.com/coinbase-reviews
         for node in response.xpath("//div[@class='comment-body']"):
             reviews.append(node.xpath('string()').extract());
@@ -20,28 +20,17 @@ class vpnRanks():
         authors1 = response.xpath("//div[@class='comment-author vcard']").extract()
         authors =[]
         for content in authors1:
-            print(content)
             root = etree.fromstring(content)
-
-            print("roooottt    ", root, "text !", root.text)
             if (root.text == None):
-                print(" null nahi", root.text)
                 for element in root:
-                    print("elemnt ", element.text)
                     authors.append(element.text)
             else:
                 for element in root:
-                    print("elemnt ", element.text)
                     authors.append(element.text)
-        # img_src = response.xpath("//div[@class='img-wrap']/div/").extract()
+        for i in range(len(authors)/2 + 1):
+           if i != 0 :
+                del authors[i]
         website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
-        # print(" Ratings ", len(ratings), ratings)
-        print("dates ", len(dates), dates)
-        print(" Reviews ", len(reviews), reviews)
-        # print(" headings ", len(headings), headings)
-        print(" authors ", len(authors), authors)
-        # print("img_Src ", len(img_src), img_src)
-        print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item],
                                          category, servicename, reviews[item], None, website_name)

@@ -13,7 +13,6 @@ class SiteJabberCrawler(Spider):
         reviews = []
         self.category = category
         self.servicename = servicename
-        print("Reviews from sitejabber.com")
         # https://www.sitejabber.com/reviews/zoosk.com
         for node in response.xpath('//div[@class="review "]/p'):
             reviews.append(node.xpath('string()').extract());
@@ -30,9 +29,8 @@ class SiteJabberCrawler(Spider):
             else:
                 authors.append(root.text)
         website_name = response.xpath("//div[@id='header_top']/a[@id='header_logo']/picture/img/@alt").extract()
-        print(authors)
+        #print(authors)
         for item in range(0, len(reviews)):
-            print(item)
             servicename1 =ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], category,
                           servicename, reviews[item], None,website_name);
             servicename1.save()
@@ -40,6 +38,6 @@ class SiteJabberCrawler(Spider):
         if next_page is not None:
             next_page_url ="".join(next_page)
             if next_page_url and next_page_url.strip():
-                print(type(next_page_url))
-                print(next_page_url)
+                #print(type(next_page_url))
+                #print(next_page_url)
                 yield response.follow(url=next_page_url, callback=self.parsing)

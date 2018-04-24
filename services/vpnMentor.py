@@ -10,7 +10,7 @@ class vpnMentor():
         reviews = []
         self.category = category
         self.servicename = servicename
-        print("review from vpnmentor.com")
+        #print("review from vpnmentor.com")
         # https://www.highya.com/coinbase-reviews
         for node in response.xpath("//div[@class='review-item style_prevu_kit ']/div[@class='review-content']/p"):
             reviews.append(node.xpath('string()').extract());
@@ -20,13 +20,13 @@ class vpnMentor():
         authors = response.xpath("//div[@class='text-wrap']/h5/text()").extract()
         # img_src = response.xpath("//div[@class='img-wrap']/div/").extract()
         website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
-        print(" Ratings ", len(ratings), ratings)
-        print("dates ", len(dates), dates)
-        print(" Reviews ", len(reviews), reviews)
-        print(" headings ", len(headings), headings)
-        print(" authors ", len(authors), authors)
+        #print(" Ratings ", len(ratings), ratings)
+        #print("dates ", len(dates), dates)
+        #print(" Reviews ", len(reviews), reviews)
+        #print(" headings ", len(headings), headings)
+        #print(" authors ", len(authors), authors)
         # print("img_Src ", len(img_src), img_src)
-        print(" website_name ", len(website_name), website_name)
+        #print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
                                          category, servicename, reviews[item], None, website_name)

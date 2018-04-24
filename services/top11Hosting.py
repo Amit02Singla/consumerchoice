@@ -1,4 +1,5 @@
 from model.Servicemodel import ServiceRecord
+from utils.utils import getStarts
 
 class top11Hosting():
     def __init__(self):
@@ -21,8 +22,14 @@ class top11Hosting():
         # headings = response.xpath("//div[@class='width64 floatleft']/h4[3]").extract()
         authors = response.xpath("//div[@class='wpcr3_review_author']/span[@class='wpcr3_caps']/text()").extract()
         website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
+        ratings1 = []
+        i =0
+        while i < len(ratings):
+            c= int(getStarts(ratings[i]))/20
+            ratings1.append(str(c))
+            i = i + 1
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item],
+            servicename1 = ServiceRecord(response.url, ratings1[item], None, dates[item], authors[item],
                                          category, servicename, reviews[item], None, website_name)
             servicename1.save()
 
