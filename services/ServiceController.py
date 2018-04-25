@@ -60,18 +60,17 @@ dict_url = {}
 class ServiceController(scrapy.Spider):
     start_urls = []
 
-    def __init__(self, url):
-        for link in url:
-            self.start_urls.append(link["url"])
-            category = link["Category"];
-            service_name = link["ServiceName"]
-            dict_url[link["url"]] = {"Category": category,
-                                     "Service Name": service_name}
-            response = Response("Service");
-            response.Service_Name = service_name
-            response.Category = category
-            response.URL = link["url"]
-            final_json[service_name] = {"response": response}
+    def __init__(self, link):
+        self.start_urls.append(link["url"])
+        category = link["Category"];
+        service_name = link["ServiceName"]
+        dict_url[link["url"]] = {"Category": category,
+                                 "Service Name": service_name}
+        response = Response("Service");
+        response.Service_Name = service_name
+        response.Category = category
+        response.URL = link["url"]
+        final_json[service_name] = {"response": response}
 
     def start_requests(self):
         headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0'}
@@ -199,11 +198,8 @@ def f(q, ):
     except Exception as e:
         q[0].put(e)
 
-
-def crawl_services(urls):
+def run_spider(urls):
     q = Queue()
-    for i in urls:
-        print("printing url "+i +"\n")
     p = Process(target=f, args=([q, urls],))
     print("crawl_services()")
     p.start()
@@ -212,4 +208,8 @@ def crawl_services(urls):
 
     if result is not None:
         raise result
+def crawl_services(urls):
+    q = Queue()
+    for i in urls:
+        run_spider(i)
 
