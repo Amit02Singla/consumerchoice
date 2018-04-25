@@ -7,7 +7,7 @@
 
 from flask import Flask, Response
 from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
-from restapis.Login import getUrl
+from Login import getUrl
 import json
 from functools import wraps
 
@@ -71,4 +71,4 @@ def crawl():
     resp = Response(status="ok", message="Crawling Scheduled" , code = 200, mimetype='application/json')
     return resp
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')

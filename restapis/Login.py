@@ -1,6 +1,6 @@
 import requests
 import json
-from services.ServiceController import crawl_services
+import services.ServiceController
 param = {
   "email": "data_miner@example.com",
   "password": "ATBdm9",
@@ -29,4 +29,4 @@ def getUrl():
     website_list.append({"ServiceName": "Bluehost",
                  "Category": "Hosting Service",
                  "url": element['url']})
-  crawl_services(website_list)
+  services.ServiceController.crawl_services(website_list)
