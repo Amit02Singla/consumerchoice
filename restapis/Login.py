@@ -34,8 +34,11 @@ def crawling():
     website_list.append({"ServiceName": "Bluehost",
                          "Category": "Hosting Service",
                          "url": element['url']})
+
+    print("crawl_services called")
     crawl_services(website_list)
 class MyThread(threading.Thread):
   def run(self):
+    print("Mythread start")
     crawling()
 
