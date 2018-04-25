@@ -61,6 +61,8 @@ class ServiceController(scrapy.Spider):
     start_urls = []
 
     def __init__(self, link):
+        if (len(self.start_urls) > 0):
+            self.start_urls.pop(0)
         self.start_urls.append(link["url"])
         category = link["Category"];
         service_name = link["ServiceName"]
