@@ -4,7 +4,6 @@
 # * 'gtrp' and 'gtr' create a GET request with or without query parameters;
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
-import eventlet
 from flask import Flask, Response
 from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
 

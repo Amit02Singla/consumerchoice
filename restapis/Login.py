@@ -36,7 +36,7 @@ def crawling():
                          "url": element['url']})
 
     print("crawl_services called")
-    crawl_services(website_list)
+  crawl_services(website_list)
 class MyThread(threading.Thread):
   def run(self):
     print("Mythread start")
