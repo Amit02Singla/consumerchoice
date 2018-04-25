@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+from multiprocessing import Process, Queue
+
 import scrapy
 from scrapy import Request
-from scrapy.crawler import CrawlerProcess
+from scrapy.crawler import CrawlerProcess, CrawlerRunner
+from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
+from twisted.internet import reactor
 
 from services.TotallyOnlineDating import TotallyOnlineDating
 from services.BestDatingReviews import BestDatingReviews
@@ -183,13 +187,25 @@ class ServiceController(scrapy.Spider):
         if (crawler != None):
             return crawler.crawl(response, dict_url[response.url]["Category"], dict_url[response.url]["Service Name"])
 
+def f(q, ):
+    try:
+        configure_logging({'LOG_FORMAT': '%(levelname)s: %(message)s'})
+        runner = CrawlerRunner()
+        deferred = runner.crawl(ServiceController, q[1])
+        deferred.addBoth(lambda _: reactor.stop())
+        reactor.run()
+        q[0].put(None)
+    except Exception as e:
+        q[0].put(e)
+
 
 def crawl_services(urls):
-    process = CrawlerProcess(get_project_settings())
-    process.crawl(ServiceController, urls)
-    process.start(stop_after_crawl=False)
-    # print final_dict_reviews
+    q = Queue()
+    p = Process(target=f, args=([q, urls],))
+    p.start()
+    result = q.get()
+    p.join()
 
-    # with open("reviews.json","w") as f:
-    #          json.dump(final_dict_reviews,f)
-    # print("Writing json file")
+    if result is not None:
+        raise result
+

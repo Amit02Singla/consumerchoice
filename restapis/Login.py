@@ -37,5 +37,5 @@ def crawling():
     crawl_services(website_list)
 class MyThread(threading.Thread):
   def run(self):
-    os.system("python /home/ubuntu/ConsumerChoice/ApplicationController.py")
+    crawling()
 
