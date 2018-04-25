@@ -190,7 +190,6 @@ class ServiceController(scrapy.Spider):
 
 def f(q, ):
     try:
-        configure_logging({'LOG_FORMAT': '%(levelname)s: %(message)s'})
         runner = CrawlerRunner()
         deferred = runner.crawl(ServiceController, q[1])
         deferred.addBoth(lambda _: reactor.stop())
@@ -203,6 +202,8 @@ def f(q, ):
 
 def crawl_services(urls):
     q = Queue()
+    for i in urls:
+        print("printing url "+i +"\n")
     p = Process(target=f, args=([q, urls],))
     print("crawl_services()")
     p.start()
