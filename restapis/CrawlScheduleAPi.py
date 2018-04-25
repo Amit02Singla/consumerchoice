@@ -81,7 +81,7 @@ def crawl():
     #[pile.spawn(thread.run()) for _ in range(1)]
     #pool.waitall()
 
-    resp = Response("{'status': 'ok','code': 200,'messages': 'Scheduling Done'}" , mimetype='application/json')
+    resp = Response("Schedule Success" , mimetype='application/json')
     return resp
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
