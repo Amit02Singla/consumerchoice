@@ -3,7 +3,7 @@ import threading
 import os
 import requests
 import json
-import services.ServiceController
+from services.ServiceController import crawl_services
 param = {
   "email": "data_miner@example.com",
   "password": "ATBdm9",
@@ -33,7 +33,7 @@ def crawling():
     website_list.append({"ServiceName": "Bluehost",
                          "Category": "Hosting Service",
                          "url": element['url']})
-  crawl_services(website_list)
+    crawl_services(website_list)
 class MyThread(threading.Thread):
   def run(self):
     os.system("python /home/ubuntu/ConsumerChoice/ApplicationController.py")
