@@ -8,7 +8,6 @@ import eventlet
 from flask import Flask, Response
 from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
 
-from restapis.CronJob import cronjob1
 from restapis.Login import MyThread
 import json
 from functools import wraps
