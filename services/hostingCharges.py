@@ -43,11 +43,6 @@ class hostingCharges():
                 del reviews[i]
                 count = count+1
             i = i+1
-        print("dates ", len(dates), dates)
-        print(" Reviews ", len(reviews), reviews)
-        print(" headings ", len(headings), headings)
-        print(" authors ", len(authors), authors)
-        print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings1[item], headings[item], dates[item], authors[item],
                                          category, servicename, reviews[item], img_src, website_name)

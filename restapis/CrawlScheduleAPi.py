@@ -4,12 +4,17 @@
 # * 'gtrp' and 'gtr' create a GET request with or without query parameters;
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
-
+import eventlet
 from flask import Flask, Response
 from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
-from restapis.Login import getUrl
+
+from restapis.CronJob import cronjob1
+from restapis.Login import MyThread
 import json
 from functools import wraps
+import os
+
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -67,8 +72,17 @@ def do_schedule():
 @app.route('/schedule', methods=['GET'])
 @requires_auth
 def crawl():
-    getUrl()
-    resp = Response(status="ok", message="Crawling Scheduled" , code = 200, mimetype='application/json')
+
+    thread = MyThread()
+    thread.start()
+    #thread1 = MyThread()
+    #thread.seprate(thread1)
+    #pool = eventlet.GreenPool(1)
+    #pile = eventlet.GreenPile(pool)
+    #[pile.spawn(thread.run()) for _ in range(1)]
+    #pool.waitall()
+
+    resp = Response("Schedule Success" , mimetype='application/json')
     return resp
 if __name__ == "__main__":
-    app.run()
+    app.run(debug = True)

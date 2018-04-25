@@ -25,12 +25,6 @@ class MacUpdate():
         for i in range(len(ratings)):
             if i != 0:
                 del [ratings]
-        print("Reviews ", len(reviews), reviews)
-        print("Headings ", len(headings), headings)
-        print("Authors ", len(authors), authors)
-        print("Rating ", len(ratings), ratings)
-        print("Dates ", len(dates), dates)
-        print("Img_src ", len(img_src), img_src)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
                                          category, servicename, reviews[item], img_src, website_name)

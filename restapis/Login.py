@@ -1,3 +1,6 @@
+import threading
+
+import os
 import requests
 import json
 from services.ServiceController import crawl_services
@@ -9,6 +12,8 @@ param = {
 url = ""
 SUCCESS_STATUS = 200
 base_url ="http://52.0.49.246/api/v1/"
+
+
 def login():
   response = requests.post( base_url+"users/login", param)
   data = response.json()
@@ -18,8 +23,7 @@ def postReview(review):
   data =login()
   header = {'Content-Type':'application/json','Authorization':'bearer '+data['data']['token']['access_token']}
   r = requests.post(base_url+"data_miner/store_data",data=json.dumps(review),headers=header)
-
-def getUrl():
+def crawling():
   data = login()
   header = {'Authorization': 'bearer ' + data['data']['token']['access_token']}
   response_website = requests.get(base_url + "scrapping_websites", headers=header)
@@ -27,6 +31,10 @@ def getUrl():
   website_list = []
   for element in (website_data['data']['scrapping_websites']):
     website_list.append({"ServiceName": "Bluehost",
-                 "Category": "Hosting Service",
-                 "url": element['url']})
+                         "Category": "Hosting Service",
+                         "url": element['url']})
   crawl_services(website_list)
+class MyThread(threading.Thread):
+  def run(self):
+    os.system("python C:\Users\madhvi.gupta\PycharmProjects\CustomerChoice\ApplicationController.py")
+
