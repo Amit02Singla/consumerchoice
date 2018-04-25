@@ -86,8 +86,6 @@ class ServiceController(scrapy.Spider):
                              "response": responselist}
             buisness_units.append(dictionary[k])
             restapis.Login.postReview({"business_units":buisness_units})
-        with open("reviews.json","w") as f:
-            json.dump({"business_units":buisness_units},f)
     def parse(self, response):
         self.log('I just visited: ' + response.url)
         dict_reviews = {}
