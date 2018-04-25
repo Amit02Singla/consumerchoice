@@ -16,6 +16,7 @@ base_url ="http://52.0.49.246/api/v1/"
 
 def login():
   response = requests.post( base_url+"users/login", param)
+  print(response)
   data = response.json()
   return data
 
