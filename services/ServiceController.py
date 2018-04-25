@@ -187,7 +187,7 @@ class ServiceController(scrapy.Spider):
 def crawl_services(urls):
     process = CrawlerProcess(get_project_settings())
     process.crawl(ServiceController, urls)
-    process.start()
+    process.start(stop_after_crawl=False)
     # print final_dict_reviews
 
     # with open("reviews.json","w") as f:
