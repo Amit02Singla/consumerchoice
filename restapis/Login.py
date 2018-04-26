@@ -35,9 +35,11 @@ def crawling():
   response_website = requests.get(base_url + "scrapping_websites", headers=header)
   website_data = response_website.json()
   website_list = []
+  i =0
   for element in (website_data['data']['scrapping_websites']):
-    website_list.append({"ServiceName": "Bluehost",
-                         "Category": "Hosting Service",
+    i = i+1
+    website_list.append({"ServiceName": "Bluehost"+i,
+                         "Category": "Hosting Service"+i,
                          "url": element['url']})
 
     print("crawl_services called")
