@@ -38,8 +38,8 @@ def crawling():
   i =0
   for element in (website_data['data']['scrapping_websites']):
     i = i+1
-    website_list.append({"ServiceName": "Bluehost"+i,
-                         "Category": "Hosting Service"+i,
+    website_list.append({"ServiceName": "Bluehost"+str(i),
+                         "Category": "Hosting Service"+str(i),
                          "url": element['url']})
 
     print("crawl_services called")
