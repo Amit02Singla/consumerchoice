@@ -12,10 +12,8 @@ import json
 from functools import wraps
 import os
 
-from threading import Thread
 
 app = Flask(__name__)
-
 
 def check_auth(auth):
     return auth == 'bearer crawl token'
@@ -56,22 +54,12 @@ def do_admin_login():
         return resp
         return jsonify(request.json['message'])
 
-@app.route('/schedule', methods=['POST'])
-@requires_auth
-def do_schedule():
-    if request.headers['Content-Type'] == 'application/json':
-        requests =  jsonify(request.json)
-        time = request['Time']
-        crontime = request['Crontime']
-        resp = Response(status="ok", message=cronjob(time, crontime) , code = 200, mimetype='application/json')
-
-
 
 @app.route('/schedule', methods=['GET'])
 @requires_auth
 def crawl():
 
-    thread = MyThread()
+    thread = MyThread("","")
     thread.start()
     #thread1 = MyThread()
     #thread.seprate(thread1)
@@ -79,6 +67,17 @@ def crawl():
     #pile = eventlet.GreenPile(pool)
     #[pile.spawn(thread.run()) for _ in range(1)]
     #pool.waitall()
+
+    resp = Response("Schedule Success" , mimetype='application/json')
+    return resp
+@app.route('/schedule', methods=['POST'])
+@requires_auth
+def crawlSite():
+    request_json = request.get_json()
+    url = request_json.get("url")
+    responseURL = request_json.get("responseURL")
+    thread = MyThread(url,responseURL)
+    thread.start()
 
     resp = Response("Schedule Success" , mimetype='application/json')
     return resp
