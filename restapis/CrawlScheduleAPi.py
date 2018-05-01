@@ -68,7 +68,7 @@ def crawl():
     #[pile.spawn(thread.run()) for _ in range(1)]
     #pool.waitall()
 
-    resp = Response("Schedule Success" , mimetype='application/json')
+    resp = "Schedule Success"
     return resp
 @app.route('/schedule', methods=['POST'])
 @requires_auth
@@ -79,7 +79,7 @@ def crawlSite():
     thread = MyThread(url,responseURL)
     thread.start()
 
-    resp = Response("Schedule Success" , mimetype='application/json')
+    resp = "Schedule Success"
     return resp
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
