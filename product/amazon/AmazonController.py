@@ -34,7 +34,7 @@ def begin_crawl(url):
         count += 1
         enqueue_url(link)
 
-    log("Found {} subcategories on {}".format(count, line))
+    log("Found {} subcategories on {}".format(count, link))
 
 
 def fetch_listing():

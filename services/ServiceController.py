@@ -51,6 +51,7 @@ from services.ThewebmasterCrawler import ThewebmasterCrawler
 from services.TheVPNlabCrawler import TheVPNlanCrawler
 from services.WebHostingHeroCrawler import WebHostingHeroCrawler
 from services.BestVPNZCrawler import BestVPNZCrawler
+from services.BuyBitcoinsWithCreditCardCrawler import BuyBitcoinsWithCreditCardCrawler
 from model.Servicemodel import final_json
 import restapis.Login
 import json
@@ -77,7 +78,7 @@ class ServiceController(scrapy.Spider):
     def start_requests(self):
         headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0'}
         for url in self.start_urls:
-            yield Request(url, headers=headers)
+            yield Request(url, headers=headers,meta={'dont_merge_cookies': True})
     def closed(self, reason):
         # with open("reviews.json","w") as f:
         #    json.dump(final_json,f)
@@ -182,6 +183,8 @@ class ServiceController(scrapy.Spider):
             crawler = BestDatingReviews()
         elif 'totallyonlinedating.com' in response.url:
             crawler = TotallyOnlineDating()
+        elif('buybitcoinswithcreditcard.net' in response.url):
+            crawler = BuyBitcoinsWithCreditCardCrawler()
         #elif 'seniordatingexpert.com' in response.url:
          #   crawler = SeniorDatingSites()
         else:

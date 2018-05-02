@@ -23,10 +23,9 @@ allowed_params = ["node", "rh", "page"]
 
 # Proxies
 proxies = [
-        
-    # your list of proxy IP addresses goes here
-    # check out https://proxybonanza.com/?aff_id=629
-    # for a quick, easy-to-use proxy service
+
+    'http://103.228.119.125:8080', 'http://89.236.17.106:3128', 'http://153.149.171.26:3128',
+     'http://51.15.65.152:8080', 'http://159.65.0.210:3128', 'http://185.93.3.123:3128'
 ]
 proxy_user = ""
 proxy_pass = ""
