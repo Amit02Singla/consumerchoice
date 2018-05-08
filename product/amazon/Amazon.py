@@ -38,10 +38,10 @@ def ParseReviews(url):
     XPATH_PRODUCT_AVAILABILITY = '//div[@id="availability"]/span/text()'
     XPATH_PRODUCT_CATEGORY = '//div[@id="wayfinding-breadcrumbs_feature_div"]/ul[@class="a-unordered-list a-horizontal a-size-small"]/li[1]/span[@class="a-list-item"]/a[@class="a-link-normal a-color-tertiary"]/text()'
     XPATH_PRODUCT_LIST_PRICE = '//span[@class="a-text-strike"]/text()'
-
+    XPATH_PRODUCT_BRAND = '//div[@class="a-section a-spacing-none"]/a[@id="bylineInfo"]/text()'
     raw_product_price = parser.xpath(XPATH_PRODUCT_PRICE)
     product_price = ''.join(raw_product_price).replace(',', '')
-
+    product_brand = parser.xpath(XPATH_PRODUCT_BRAND)
     raw_product_name = parser.xpath(XPATH_PRODUCT_NAME)
     product_name = ''.join(raw_product_name).strip()
     total_ratings = parser.xpath(XPATH_AGGREGATE_RATING)
