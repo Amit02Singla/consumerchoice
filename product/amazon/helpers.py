@@ -90,9 +90,8 @@ def get_proxy():
     return {
         "http": proxy_ip,
         "https": proxy_ip,
-        "no_proxy":proxy_ip
+        "no_proxy": proxy_ip
     }
-
 redis  =[];
 def enqueue_url(u):
     url = format_url(u)

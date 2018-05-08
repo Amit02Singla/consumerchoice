@@ -6,4 +6,3 @@ if __name__ == '__main__':
                  "Category": "VPN Service",
                  "url": "http://www.buybitcoinswithcreditcard.net/en/coinbase-com/"})
     crawl_services(urls)
-
