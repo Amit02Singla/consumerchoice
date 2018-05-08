@@ -1,7 +1,7 @@
 import os
 import random
 from datetime import datetime
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 import eventlet
 
@@ -86,16 +86,11 @@ def get_proxy():
         return None
 
     proxy_ip = random.choice(settings.proxies)
-    proxy_url = "socks5://{user}:{passwd}@{ip}:{port}/".format(
-        user=settings.proxy_user,
-        passwd=settings.proxy_pass,
-        ip=proxy_ip,
-        port=settings.proxy_port,
 
-    )
     return {
-        "http": proxy_url,
-        "https": proxy_url
+        "http": proxy_ip,
+        "https": proxy_ip,
+        "no_proxy":proxy_ip
     }
 
 redis  =[];

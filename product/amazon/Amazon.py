@@ -18,7 +18,7 @@ def ParseReviews(url):
     # for i in range(5):
     #     try:
     # This script has only been tested with Amazon.com
-    amazon_url = 'http://www.amazon.com' + url
+    amazon_url =  url
     print(url)
     # Add some recent user agent to prevent amazon from blocking the request 
     # Find some chrome user agent strings  here https://udger.com/resources/ua-list/browser-detail?browser=Chrome

@@ -58,18 +58,12 @@ def do_admin_login():
 @app.route('/schedule', methods=['GET'])
 @requires_auth
 def crawl():
-
     thread = MyThread("","")
     thread.start()
-    #thread1 = MyThread()
-    #thread.seprate(thread1)
-    #pool = eventlet.GreenPool(1)
-    #pile = eventlet.GreenPile(pool)
-    #[pile.spawn(thread.run()) for _ in range(1)]
-    #pool.waitall()
-
     resp = "Schedule Success"
     return resp
+
+
 @app.route('/schedule', methods=['POST'])
 @requires_auth
 def crawlSite():
