@@ -4,6 +4,8 @@
 # * 'gtrp' and 'gtr' create a GET request with or without query parameters;
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+import threading
+
 from flask import Flask, Response
 from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
 
@@ -12,6 +14,7 @@ import json
 from functools import wraps
 import os
 
+from utils.GoogleSearch import search
 
 app = Flask(__name__)
 
@@ -75,5 +78,20 @@ def crawlSite():
 
     resp = "Schedule Success"
     return resp
+
+
+@app.route('/categories/search_websites', methods=['GET'])
+@requires_auth
+def searchGoogle():
+    id = request.args.get('id')
+    categoryName =request.args.get('name')
+    categoryKeywords = request.args.get('keyword')
+    callback_url = request.args.get('callback_url')
+    print(categoryKeywords , categoryName, callback_url , id)
+    t1 = threading.Thread(target=search,args=(id,categoryName,categoryKeywords,callback_url))
+    t1.start()
+    response ="Searching Scheduled"
+    return response
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

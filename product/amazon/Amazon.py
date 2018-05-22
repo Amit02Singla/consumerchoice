@@ -13,6 +13,8 @@ import requests
 from dateutil import parser as dateparser
 from lxml import html
 
+from utils import utils
+
 
 def ParseReviews(url):
     # for i in range(5):
@@ -115,24 +117,39 @@ def ParseReviews(url):
         review_comments = re.sub('[A-Za-z]', '', review_comments).strip()
         review_dict = {
             # review_comment_count':review_comments,
-            'review_text': full_review_text,
-            'review_posted_date': review_posted_date,
-            'review_header': review_header,
-            'review_rating': review_rating,
-            'review_author': author
+            "absolute_url": "",
+            "rating": utils.getStarts(review_rating),
+            "review_title": review_header,
+            "reviewed_at": utils.convertDate(review_posted_date),
+            "reviewer_name": author,
+            "category": category,
+            "product_name": product_name,
+            "review_text": full_review_text,
+            "picture_urls": "",
+            "website_name": "AMAZON"
 
         }
         reviews_list.append(review_dict)
 
     data = {
-        # 'ratings':ratings_dict,
-        'reviews': reviews_list,
-        'url': amazon_url,
-        'price': product_price,
-        'name': product_name,
-        'availability': availability,
-        'category': category,
-        'list price': list_price
+
+        {"business_item_data": {
+            "business_type": "",
+            "absolute_url": amazon_url,
+            "category": category,
+            "name": product_name,
+            "sub_category": "",
+            "picture_urls": "",
+            "original_price": product_price,
+            "sale_price": list_price,
+            "availability": availability,
+            "specifications": "",
+            "website_name": "",
+            "description": ""
+        },
+            "reviews": reviews_list
+
+        }
     }
 
     return data
