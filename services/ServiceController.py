@@ -52,6 +52,7 @@ from services.TheVPNlabCrawler import TheVPNlanCrawler
 from services.WebHostingHeroCrawler import WebHostingHeroCrawler
 from services.BestVPNZCrawler import BestVPNZCrawler
 from services.BuyBitcoinsWithCreditCardCrawler import BuyBitcoinsWithCreditCardCrawler
+from services.FreeDatingHelperCrawler import FreeDatingHelperCrawler
 from model.Servicemodel import final_json
 import restapis.Login
 import json
@@ -94,7 +95,6 @@ class ServiceController(scrapy.Spider):
             restapis.Login.postReview({"business_units":buisness_units})
         with open("reviews.json","w") as f:
             json.dump({"business_units":buisness_units},f)
-        reactor.stop()
     def parse(self, response):
         self.log('I just visited: ' + response.url)
         dict_reviews = {}
@@ -185,6 +185,8 @@ class ServiceController(scrapy.Spider):
             crawler = TotallyOnlineDating()
         elif('buybitcoinswithcreditcard.net' in response.url):
             crawler = BuyBitcoinsWithCreditCardCrawler()
+        elif ('freedatinghelper' in response.url):
+            crawler = FreeDatingHelperCrawler()
         #elif 'seniordatingexpert.com' in response.url:
          #   crawler = SeniorDatingSites()
         else:
