@@ -85,7 +85,7 @@ def crawlSite():
 def searchGoogle():
     id = request.args.get('id')
     categoryName =request.args.get('name')
-    categoryKeywords = request.args.get('keyword')
+    categoryKeywords = request.args.getlist('keywords')
     callback_url = request.args.get('callback_url')
     print(categoryKeywords , categoryName, callback_url , id)
     t1 = threading.Thread(target=search,args=(id,categoryName,categoryKeywords,callback_url))

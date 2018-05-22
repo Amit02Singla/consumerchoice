@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import time
 
 #USER_AGENT = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
+from restapis.Login import google_search_post
+
 USER_AGENT = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
 
 def fetch_results(search_term, number_results, language_code):
@@ -33,7 +35,7 @@ def parse_results(html, keyword):
             title = title.get_text()
             description = description.get_text()
             if link != '#':
-                found_results.append({'url':link,'keyword': keyword, 'rank': rank, 'title': title, 'description': description})
+                found_results.append({'url':link, 'name': title})
                 rank += 1
     return found_results
 def scrape_google(search_term, number_results, language_code):
@@ -59,7 +61,9 @@ def search(id,categoryName,keywords,callbackurl):
             print(e)
         finally:
             time.sleep(10)
-    search :{
+    search_data ={
         "id" :id,
         "result" : data
     }
+    print(search_data)
+    google_search_post(callbackurl,search_data)
