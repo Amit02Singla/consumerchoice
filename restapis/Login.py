@@ -3,6 +3,8 @@ import threading
 import os
 import requests
 import json
+
+from product.ProductController import crawlAmazon
 from services.ServiceController import crawl_services
 param = {
   "email": "data_miner@example.com",
@@ -35,15 +37,25 @@ def crawling():
   response_website = requests.get(base_url + "scrapping_websites", headers=header)
   website_data = response_website.json()
   website_list = []
+  amazon_list =[]
   i =0
   for element in (website_data['data']['scrapping_websites']):
     i = i+1
-    website_list.append({"ServiceName": "Bluehost"+str(i),
+    if("www.amazon." in url):
+      amazon_list.append(url)
+    else:
+      website_list.append({"ServiceName": "Bluehost"+str(i),
                          "Category": "Hosting Service"+str(i),
                          "url": element['url']})
-
-    print("crawl_services called")
   crawl_services(website_list)
+  crawlAmazon(amazon_list)
+
+def google_search_post(callbackurl,search):
+  data = login()
+  header = {'Authorization': 'bearer ' + data['data']['token']['access_token']}
+  requests.post(callbackurl, data=json.dumps(search), headers=header)
+
+
 def crawlURL(url,responseURL):
   website_list = []
   website_list.append({"ServiceName": "Bluehost",

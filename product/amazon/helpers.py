@@ -1,7 +1,7 @@
 import os
 import random
 from datetime import datetime
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 import eventlet
 

@@ -22,14 +22,14 @@ headers = {
 allowed_params = ["node", "rh", "page"]
 
 # Proxies
-proxies = [
-
-    'http://103.228.119.125:8080', 'http://89.236.17.106:3128', 'http://153.149.171.26:3128',
-     'http://51.15.65.152:8080', 'http://159.65.0.210:3128', 'http://185.93.3.123:3128'
-]
+proxies = []
 proxy_user = ""
 proxy_pass = ""
 proxy_port = ""
+
+def updateProxies(proxyList):
+    global  proxies
+    proxies = proxyList
 
 # Crawling Logic
 start_file = os.path.join(current_dir, "start-urls.txt")
