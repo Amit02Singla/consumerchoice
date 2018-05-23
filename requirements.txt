@@ -8,3 +8,4 @@ redis==2.10.5
 requests==2.10.0
 psycopg2==2.7.4
 bs4==0.0.1
+HTMLParser==0.0.2
