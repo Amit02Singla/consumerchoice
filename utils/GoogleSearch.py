@@ -35,7 +35,7 @@ def parse_results(html, keyword):
             title = title.get_text()
             description = description.get_text()
             if link != '#':
-                found_results.append({'url':link, 'name': title})
+                found_results.append({"url":link, "name": title})
                 rank += 1
     return found_results
 def scrape_google(search_term, number_results, language_code):

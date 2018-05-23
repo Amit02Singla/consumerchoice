@@ -52,7 +52,7 @@ def crawling():
 
 def google_search_post(callbackurl,search):
   data = login()
-  header = {'Authorization': 'bearer ' + data['data']['token']['access_token']}
+  header = {'Content-Type': 'application/json', 'Authorization': 'bearer ' + data['data']['token']['access_token']}
   requests.post(callbackurl, data=json.dumps(search), headers=header)
 
 
