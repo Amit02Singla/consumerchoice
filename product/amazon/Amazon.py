@@ -20,6 +20,7 @@ def ParseReviews(url):
     # for i in range(5):
     #     try:
     # This script has only been tested with Amazon.com
+    #Todo: check for subcategory and append it in json
     amazon_url =  url
     print(url)
     # Add some recent user agent to prevent amazon from blocking the request 
@@ -40,6 +41,8 @@ def ParseReviews(url):
     XPATH_PRODUCT_AVAILABILITY = '//div[@id="availability"]/span/text()'
     XPATH_PRODUCT_CATEGORY = '//div[@id="wayfinding-breadcrumbs_feature_div"]/ul[@class="a-unordered-list a-horizontal a-size-small"]/li[1]/span[@class="a-list-item"]/a[@class="a-link-normal a-color-tertiary"]/text()'
     XPATH_PRODUCT_LIST_PRICE = '//span[@class="a-text-strike"]/text()'
+
+    XPATH_SUB_CATEGORY = '//div[@id="wayfinding-breadcrumbs_feature_div"]/ul[@class="a-unordered-list a-horizontal a-size-small"]/li/span[@class="a-list-item"]/a[@class="a-link-normal a-color-tertiary"]/text()'
     XPATH_PRODUCT_BRAND = '//div[@class="a-section a-spacing-none"]/a[@id="bylineInfo"]/text()'
     raw_product_price = parser.xpath(XPATH_PRODUCT_PRICE)
     product_price = ''.join(raw_product_price).replace(',', '')
@@ -54,6 +57,7 @@ def ParseReviews(url):
     if (category):
         category = (category)[0].strip()
     list_price = parser.xpath(XPATH_PRODUCT_LIST_PRICE)
+    sub_category = parser.xpath(XPATH_SUB_CATEGORY)
     reviews = parser.xpath(XPATH_REVIEW_SECTION_1)
     if not reviews:
         reviews = parser.xpath(XPATH_REVIEW_SECTION_2)
@@ -131,9 +135,7 @@ def ParseReviews(url):
         }
         reviews_list.append(review_dict)
 
-    data = {
-
-        {"business_item_data": {
+    data =  {"business_item_data": {
             "business_type": "",
             "absolute_url": amazon_url,
             "category": category,
@@ -150,7 +152,6 @@ def ParseReviews(url):
             "reviews": reviews_list
 
         }
-    }
 
     return data
     #     except ValueError:
