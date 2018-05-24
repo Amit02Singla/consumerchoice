@@ -2,9 +2,7 @@ import scrapy
 from scrapy.crawler import CrawlerProcess, CrawlerRunner
 from twisted.internet import reactor
 from scrapy.utils.log import configure_logging
-from scrapy.utils.project import get_project_settings
 from multiprocessing import Process, Queue
-from product import ProductController
 
 
 class GetProxyList(scrapy.Spider):
