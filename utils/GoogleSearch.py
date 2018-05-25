@@ -8,11 +8,14 @@ from restapis.Login import google_search_post
 USER_AGENT = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
 
 def fetch_results(search_term, number_results, language_code):
+
+    print("Searching ", search_term)
     assert isinstance(search_term, str), 'Search term must be a string'
     assert isinstance(number_results, int), 'Number of results must be an integer'
     escaped_search_term = search_term.replace(' ', '+')
 
     google_url = 'https://www.google.com/search?q={}&num={}&hl={}'.format(escaped_search_term, number_results, language_code)
+    print("google_url ", google_url)
     response = requests.get(google_url, headers=USER_AGENT,verify= False)
     response.raise_for_status()
 
