@@ -56,23 +56,24 @@ def google_search_post(callbackurl,search):
   requests.post(callbackurl, data=json.dumps(search), headers=header)
 
 
-def crawlURL(url,responseURL):
+def crawlURL(url,responseURL,categoryName):
   website_list = []
   website_list.append({"ServiceName": "Bluehost",
-                       "Category": "Hosting Service",
+                       "Category": categoryName,
                        "url": url})
   global custom_base_url
   custom_base_url = responseURL
   crawl_services(website_list)
 class MyThread(threading.Thread):
-  def __init__(self, url,responseURL):
+  def __init__(self, id,categoryName,url,callback_url):
     super(MyThread, self).__init__()
-    self.responseURL = responseURL
+    self.responseURL = callback_url
     self.URL = url
+    self.categoryName = categoryName
   def run(self):
     print("Mythread start")
     if(self.URL == ""):
       crawling()
     else:
-      crawlURL(self.URL,self.responseURL)
+      crawlURL(self.URL,self.responseURL,self.categoryName)
 
