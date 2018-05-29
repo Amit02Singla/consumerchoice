@@ -29,7 +29,9 @@ def postReview(review):
     header = {'Content-Type': 'application/json', 'Authorization': 'bearer ' + data['data']['token']['access_token']}
     requests.post(base_url + "data_miner/store_data", data=json.dumps(review), headers=header)
   else:
-    requests.post(custom_base_url, data=json.dumps(review))
+    data = login()
+    header = {'Content-Type': 'application/json', 'Authorization': 'bearer ' + data['data']['token']['access_token']}
+    requests.post(custom_base_url, data=json.dumps(review), headers=header)
 
 def crawling():
   data = login()
