@@ -10,6 +10,7 @@ class FinancesOnlineCrawler(Spider):
         self.servicename = servicename
         reviews = []
         # https://reviews.financesonline.com/p/vyprvpn/
+        # TODO Extract data
         for node in :
             reviews.append(node.xpath('string()').extract());
         dates =

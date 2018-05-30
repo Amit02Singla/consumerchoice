@@ -10,6 +10,7 @@ class DatingSitesReviewsCrawler(Spider):
         self.servicename = servicename
         reviews = []
         # https://www.datingsitesreviews.com/staticpages/index.php?page=BlackPeopleMeet-Reviews&query=blackpeoplemeet
+        # TODO Extract data
         for node in :
             reviews.append(node.xpath('string()').extract());
         temp_data = response.xpath("//div[@id='comments']/div[@class='block-comment-content level-0']/ul[@class='comment_status']/li[@class='comment_author']/text()").extract()

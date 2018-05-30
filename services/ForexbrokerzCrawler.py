@@ -1,6 +1,6 @@
 from model.Servicemodel import ServiceRecord
 
-
+#URL https://www.forexbrokerz.com/brokers/binance-review
 class ForexbrokerzCrawler():
 
     def __init__(self):

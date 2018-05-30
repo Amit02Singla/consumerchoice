@@ -14,7 +14,7 @@ class PickuphostCrawler():
         headings = response.xpath("//div[@id='rew_replace_div']/div[@class='one_rew']/h4/b/text()").extract()
         dates = response.xpath("//div[@id='rew_replace_div']/div[@class='one_rew']/span[@class='rewiwer_data']/span[2]/text()").extract()
         authors = response.xpath("//div[@id='rew_replace_div']/div[@class='one_rew']/span[@class='rewiwer_data']/span[1]/text()").extract()
-        #TODO website name pending-- done
+        #TODO Pagination Pending
         name = response.xpath("//div[@class='navbar-header']/a/@href").extract()
         website_name = name[0].split(".")[0].split("/")[-1]
         for item in range(1, len(reviews)):

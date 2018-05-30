@@ -8,6 +8,7 @@ from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
 from twisted.internet import reactor
 
+from services.PickuphostCrawler import PickuphostCrawler
 from services.TotallyOnlineDating import TotallyOnlineDating
 from services.BestDatingReviews import BestDatingReviews
 from services.SeniorDatingSites import SeniorDatingSites
@@ -81,8 +82,7 @@ class ServiceController(scrapy.Spider):
         for url in self.start_urls:
             yield Request(url, headers=headers,meta={'dont_merge_cookies': True})
     def closed(self, reason):
-        # with open("reviews.json","w") as f:
-        #    json.dump(final_json,f)
+
         str1 = ""
         dictionary = {}
         buisness_units = []
@@ -115,8 +115,8 @@ class ServiceController(scrapy.Spider):
             crawler = CapterraCrawler()
         elif ('forexbrokerz.com' in response.url):
             crawler = ForexbrokerzCrawler()
-        #elif('highya.com' in response.url):
-         #   crawler = HighYaCrawler()
+        elif('highya.com' in response.url):
+            crawler = HighYaCrawler()
         elif(response.xpath("//div[@class='campaign-reviews__regular-container js-campaign-reviews__regular-container']/div/div[@class='rvw-bd ca-txt-bd-2']/p")):
             crawler = consumerAffairsCrawler()
         elif('yelp.com' in response.url):
@@ -179,7 +179,7 @@ class ServiceController(scrapy.Spider):
             crawler = BlackPeopleMeet_PissedConsumer()
         elif 'top20seniordatingsites.com' in response.url:
             crawler = SeniorDatingSites()
-        elif 'bestdatingreviews.org' in response.url:
+        elif 'bestdatingreviews.org'  in response.url:
             crawler = BestDatingReviews()
         elif 'totallyonlinedating.com' in response.url:
             crawler = TotallyOnlineDating()
@@ -187,6 +187,8 @@ class ServiceController(scrapy.Spider):
             crawler = BuyBitcoinsWithCreditCardCrawler()
         elif ('freedatinghelper' in response.url):
             crawler = FreeDatingHelperCrawler()
+        elif ('pickuphost.com' in response.url):
+            crawler = PickuphostCrawler()
         #elif 'seniordatingexpert.com' in response.url:
          #   crawler = SeniorDatingSites()
         else:

@@ -1,6 +1,8 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
+
+#TODO Author value need to check
 class BestVPNZCrawler(Spider):
     def __init__(self):
         pass

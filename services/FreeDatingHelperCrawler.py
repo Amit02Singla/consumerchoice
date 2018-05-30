@@ -12,24 +12,24 @@ class FreeDatingHelperCrawler():
         self.category = category
         self.servicename = servicename
         # http://www.freedatinghelper.com/reviews/fortyplus-singles/
+        #TODO Need to check pick only first review
         authors = []
         reviews=[]
         ratings =[]
-        data = response.xpath("//div[@itemtype='http://schema.org/Review']").extract()
+        data = response.xpath("//div/div/div/section/ol/li").extract()
+        print data
         for content in data:
             content = content.replace('<br>', '$')
-            root = etree.fromstring(content)
-            temp = (root)
-            for element in root.iter():
-                temp_tag= element.tag
-                temp_data = element.text
-                if(element.tag == 'span'):
-                    authors.append(element.text)
-                if(element.tag == 'p'):
-                    reviews.append(element.text)
-
-        #website_name=
-       #for item in range(0, len(reviews)):
-            #servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item],
-             #                            category, servicename, reviews[item], None, website_name)
-            #servicename1.save()
+            root = etree.HTML(content)
+            authors.append(root.xpath("//li/article/div/div[2]/span/span/text()"))
+            reviews.append(root.xpath("//div/div/div/div/div/span/p/text()"))
+            rate = root.xpath("//div/div/table/toby/tr/td/div/span/text()")
+            if (rate != None and len(rate) > 0):
+                ratings.append(rate[0])
+            else:
+                ratings.append("")
+        website_name= response.xpath("//html/head/meta[8]/@content").extract()[0]
+        for item in range(0, len(reviews)):
+            servicename1 = ServiceRecord(response.url, ratings[item], None, None, authors[item],
+                                         category, servicename, reviews[item], None, website_name)
+            servicename1.save()

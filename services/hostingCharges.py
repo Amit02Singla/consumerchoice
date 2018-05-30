@@ -16,7 +16,7 @@ class hostingCharges():
             reviews.append(node.xpath('string()').extract());
         ratings = response.xpath("//div[@class='review-one-all']/div[@class='lftfeatures']/div/div/input/@value").extract()
         headings = response.xpath("//div[@class='review-mid']/p/text()").extract()
-        #TODO code pending giving error
+        #TODO code pending giving error url need to extract
         ratings1 = []
         for i in range(len(ratings)):
             if i % 4 != 0 and i != 0:

@@ -1,6 +1,7 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
-
+#TODO: 2-Raiting pending,incompletem header, raiting etc.
+#url "https://www.10bestonline.com/top_10_best_online_dating_reviews/eHarmony_customer_reviews/"
 class BestOnline():
     def __init__(self):
         pass
@@ -12,12 +13,12 @@ class BestOnline():
         self.category = category
         self.servicename = servicename
         print("review from 10bestonline.com")
-        for node in response.xpath("//div[@class='cust_review']/table/tbody/tr[5]/td[@class='comment']"):
+        for node in response.xpath("//div[@class='cust_review']/table/tr[5]/td[@class='comment']"):
             reviews.append(node.xpath('string()').extract());
         # ratings = response.xpath("//div[@class='box col-12 review-title']/meta[@itemprop='ratingValue']/@content").extract()
-        dates = response.xpath("//div[@class='customer_reviews']/div/div[@class='cust_review']/table/tbody/tr[2]/td[@class='customer']/text()").extract()
+        dates = response.xpath("//div[@class='customer_reviews']/div/div[@class='cust_review']/table/tr[2]/td[@class='customer']/text()").extract()
         # headings = response.xpath("//div[@class='box col-12 review-title']/h4/text()").extract()
-        authors = response.xpath("//div[@class='cust_review']/table/tbody/tr[3]/td[@class='customer']").extract()
+        authors = response.xpath("//div[@class='cust_review']/table/tr[3]/td[@class='customer']/text()").extract()
         website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
         # img_src = response.xpath("//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/img[@class='avatar avatar-74 photo']/@src").extract()
         #print("Reviews ", len(reviews), reviews)

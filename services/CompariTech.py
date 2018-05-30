@@ -1,6 +1,9 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
 
+#TODO etree complete auther extraction
+#URL https://www.comparitech.com/vpn/reviews/expressvpn/
+
 class CompariTech():
     def __init__(self):
         pass
@@ -23,7 +26,7 @@ class CompariTech():
         authors = []
         for content in authors1:
             #print(content)
-            root = etree.fromstring(content)
+            root = etree.HTML(content)
             #print(root)
         #print("Reviews ", len(reviews), reviews)
         # print("Headings ", len(headings), headings)
