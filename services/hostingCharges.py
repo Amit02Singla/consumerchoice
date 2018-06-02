@@ -11,12 +11,12 @@ class hostingCharges():
         self.category = category
         self.servicename = servicename
         print("review from hostingcharges.in")
-        # https://www.highya.com/coinbase-reviews
+        # http://www.hostingcharges.in/hosting-reviews/bluehost
         for node in response.xpath("//div[@class='review-cntnr']/div[@class='review-sub-cntnr']/div[@class='review-one-all']/p"):
             reviews.append(node.xpath('string()').extract());
         ratings = response.xpath("//div[@class='review-one-all']/div[@class='lftfeatures']/div/div/input/@value").extract()
         headings = response.xpath("//div[@class='review-mid']/p/text()").extract()
-        #TODO code pending giving error url need to extract
+        #TODO code pending giving error url need to extract: done
         ratings1 = []
         for i in range(len(ratings)):
             if i % 4 != 0 and i != 0:

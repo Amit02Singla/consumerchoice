@@ -1,7 +1,7 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
 
-#TODO etree complete auther extraction
+#TODO etree complete auther extraction: Refer sandy
 #URL https://www.comparitech.com/vpn/reviews/expressvpn/
 
 class CompariTech():
@@ -25,15 +25,8 @@ class CompariTech():
         img_src = response.xpath("//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/img[@class='avatar avatar-74 photo']/@src").extract()
         authors = []
         for content in authors1:
-            #print(content)
             root = etree.HTML(content)
-            #print(root)
-        #print("Reviews ", len(reviews), reviews)
-        # print("Headings ", len(headings), headings)
-        #print("Authors ", len(authors), authors)
-        # print("Rating ", len(ratings), ratings)
-        #print("Dates ", len(dates), dates)
-        #print("Img_src ", len(img_src), img_src)
+
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item],
                                          category, servicename, reviews[item], img_src, website_name)

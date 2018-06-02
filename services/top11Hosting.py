@@ -11,13 +11,17 @@ class top11Hosting():
         reviews = []
         self.category = category
         self.servicename = servicename
-        #TODO raiting coming in percentage
+        #TODO raiting coming in percentage: done
         # https://top11hosting.com/hostgator-review/
         for node in response.xpath("//div[@class='wpcr3_item wpcr3_business']/div/blockquote[@class='wpcr3_content']"):
             reviews.append(node.xpath('string()').extract());
-        ratings = response.xpath("//div[@class='wpcr3_rating_style1_average']/@style").extract()
-        ratings.pop(0)
-        ratings.pop(0)
+        rate = response.xpath("//div[@class='wpcr3_rating_style1_average']/@style").extract()
+        rate.pop(0)
+        rate.pop(0)
+        ratings = []
+        for i in range(0,len(rate)):
+            rate[i]=rate[i].split(":")[1].split("%")[0]
+            ratings.append(str((int(rate[i]))*5/100))
         dates = response.xpath("//div[@class='wpcr3_review_datePublished']/text()").extract()
         # headings = response.xpath("//div[@class='width64 floatleft']/h4[3]").extract()
         authors = response.xpath("//div[@class='wpcr3_review_author']/span[@class='wpcr3_caps']/text()").extract()

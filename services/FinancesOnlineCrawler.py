@@ -10,13 +10,10 @@ class FinancesOnlineCrawler(Spider):
         self.servicename = servicename
         reviews = []
         # https://reviews.financesonline.com/p/vyprvpn/
-        # TODO Extract data
+        # TODO Extract data: forbidden website: done
         for node in :
             reviews.append(node.xpath('string()').extract());
-        dates =
-        headings =
-        authors =
-        img_src =
+        authors =response
         website_name =  
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item], category,

@@ -13,27 +13,19 @@ class HighYaCrawler():
         self.servicename = servicename
         #print("review from HighYa.com")
         # https://www.highya.com/coinbase-reviews
-        #TODO : 2- Auther need to extract
+        #TODO : 2- Auther need to extract: Authors done some other error coming up
         for node in  response.xpath("//div[@class='left-col col-lg-8 col-lg']/div[@id='reviews']/ul[@class='no-list list-review']/li/span/div[@class='description']"):
             reviews.append(node.xpath('string()').extract());
         ratings = response.xpath("//div[@id='reviews']/ul[@class='no-list list-review']/li/span/span[@class='review']/meta[@itemprop='ratingValue']/@content").extract()
         dates =  response.xpath("//div[@id='reviews']/ul[@class='no-list list-review']/li/span/ul[@class='list-line options']/li[last()-1]/text()").extract()
         headings = response.xpath("//div[@id='reviews']/ul[@class='no-list list-review']/li/span/h3[@class='title']/text()").extract()
         #TODO some times auther name structure differ not anchor tag need to check
-        # authors = response.xpath("//div[@id='reviews']/ul[@class='no-list list-review']/li/span/ul[@class='list-line options']/li[1]/a/span/text()").extract()
         authors1 = response.xpath("//div[@id='reviews']/ul[@class='no-list list-review']/li/span/ul[@class='list-line options']/li[1]").extract()
         authors = []
         for content in authors1:
-            #print(content)
             root = etree.HTML(content)
-            #print("rootttttt    ", root.text)
-            break
-
-            # if (root.text == None):
-            #     for element in root:
-            #         authors.append(element.text)
-            # else:
-            #     authors.append(root.text)
+            if(root.xpath("//a/span")):
+                authors.append(root.xpath("//a/span/text()"))
         website_name =  response.xpath("//html/head/meta[7]/@content").extract()
 
         for item in range(0, len(reviews)):

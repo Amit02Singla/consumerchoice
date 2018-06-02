@@ -8,7 +8,7 @@ class webshostingFatcow(Spider):
         pass
     def parsing(self, response):
         return self.crawl(response,self.category,self.servicename)
-#TODO rating pending
+#TODO rating pending: could not get which website is this
     def crawl(self, response, category, servicename):
         reviews = []
         self.category = category
@@ -20,8 +20,7 @@ class webshostingFatcow(Spider):
         headings = response.xpath("//div[@class='comments_user_comment']/a/text()").extract()
         ratings1 = response.xpath("//div[@class='comment_user_star_rate']/div[@class='comment_user_stars']/img/@src").extract()
         if len(ratings1) == 0:
-            ratings1 = response.xpath(
-                "//div[@class='rating pure-u-1 pure-u-lg-1-3']/img[@class='stars overall']/@alt").extract()
+            ratings1 = response.xpath("//div[@class='rating pure-u-1 pure-u-lg-1-3']/img[@class='stars overall']/@alt").extract()
         ratings = []
         while i < len(ratings1):
             ratings.append(getStarts(ratings1[i]))

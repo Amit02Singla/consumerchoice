@@ -21,3 +21,11 @@ class PickuphostCrawler():
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], category,
                           servicename, reviews[item],"",website_name);
             servicename1.save()
+        next_page = response.xpath("//div[@class='row']/div[@class='col-lg-8 col-lg-offset-3']/ul[@class='pagecount']/li[8]/a[@class='next page-numbers custom_page_link']/@href").extract()
+        if next_page is not None:
+            next_page_url = "".join(next_page)
+            if next_page_url and next_page_url.strip():
+                print(type(next_page_url))
+                print(next_page_url)
+                # yield Request(url=next_page_url, callback=self.parse, dont_filter=True)
+                yield response.follow(next_page_url, callback=self.parsing)

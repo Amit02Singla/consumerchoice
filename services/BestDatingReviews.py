@@ -67,8 +67,7 @@ class BestDatingReviews():
                                          category, servicename, reviews[item], None, website_name)
             servicename1.save()
 
-        next_page = response.xpath(
-            "//div[@class='mid_left']/div[@class='mid_left_site']/div[@class='viciao']/div[@class='page_cut']/a[@class='cur_pageva']/@href").extract()
+        next_page = response.xpath("//div[@class='mid_left']/div[@class='mid_left_site']/div[@class='viciao']/div[@class='page_cut']/a[@class='cur_pageva']/@href").extract()
         if next_page is not None:
             next_page_url = "".join(next_page)
             if next_page_url and next_page_url.strip():

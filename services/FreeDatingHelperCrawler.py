@@ -12,7 +12,7 @@ class FreeDatingHelperCrawler():
         self.category = category
         self.servicename = servicename
         # http://www.freedatinghelper.com/reviews/fortyplus-singles/
-        #TODO Need to check pick only first review
+        #TODO Need to check pick only first review: Refer Sandy
         authors = []
         reviews=[]
         ratings =[]

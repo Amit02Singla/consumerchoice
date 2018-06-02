@@ -3,7 +3,7 @@ from model.Servicemodel import ServiceRecord
 class tbwhsCrawler():
     def __init__(self):
         pass
-    #TODO site pending
+    #TODO site pending: Done by amit merge the code
     def crawl(self, response,category,servicename):
         reviews = []
         # https://tbwhs.com/fatcow-web-hosting-reviews/

@@ -54,6 +54,7 @@ from services.WebHostingHeroCrawler import WebHostingHeroCrawler
 from services.BestVPNZCrawler import BestVPNZCrawler
 from services.BuyBitcoinsWithCreditCardCrawler import BuyBitcoinsWithCreditCardCrawler
 from services.FreeDatingHelperCrawler import FreeDatingHelperCrawler
+from DatingSitesReviewsCrawler import DatingSitesReviewsCrawler
 from model.Servicemodel import final_json
 import restapis.Login
 import json
@@ -189,6 +190,8 @@ class ServiceController(scrapy.Spider):
             crawler = FreeDatingHelperCrawler()
         elif ('pickuphost.com' in response.url):
             crawler = PickuphostCrawler()
+        elif('datingsitesreviews.com' in response.url):
+            crawler = DatingSitesReviewsCrawler()
         #elif 'seniordatingexpert.com' in response.url:
          #   crawler = SeniorDatingSites()
         else:
