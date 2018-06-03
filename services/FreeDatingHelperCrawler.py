@@ -1,6 +1,5 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
-
 class FreeDatingHelperCrawler():
     def __init__(self):
         pass

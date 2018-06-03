@@ -36,10 +36,6 @@ class BuyBitcoinsWithCreditCardCrawler():
                 ratings.append(rate[0])
             else:
                 ratings.append("")
-            print(ratings)
-
-
-
         website_name = response.xpath("//html/head/title/text()").extract()[0].split("-")[1]
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item],

@@ -2,6 +2,8 @@ from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
 
+
+#TODO REDO
 class WebHostingHeroCrawler(Spider):
 
     def __init__(self):

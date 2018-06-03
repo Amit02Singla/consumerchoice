@@ -1,6 +1,6 @@
 from model.Servicemodel import ServiceRecord
 
-
+#TODO REDO website
 class SecureThoughts():
     def __init__(self):
         pass
@@ -11,6 +11,7 @@ class SecureThoughts():
         reviews = []
         self.category = category
         self.servicename = servicename
+        #URL https://securethoughts.com/express-vpn-review/
         print("review from securethoughts.com")
         for node in response.xpath("//div[@class='comment-content']"):
             reviews.append(node.xpath('string()').extract());

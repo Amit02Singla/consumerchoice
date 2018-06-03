@@ -1,6 +1,8 @@
 from model.Servicemodel import ServiceRecord
 from utils.utils import getStarts
 
+#TODO redo website
+#URL https://www.macupdate.com/app/mac/52417/purevpn
 class MacUpdate():
     def __init__(self):
         pass

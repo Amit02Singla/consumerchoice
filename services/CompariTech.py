@@ -22,10 +22,12 @@ class CompariTech():
         # headings = response.xpath("//div[@class='box col-12 review-title']/h4/text()").extract()
         authors1 = response.xpath("//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']").extract()
         website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
-        img_src = response.xpath("//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/img[@class='avatar avatar-74 photo']/@src").extract()
+        img_src = response.xpath("//div[@class='main wrapper clearfix']/div[@class='section'][2]/div[@class='review--summary full-width large-cta']/div[@class='review-summary-section top']/a[@class='review-summary-column image centered-no-stretch']/@style").extract()
+        img_src = str(img_src[0]).split("'")[1]
         authors = []
         for content in authors1:
             root = etree.HTML(content)
+            authors.append(root.xpath("//b/text()"))
 
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item],

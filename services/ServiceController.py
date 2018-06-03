@@ -9,6 +9,7 @@ from scrapy.utils.project import get_project_settings
 from twisted.internet import reactor
 
 from services.PickuphostCrawler import PickuphostCrawler
+from services.SeniorDatingExpert import SeniorDatingExpert
 from services.TotallyOnlineDating import TotallyOnlineDating
 from services.BestDatingReviews import BestDatingReviews
 from services.SeniorDatingSites import SeniorDatingSites
@@ -55,6 +56,9 @@ from services.BestVPNZCrawler import BestVPNZCrawler
 from services.BuyBitcoinsWithCreditCardCrawler import BuyBitcoinsWithCreditCardCrawler
 from services.FreeDatingHelperCrawler import FreeDatingHelperCrawler
 from DatingSitesReviewsCrawler import DatingSitesReviewsCrawler
+from AnblikCrawler import AnblikCrawler
+from BestVPNProvidersCrawler import BestVPNProvidersCrawler
+from CoinJabberCrawler import CoinJabberCrawler
 from model.Servicemodel import final_json
 import restapis.Login
 import json
@@ -93,7 +97,7 @@ class ServiceController(scrapy.Spider):
             dictionary[k] = {"scrapping_website_name": k, "scrapping_website_url": v["response"].URL,
                              "response": responselist}
             buisness_units.append(dictionary[k])
-            restapis.Login.postReview({"business_units":buisness_units})
+            #restapis.Login.postReview({"business_units":buisness_units})
         with open("reviews.json","w") as f:
             json.dump({"business_units":buisness_units},f)
     def parse(self, response):
@@ -192,8 +196,14 @@ class ServiceController(scrapy.Spider):
             crawler = PickuphostCrawler()
         elif('datingsitesreviews.com' in response.url):
             crawler = DatingSitesReviewsCrawler()
-        #elif 'seniordatingexpert.com' in response.url:
-         #   crawler = SeniorDatingSites()
+        elif ('anblik.com' in response.url):
+            crawler = AnblikCrawler()
+        elif ('bestvpnprovider.com' in response.url):
+            crawler = BestVPNProvidersCrawler()
+        elif ('coinjabber.com' in response.url):
+            crawler = CoinJabberCrawler()
+        elif 'seniordatingexpert.com' in response.url:
+            crawler = SeniorDatingExpert()
         else:
             print("Found Nothing")
         if (crawler != None):

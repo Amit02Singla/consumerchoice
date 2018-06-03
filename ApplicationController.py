@@ -4,5 +4,5 @@ if __name__ == '__main__':
     urls = []
     urls.append({"ServiceName": "Expressvpn",
                  "Category": "VPN Service",
-                 "url": "https://vpnpick.com/reviews/expressvpn/"})
+                 "url": "https://www.webhostinghero.com/reviews/bluehost/"})
     crawl_services(urls)

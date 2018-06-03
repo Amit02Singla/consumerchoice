@@ -11,7 +11,7 @@ class restorePrivacy():
         self.category = category
         self.servicename = servicename
         print("review from restoreprivacy.com")
-        # https://www.highya.com/coinbase-reviews
+        # https://restoreprivacy.com/expressvpn-review/
         for node in response.xpath("//div[@class='comment-text-inner']"):
             reviews.append(node.xpath('string()').extract());
         # ratings = response.xpath("//div[@class='wpcr3_rating_style1_average']/@style").extract()

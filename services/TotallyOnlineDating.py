@@ -1,6 +1,6 @@
 from model.Servicemodel import ServiceRecord
 
-
+#Todo: redo
 class TotallyOnlineDating():
     def parsing(self, response):
         return self.crawl(response,self.category,self.servicename)
@@ -10,7 +10,7 @@ class TotallyOnlineDating():
         self.category = category
         self.servicename = servicename
         print("review from totallyonlinedating.com")
-        # https://www.productreview.com.au/p/smart-fares.html
+        # http://www.totallyonlinedating.com/usa-online-dating-services/senior-dating-sites/seniorpeoplemeet.com-review.html
         for node in response.xpath("//div/table[@class='showcomment']/tbody/tr[2]/td[@class='contcomment']"):
             reviews.append(node.xpath('string()').extract());
         ratings = response.xpath("//div[@class='rating-md']/p/span/span[@itemprop='ratingValue']/@content").extract()

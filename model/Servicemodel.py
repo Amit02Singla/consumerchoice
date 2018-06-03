@@ -23,11 +23,21 @@ class ServiceRecord(object):
         store_data_dict = {}
 
         # datetime.datetime(2010, 2, 15, 0, 0)
+        if(self.rating != None):
+            rating = str(self.rating);
+        else:
+            rating = None
+
+        if(self.date != None):
+            date = str (self.date)
+        else:
+            date = None
+
         return {
             "absolute_url": self.url,
-            "rating": utils.getStarts(self.rating),
+            "rating": utils.getStarts(rating),
             "review_title": self.heading,
-            "reviewed_at": utils.convertDate(self.date),
+            "reviewed_at": utils.convertDate(date),
             "reviewer_name": self.author,
             "category": self.category,
             "service_name": self.service_name,

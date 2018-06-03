@@ -1,5 +1,9 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
+
+from utils.utils import getStarts
+
+
 class SeniorDatingSites():
     def __init__(self):
         pass
@@ -11,13 +15,15 @@ class SeniorDatingSites():
         self.category = category
         self.servicename = servicename
         print("review from seniordatingsites.com")
-        # https://www.highya.com/coinbase-reviews
+        # http://www.top20seniordatingsites.com/product/senior-people-meet/
+        #TODO Full website redo
         for node in response.xpath("//div[@id='main-inner']/ul[@id='user-reviews']/li/div[@class='userrev']/div[@class='user-review']/p"):
             reviews.append(node.xpath('string()').extract());
         ratings = response.xpath("//div[@id='main-inner']/ul[@id='user-reviews']/li/div[@class='userrev']/div[@class='user-stars']/img/@src").extract()
         i = 0
+        ratings1 = []
         while i < len(ratings):
-            star = getStarts(ratings[i])
+            ratings1.append(getStarts(ratings[i]))
             i = i + 1
 
         # dates = response.xpath("//div[@class='review-sub-cntnr']/div[@class='review-one-all']/div[@class='review-profile']/div[@class='review-mid']/p/text()").extract()

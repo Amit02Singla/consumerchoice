@@ -1,6 +1,6 @@
 from model.Servicemodel import ServiceRecord
 
-
+#TODO URL not found Ask amit
 class SeniorDatingExpert():
     def parsing(self, response):
         return self.crawl(response,self.category,self.servicename)
@@ -10,7 +10,8 @@ class SeniorDatingExpert():
         self.category = category
         self.servicename = servicename
         print("review from seniordatingexpert.com")
-        # https://www.productreview.com.au/p/smart-fares.html
+        # https://www.seniordatingexpert.com/reviews/silversingles-review/
+        #TODo REDO website
         for node in response.xpath("//div/table[@class='showcomment']/tbody/tr[2]/td[@class='contcomment']"):
             reviews.append(node.xpath('string()').extract());
         ratings = response.xpath("//div[@class='rating-md']/p/span/span[@itemprop='ratingValue']/@content").extract()

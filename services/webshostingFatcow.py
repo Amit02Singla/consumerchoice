@@ -3,12 +3,13 @@ from utils.utils import getStarts
 from scrapy import Spider, Request
 from lxml import etree
 
+
 class webshostingFatcow(Spider):
     def __init__(self):
         pass
     def parsing(self, response):
         return self.crawl(response,self.category,self.servicename)
-#TODO rating pending: could not get which website is this
+#TODO rating pending: could not get which website is this ask amit
     def crawl(self, response, category, servicename):
         reviews = []
         self.category = category

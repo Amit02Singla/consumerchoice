@@ -4,8 +4,11 @@ from model.Servicemodel import ServiceRecord
 class PickuphostCrawler():
     def __init__(self):
         pass
-
+    def parsing(self, response):
+        return self.crawl(response,self.category,self.servicename)
     def crawl(self, response, category, servicename):
+        self.category = category
+        self.servicename = servicename
         reviews = []
         #http://pickuphost.com/review/bluehost/#customer_review_shap
         for node in response.xpath("//div[@class='one_rew']/div[@class='rewiwer_post']/span"):
