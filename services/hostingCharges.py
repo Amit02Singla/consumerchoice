@@ -28,7 +28,6 @@ class hostingCharges():
                 headings.append(root.xpath("//a/text()")[0])
             else:
                 headings.append(root.xpath("//h4/text()")[0])
-
         #TODO code pending giving error url need to extract: done
         ratings = []
         i=0

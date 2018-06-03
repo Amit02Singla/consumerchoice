@@ -1,6 +1,5 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
-#TODO: 2-Raiting pending,incompletem header, raiting etc.: done
 #url "https://www.10bestonline.com/top_10_best_online_dating_reviews/eHarmony_customer_reviews/"
 class BestOnline():
     def __init__(self):

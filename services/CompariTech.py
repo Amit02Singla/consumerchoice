@@ -1,7 +1,6 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
 
-#TODO etree complete auther extraction: Refer sandy
 #URL https://www.comparitech.com/vpn/reviews/expressvpn/
 
 class CompariTech():

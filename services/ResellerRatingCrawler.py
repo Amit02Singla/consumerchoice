@@ -6,7 +6,6 @@ class ResellerRatingCrawler():
     def __init__(self):
         pass
 
-    #TODO need to recheck--done
     def crawl(self, response, category, servicename):
         reviews = []
         print("Reviews from Resellerrating.com")

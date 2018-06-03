@@ -12,7 +12,6 @@ class BuyBitcoinsWithCreditCardCrawler():
         self.category = category
         self.servicename = servicename
         # http://www.buybitcoinswithcreditcard.net/en/coinbase-com/
-        #TODO: done
         '''temp_dates =  response.xpath("//div[@class='box']/ol[@class='comment-list']/li/div/div[@class='comment-author vcard rc']/text()").extract()
         dates = []
         for j in range(1, len(dates)):

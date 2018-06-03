@@ -23,7 +23,10 @@ class vpnMentor():
             content = content.replace('<br>', '$')
             root = etree.HTML(content)
             authors.append(root.xpath("//div/div/div/div/div/h5/text()"))
-            dates.append(str(root.xpath("//div[@class='review-head']/div[@class='row']/div[@class='col-md-4 col-xs-5']/div[@class='user']/div[@class='text-wrap']/h6/text()")))
+            if(len(root.xpath("//div[@class='review-head']/div[@class='row']/div[@class='col-md-4 col-xs-5']/div[@class='user']/div[@class='text-wrap']/h6/text()")) == 0):
+                dates.append("")
+            else:
+                dates.append(str(root.xpath("//div[@class='review-head']/div[@class='row']/div[@class='col-md-4 col-xs-5']/div[@class='user']/div[@class='text-wrap']/h6/text()")[0]))
             headings.append(root.xpath("//div[@class='review-head']/div[@class='row']/div[@class='col-md-6 col-md-pull-2 col-xs-12']/div[@class='topic']/span/text()"))
             ratings.append(str(root.xpath("//div[@class='review-head']/div[@class='row']/div[@class='col-md-2 col-md-push-6 col-xs-7']/div[@class='rate']/ul/li[@class='fa']/text()")))
             reviews.append(root.xpath("///div[@class='review-content']/p/text()"))

@@ -11,7 +11,6 @@ class top11Hosting():
         reviews = []
         self.category = category
         self.servicename = servicename
-        #TODO raiting coming in percentage: done
         # https://top11hosting.com/hostgator-review/
         for node in response.xpath("//div[@class='wpcr3_item wpcr3_business']/div/blockquote[@class='wpcr3_content']"):
             reviews.append(node.xpath('string()').extract());

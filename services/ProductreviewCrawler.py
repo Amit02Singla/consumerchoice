@@ -11,7 +11,6 @@ class ProductreviewCrawler():
         self.servicename = servicename
         print("review from productreview.com")
         # https://www.productreview.com.au/p/smart-fares.html
-        #TODO date missing--done
         for node in response.xpath("//div[@class='review-overall']"):
             reviews.append(node.xpath('string()').extract());
         ratings =  response.xpath("//div[@class='rating-md']/p/span/span[@itemprop='ratingValue']/@content").extract()

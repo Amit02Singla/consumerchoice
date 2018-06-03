@@ -4,7 +4,7 @@ from dateutil.parser import parse
 import re
 
 def convertDate(date):
-    if (date != None):
+    if (date != None and date != ''):
         date = parse(date)
         date = date.strftime('%d/%m/%Y')
     return date

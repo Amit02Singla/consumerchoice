@@ -15,7 +15,6 @@ class HighYaCrawler():
         self.servicename = servicename
         # print("review from HighYa.com")
         # https://www.highya.com/coinbase-reviews
-        # TODO : 2- Auther need to extract: Authors done some other error coming up
         for node in response.xpath(
                 "//div[@class='left-col col-lg-8 col-lg']/div[@id='reviews']/ul[@class='no-list list-review']/li/span/div[@class='description']"):
             reviews.append(node.xpath('string()').extract());
@@ -35,7 +34,6 @@ class HighYaCrawler():
                 dates.append(root.xpath("//li[last()-1]/text()")[0])
         headings = response.xpath(
             "//div[@id='reviews']/ul[@class='no-list list-review']/li/span/h3[@class='title']/text()").extract()
-        # TODO some times auther name structure differ not anchor tag need to check
         authors1 = response.xpath(
             "//div[@id='reviews']/ul[@class='no-list list-review']/li/span/ul[@class='list-line options']/li[1]").extract()
         authors = []

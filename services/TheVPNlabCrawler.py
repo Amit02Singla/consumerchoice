@@ -9,7 +9,6 @@ class TheVPNlanCrawler():
         reviews = []
         dates= []
         authors= []
-        #TODO raiting negative--done
         # https://www.thevpnlab.com/reviews/nordvpn-review
         for node in response.xpath("//div[@class='ur-inner']/div[@class='user-review']"):
             reviews.append(node.xpath('string()').extract());
