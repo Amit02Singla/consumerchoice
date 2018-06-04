@@ -59,7 +59,11 @@ from DatingSitesReviewsCrawler import DatingSitesReviewsCrawler
 from AnblikCrawler import AnblikCrawler
 from BestVPNProvidersCrawler import BestVPNProvidersCrawler
 from CoinJabberCrawler import CoinJabberCrawler
+from DatingSitesReviewsCrawler import DatingSitesReviewsCrawler
 from model.Servicemodel import final_json
+from JoomlaHostingReviewsCrawler import JoomlaHostingReviews
+from ReviewCentreCrawler import ReviewCentreCrawler
+from RevexCrawler import RevexCrawler
 import restapis.Login
 import json
 
@@ -204,6 +208,14 @@ class ServiceController(scrapy.Spider):
             crawler = CoinJabberCrawler()
         elif 'seniordatingexpert.com' in response.url:
             crawler = SeniorDatingExpert()
+        elif 'datingwise.com' in response.url:
+            crawler = DatingSitesReviewsCrawler()
+        elif 'joomlahostingreviews.com' in response.url:
+            crawler = JoomlaHostingReviews()
+        elif 'revex.co' in response.url:
+            crawler = RevexCrawler()
+        elif 'reviewcentre.com' in response.url:
+            crawler = ReviewCentreCrawler()
         else:
             print("Found Nothing")
         if (crawler != None):
