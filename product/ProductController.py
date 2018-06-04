@@ -11,4 +11,4 @@ def onProxyUpdated():
         AmazonController.crawlamazon(url)
 
 if __name__ == '__main__':
-    crawlAmazon(["https://www.amazon.com/Home-Audio-Electronics/b/ref=nav_shopall_hat?ie=UTF8&node=667846011"])
+    crawlAmazon(["https://www.amazon.ca/pc-laptop-computer-microsoft-surface/b/ref=nav_shopall_mj_ce_all_comp?ie=UTF8&node=2404990011"])

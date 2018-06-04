@@ -50,6 +50,11 @@ def make_request(url, return_soup=True):
     return r
 
 
+def get_host(url):
+    u = urlparse(url)
+    scheme = u.scheme or "https"
+    host = scheme+"://"+u.netloc or "www.amazon.com"
+    return host
 def format_url(url):
     # make sure URLs aren't relative, and strip unnecssary query args
     u = urlparse(url)

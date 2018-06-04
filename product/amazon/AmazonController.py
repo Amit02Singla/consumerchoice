@@ -7,7 +7,7 @@ import eventlet
 from product.amazon import settings
 from product.amazon.Amazon import ParseReviews
 from product.amazon.extractors import get_url, get_primary_img
-from product.amazon.helpers import make_request, log, format_url, enqueue_url, dequeue_url
+from product.amazon.helpers import make_request, log, format_url, enqueue_url, dequeue_url,get_host
 
 crawl_time = datetime.now()
 
@@ -32,9 +32,9 @@ def begin_crawl(url):
             continue
         link = link["href"]
         count += 1
-        enqueue_url(link)
+        host = get_host(url)
+        enqueue_url(host+link)
 
-    log("Found {} subcategories on {}".format(count, link))
 
 
 def fetch_listing():
@@ -77,7 +77,8 @@ def fetch_listing():
     next_link = page.find("a", id="pagnNextLink")
     if next_link:
         log(" Found 'Next' link on {}: {}".format(url, next_link["href"]))
-        enqueue_url(next_link["href"])
+        host = get_host(url)
+        enqueue_url(host + next_link["href"])
         pile.spawn(fetch_listing)
 
 
