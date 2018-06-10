@@ -22,7 +22,7 @@ num_requests = 0
 def make_request(url, return_soup=True):
     # global request building and response handling
 
-    url = format_url(url)
+    url = format_url(url,get_host(url))
 
     if "picassoRedirect" in url:
         return None  # skip the redirect URLs
@@ -49,13 +49,16 @@ def make_request(url, return_soup=True):
         return BeautifulSoup(r.text), r.text
     return r
 
+def get_host(url):
+    u = urlparse(url)
+    scheme = u.scheme or "https"
+    host = scheme+"://"+u.netloc or "www.amazon.com"
+    return host
 
-def format_url(url):
+def format_url(url,host):
     # make sure URLs aren't relative, and strip unnecssary query args
     u = urlparse(url)
 
-    scheme = u.scheme or "https"
-    host = u.netloc or "www.amazon.com"
     path = u.path
 
     if not u.query:
@@ -68,7 +71,7 @@ def format_url(url):
                 query += "{k}={v}&".format(**locals())
         query = query[:-1]
 
-    return "{scheme}://{host}{path}{query}".format(**locals())
+    return "{host}{path}{query}".format(**locals())
 
 
 def log(msg):
@@ -93,8 +96,9 @@ def get_proxy():
         "no_proxy": proxy_ip
     }
 redis  =[];
-def enqueue_url(u):
-    url = format_url(u)
+def enqueue_url(u,baseUrl):
+    host =  get_host(baseUrl)
+    url = format_url(u,host)
     return redis.append(url)
 
 
