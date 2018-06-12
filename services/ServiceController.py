@@ -8,8 +8,21 @@ from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
 from twisted.internet import reactor
 
+from VirtualBanking import VirtualBanking
+from ViewPoints import ViewPoints
+from TrustPilot import TrustPilot
+from services.NetBusinessRating import NetBusinessRating
+from services.TravelSiteCritic import TravelSiteCritic
+from services.InfluensterCrawler import InfluensterCrawler
+from services.BestBitcoinExchange import BestBitcoinExchange
+from services.AlterNativeTo import AlterNativeTo
+from services.FreeDatingHelper import FreeDatingHelper
+from services.DatingWiseCrawler import DatingWiseCrawler
+from services.ReviewOpedia import ReviewOpedia
+
 from services.PickuphostCrawler import PickuphostCrawler
 from services.SeniorDatingExpert import SeniorDatingExpert
+
 from services.TotallyOnlineDating import TotallyOnlineDating
 from services.BestDatingReviews import BestDatingReviews
 from services.SeniorDatingSites import SeniorDatingSites
@@ -55,15 +68,15 @@ from services.WebHostingHeroCrawler import WebHostingHeroCrawler
 from services.BestVPNZCrawler import BestVPNZCrawler
 from services.BuyBitcoinsWithCreditCardCrawler import BuyBitcoinsWithCreditCardCrawler
 from services.FreeDatingHelperCrawler import FreeDatingHelperCrawler
-from DatingSitesReviewsCrawler import DatingSitesReviewsCrawler
-from AnblikCrawler import AnblikCrawler
-from BestVPNProvidersCrawler import BestVPNProvidersCrawler
-from CoinJabberCrawler import CoinJabberCrawler
-from DatingSitesReviewsCrawler import DatingSitesReviewsCrawler
+from services.DatingSitesReviewsCrawler import DatingSitesReviewsCrawler
+from services.AnblikCrawler import AnblikCrawler
+from services.BestVPNProvidersCrawler import BestVPNProvidersCrawler
+from services.CoinJabberCrawler import CoinJabberCrawler
+from services.DatingSitesReviewsCrawler import DatingSitesReviewsCrawler
 from model.Servicemodel import final_json
-from JoomlaHostingReviewsCrawler import JoomlaHostingReviews
-from ReviewCentreCrawler import ReviewCentreCrawler
-from RevexCrawler import RevexCrawler
+from services.JoomlaHostingReviewsCrawler import JoomlaHostingReviews
+from services.ReviewCentreCrawler import ReviewCentreCrawler
+from services.RevexCrawler import RevexCrawler
 import restapis.Login
 import json
 
@@ -101,7 +114,7 @@ class ServiceController(scrapy.Spider):
             dictionary[k] = {"scrapping_website_name": k, "scrapping_website_url": v["response"].URL,
                              "response": responselist}
             buisness_units.append(dictionary[k])
-            #restapis.Login.postReview({"business_units":buisness_units})
+            restapis.Login.postReview({"business_units":buisness_units})
         with open("reviews.json","w") as f:
             json.dump({"business_units":buisness_units},f)
     def parse(self, response):
@@ -116,8 +129,8 @@ class ServiceController(scrapy.Spider):
             crawler = WhoIsHostingCrawler()
         elif ('sitejabber.com' in response.url):
             crawler = SiteJabberCrawler()
-        #elif ('bestvpn.com'in response.url):
-         #   crawler = BestVPN()
+        elif ('bestvpn.com'in response.url):
+           crawler = BestVPN()
         elif ('resellerratings.com' in response.url):
             crawler = ResellerRatingCrawler()
         elif ('capterra.com' in response.url):
@@ -202,12 +215,24 @@ class ServiceController(scrapy.Spider):
             crawler = DatingSitesReviewsCrawler()
         elif ('anblik.com' in response.url):
             crawler = AnblikCrawler()
-        elif ('bestvpnprovider.com' in response.url):
+        elif ('bestvpnprovider.co' in response.url):
             crawler = BestVPNProvidersCrawler()
         elif ('coinjabber.com' in response.url):
             crawler = CoinJabberCrawler()
         elif 'seniordatingexpert.com' in response.url:
             crawler = SeniorDatingExpert()
+
+        elif 'reviewopedia.com' in response.url:
+           crawler = ReviewOpedia()
+        elif 'datingwise.com' in response.url:
+            crawler = DatingWiseCrawler()
+        elif 'freedatinghelper.com' in response.url:
+            crawler = FreeDatingHelper()
+        elif 'bestbitcoinexchange.net' in response.url:
+            crawler = BestBitcoinExchange()
+
+
+
         elif 'datingwise.com' in response.url:
             crawler = DatingSitesReviewsCrawler()
         elif 'joomlahostingreviews.com' in response.url:
@@ -216,8 +241,23 @@ class ServiceController(scrapy.Spider):
             crawler = RevexCrawler()
         elif 'reviewcentre.com' in response.url:
             crawler = ReviewCentreCrawler()
+        elif 'influenster.com' in response.url:
+            crawler = InfluensterCrawler()
+        elif 'alternativeto.net' in response.url:
+            crawler = AlterNativeTo()
+        elif 'travelsitecritic.com' in response.url:
+            crawler = TravelSiteCritic()
+        elif 'netbusinessrating.com' in response.url:
+            crawler = NetBusinessRating()
+        elif 'trustpilot.com' in response.url:
+            crawler = TrustPilot()
+        elif 'viewpoints.com' in response.url:
+            crawler = ViewPoints()
+        elif 'virtualbanking.com' in response.url:
+            crawler = VirtualBanking()
+
         else:
-            print("Found Nothing")
+            ("Found Nothing")
         if (crawler != None):
             return crawler.crawl(response, dict_url[response.url]["Category"], dict_url[response.url]["Service Name"])
 
@@ -227,7 +267,7 @@ def f(q, ):
         runner = CrawlerRunner()
         deferred = runner.crawl(ServiceController, q[1])
         deferred.addBoth(lambda _: reactor.stop())
-        print("method f")
+        ("method f")
         reactor.run()
         q[0].put(None)
     except Exception as e:
@@ -236,7 +276,7 @@ def f(q, ):
 def run_spider(urls):
     q = Queue()
     p = Process(target=f, args=([q, urls],))
-    print("crawl_services()")
+    ("crawl_services()")
     p.start()
     result = q.get()
     p.join()

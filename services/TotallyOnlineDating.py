@@ -1,5 +1,5 @@
 from model.Servicemodel import ServiceRecord
-
+# http://www.totallyonlinedating.com/usa-online-dating-services/senior-dating-sites/seniorpeoplemeet.com-review.html
 #Todo: redo
 class TotallyOnlineDating():
     def parsing(self, response):

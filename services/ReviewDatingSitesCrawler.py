@@ -1,6 +1,6 @@
 from model.Servicemodel import ServiceRecord
-
-
+# http://reviewsdatingsites.com/site/elitesingles
+# TODO: need to check Dates
 class ReviewDatingSitesCrawler():
     def __init__(self):
         pass
@@ -14,7 +14,9 @@ class ReviewDatingSitesCrawler():
         ratings =  response.xpath("//div[@class='col-md-9']/h4[@class='m-t-0']/span[@class='stars']/span[@itemprop='ratingValue']/@content").extract()
         authors =   response.xpath("//div[@class='media-body text-center']/div/strong/a[@itemprop='author']/text()").extract()
         website_name = response.xpath("//html/body/div[1]/meta[1]/@content").extract()
+        dates = response.xpath("//div[@class='review']/div[@class='row']/div[@class='col-md-9']/h4[@class='m-t-0']/strong[@class='text-muted date']/text()").extract()
+
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, None, authors[item], category,
-                          servicename, reviews[item],"",website_name);
+                          servicename, reviews[item],None,website_name);
             servicename1.save()

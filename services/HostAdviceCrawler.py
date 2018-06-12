@@ -32,10 +32,13 @@ class HostAdviceCrawler(Spider):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], category,
                           servicename, reviews[item],img_src,website_name)
             servicename1.save()
-        next_page = response.xpath("//div[@class='col-md-offset-2 col-md-4']/a[ @class ='orange_button']/@href").extract()
-        if next_page is not None:
-            next_page_url = " ".join(next_page)
-            if next_page_url and next_page_url.strip():
-                yield Request(url=next_page_url,  callback=self.parsing)
+        next_page = response.xpath("//div[@class='row']/div[@class='col-md-offset-2 col-md-4']/a/@href").extract()
 
-        # yield response.follow(next_page_url, callback=self.parse)
+        if next_page is not None:
+            next_page_url = "".join(next_page)
+            if next_page_url and next_page_url.strip():
+                print(type(next_page_url))
+                print(next_page_url)
+                # yield Request(next_page_url, callback=self.parsing)
+                yield response.follow(next_page_url, callback=self.parsing)
+

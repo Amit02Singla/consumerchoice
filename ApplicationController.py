@@ -1,8 +1,11 @@
 from restapis import Login
 from services.ServiceController import crawl_services
+from product.ProductController import crawlAmazon
 if __name__ == '__main__':
-    urls = []
+   #Login.crawling()
+    urls=[]
     urls.append({"ServiceName": "Expressvpn",
                  "Category": "VPN Service",
-                 "url": "https://www.reviewcentre.com/Dating-Sites/Elite-Singles-www-elitesingles-co-uk-www-hospiconsultant-com-reviews_3802989#Reviews"})
+                 "url": "https://www.virtualbanking.com/reviews/localbitcoins-review/"})
     crawl_services(urls)
+

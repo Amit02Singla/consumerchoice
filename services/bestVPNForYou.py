@@ -1,7 +1,7 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
-
+# https://www.bestvpnforyou.com/vpn-reviews/expressvpn-review/
 class bestVPNForYou():
 
     def __init__(self):

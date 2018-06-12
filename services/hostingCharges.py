@@ -1,5 +1,9 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
+
+
+# http://www.hostingcharges.in/hosting-reviews/fatcow
+# TODO DONE
 class hostingCharges():
     def __init__(self):
         pass
@@ -12,13 +16,13 @@ class hostingCharges():
         self.category = category
         self.servicename = servicename
         print("review from hostingcharges.in")
-        # http://www.hostingcharges.in/hosting-reviews/bluehost
-        for node in response.xpath("//div[@class='review-cntnr']/div[@class='review-sub-cntnr']/div[@class='review-one-all']/p"):
-            temp_reviews.append(node.xpath('string()').extract());
-        for item in temp_reviews:
-            print (item)
-            if(str(item[0].encode("utf-8")).strip()!= ""):
-                reviews.append([str(item[0].encode("utf-8")).strip()])
+        # for item in temp_reviews:
+        #     # print (item)
+        #     if(str(item[0].encode("utf-8")).strip()!= ""):
+        #         reviews.append([str(item[0].encode("utf-8")).strip()])
+        for node in response.xpath("//div[@class='review-sub-cntnr']/div[@class='review-one-all']/p[@class='cust-review']"):
+            reviews.append(node.xpath('string()').extract());
+
         temp_ratings = response.xpath("//div[@class='review-one-all']/div[@class='lftfeatures']/div/div/input/@value").extract()
         temp_headings = response.xpath("//div[@class='review-right']").extract()
         headings = []
@@ -28,7 +32,6 @@ class hostingCharges():
                 headings.append(root.xpath("//a/text()")[0])
             else:
                 headings.append(root.xpath("//h4/text()")[0])
-        #TODO code pending giving error url need to extract: done
         ratings = []
         i=0
         sum = 0
@@ -40,9 +43,9 @@ class hostingCharges():
                 sum = sum + int(temp_ratings[i])
 
         dates = response.xpath("//div[@class='review-sub-cntnr']/div[@class='review-one-all']/div[@class='review-profile']/div[@class='review-mid']/p/text()").extract()
-        img_src = response.xpath("//div/div[1]/div/div/div[1]/a/img/@src").extract()[0]
+        img_src = response.xpath("//div[@class='review-cntnr']/div[@class='review-sub-cntnr']/div[@class='logo-img']/a/img/@src").extract()[0]
         authors = response.xpath("//div[@class='review-mid']/h4/text()").extract()
-        website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
+        website_name = response.xpath("//div[@id='bs-example-navbar-collapse-1']/ul[@class='nav navbar-nav navbar-right']/li[@class='dropdown'][1]/a/@href").extract()
 
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],

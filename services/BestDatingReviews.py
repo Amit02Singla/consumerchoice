@@ -1,6 +1,6 @@
 from model.Servicemodel import ServiceRecord
 from utils.utils import getStarts
-
+# http://www.bestdatingreviews.org/datingreviews/S2997
 class BestDatingReviews():
     def __init__(self):
         pass
@@ -18,13 +18,13 @@ class BestDatingReviews():
         dates1 = response.xpath("//div[@class='mid_left']/div[@class='mid_left_site']/div[@class='latest_reviews_a']/div[@class='latest_reviews_content']/font/span[1]/text()").extract()
         headings = response.xpath("//div[@class='mid_left']/div[@class='mid_left_site']/div[@class='latest_reviews_a']/div[@class='latest_reviews_content']/font/a/text()").extract()
         # authors = response.xpath("//div[@class='cust_review']/table/tbody/tr[3]/td[@class='customer']").extract()
-        website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
+        website_name = response.xpath("//head/title/text()").extract()
         # img_src = response.xpath("//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/img[@class='avatar avatar-74 photo']/@src").extract()
         sum = 0
         c = 0
         ratings = []
-        dates1 = map(lambda foo: foo.replace(u'\xa0', u''), dates1)
-        dates1 = map(lambda foo: foo.replace('By', ''), dates1)
+        dates1 = list(map(lambda foo: foo.replace(u'\xa0', u''), dates1))
+        dates1 = list(map(lambda foo: foo.replace('By', ''), dates1))
         dates = []
         dates2 = []
         authors = []
@@ -62,6 +62,12 @@ class BestDatingReviews():
                 sum = sum + int(ratings[i])
         c = sum / 5.0
         ratings2.append(str(round(c,2)))
+        print("Authors ", len(authors), authors)
+        print("headings ", len(headings), headings)
+        print("Rating ", len(ratings2), ratings2)
+        print("Dates ", len(dates2), dates2)
+        print("reviews ", len(reviews), reviews)
+        print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings2[item], headings[item], dates2[item], authors[item],
                                          category, servicename, reviews[item], None, website_name)

@@ -1,9 +1,9 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
-
+# http://www.datingwise.com/review/silversingles.com/
 class DatingWiseCrawler(Spider):
-#Todo: check url with amit. If url correct redo the site
+#Todo: Done
     def __init__(self):
         pass
     def parsing(self, response):

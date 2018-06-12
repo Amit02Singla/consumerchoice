@@ -15,19 +15,31 @@ class FreeDatingHelperCrawler():
         authors = []
         reviews=[]
         ratings =[]
-        data = response.xpath("//div/div/div/section/ol/li").extract()
+        data = response.xpath("//section[@id='comment-wrap']/ol[@class='commentlist clearfix']").extract()
         print data
         for content in data:
-            content = content.replace('<br>', '$')
+            # content = content.replace('<br>', '$')
             root = etree.HTML(content)
-            authors.append(root.xpath("//li/article/div/div[2]/span/span/text()"))
-            reviews.append(root.xpath("//div/div/div/div/div/span/p/text()"))
-            rate = root.xpath("//div/div/table/toby/tr/td/div/span/text()")
-            if (rate != None and len(rate) > 0):
-                ratings.append(rate[0])
+            if(len(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/span[@class='fn']/span/text()"))>0):
+                authors.append(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/span[@class='fn']/span/text()")[0])
+            else:
+                authors.append("")
+            if(len(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/div[@class='comment_area']/div[@class='comment-content clearfix']/div/span/p/text()"))>0):
+                reviews.append(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/div[@class='comment_area']/div[@class='comment-content clearfix']/div/span/p/text()"))
+            else:
+                reviews.append("")
+            if(len(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/table[@class='ratings']/tbody/tr/td[@class='rating_value']/div/text()"))>0):
+                ratings = root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/table[@class='ratings']/tbody/tr/td[@class='rating_value']/div/text()")
             else:
                 ratings.append("")
+
         website_name= response.xpath("//html/head/meta[8]/@content").extract()[0]
+        # print("Reviews ", len(reviews), reviews)
+        # # print("Headings ", len(headings), headings)
+        # print("Authors ", len(authors), authors)
+        # print("Rating ", len(ratings), ratings)
+        # # print("Dates ", len(dates), dates)
+        # # print("Img_src ", len(img_src), img_src)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, None, authors[item],
                                          category, servicename, reviews[item], None, website_name)

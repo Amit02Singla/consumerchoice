@@ -3,7 +3,7 @@ from lxml import etree
 
 from utils.utils import getStarts
 
-
+# http://www.top20seniordatingsites.com/product/senior-people-meet/
 class SeniorDatingSites():
     def __init__(self):
         pass
@@ -16,26 +16,28 @@ class SeniorDatingSites():
         self.servicename = servicename
         print("review from seniordatingsites.com")
         # http://www.top20seniordatingsites.com/product/senior-people-meet/
-        #TODO Full website redo
-        for node in response.xpath("//div[@id='main-inner']/ul[@id='user-reviews']/li/div[@class='userrev']/div[@class='user-review']/p"):
+        #TODO Done
+        for node in response.xpath("//div[@class='commentlist']/div/div[@class='review-content']"):
             reviews.append(node.xpath('string()').extract());
-        ratings = response.xpath("//div[@id='main-inner']/ul[@id='user-reviews']/li/div[@class='userrev']/div[@class='user-stars']/img/@src").extract()
+        ratings = response.xpath("//div[@class='commentlist']/div/div[@class='review-ratings']/div[@class='star-review']/span/text()").extract()
         i = 0
+        c = 0
+        j = 0
         ratings1 = []
         while i < len(ratings):
-            ratings1.append(getStarts(ratings[i]))
+            j = j+1;
+            if(j/6==1):
+                c= c + int(ratings[1]);
+                ratings1.append(c/6.0)
+                j=0;
+            else:
+                c= c + int(ratings[i])
+
             i = i + 1
 
-        # dates = response.xpath("//div[@class='review-sub-cntnr']/div[@class='review-one-all']/div[@class='review-profile']/div[@class='review-mid']/p/text()").extract()
-        # img_src = response.xpath("//div[@class='logo-profile']/img/@src").extract()
-        authors = response.xpath("//div[@id='main-inner']/ul[@id='user-reviews']/li/div[@class='userrev']/div[@class='user-name']/text()").extract()
+        authors = response.xpath("//div[@class='commentlist']/div/div[@class='review-author']/text()").extract()
         website_name = response.xpath("//div[@id='container']/div[@id='header']/div[@class='left eight columns']/div/a[@class='logo']/img/@title").extract()
-        print(" Ratings ", len(ratings1), ratings1)
-        # print("dates ", len(dates), dates)
-        print(" Reviews ", len(reviews), reviews)
-        # print(" headings ", len(headings), headings)
-        print(" authors ", len(authors), authors)
-        print(" website_name ", len(website_name), website_name)
+
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item],
                                          category, servicename, reviews[item], None, website_name)

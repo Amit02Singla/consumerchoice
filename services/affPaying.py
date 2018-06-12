@@ -1,5 +1,6 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
+# http://www.affpaying.com/hotspot-shield-affiliate-program
 class affPaying():
     def __init__(self):
         pass

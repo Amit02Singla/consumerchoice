@@ -1,7 +1,7 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
-
+# https://www.bestvpnz.com/expressvpn/
 class BestVPNZCrawler(Spider):
     def __init__(self):
         pass
@@ -14,7 +14,7 @@ class BestVPNZCrawler(Spider):
         for node in  response.xpath("//div[@id='comments']/ol[@class='comment-list']/li/article/div[@class='comment-content']"):
             reviews.append(node.xpath('string()').extract());
         dates =  response.xpath("//div[@id='comments']/ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author-info']/div[@class='entry-meta comment-metadata']/a/time/text()").extract()
-        img_src =  response.xpath("//div[@class='page-header-image-single grid-containergrid-parent']/img[@class='attachment-full size-full wp-post-image']/@src").extract()
+        img_src =  response.xpath("//div[@class='page-header-image-single grid-container grid-parent']/img[@class='attachment-full size-full wp-post-image']/@src").extract()
         website_name =  response.xpath("/html/head/link[8]/@title").extract()
         authors = []
         data = response.xpath("//div[@id='comments']/ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author-info']").extract()

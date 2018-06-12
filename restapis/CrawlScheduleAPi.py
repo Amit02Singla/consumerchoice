@@ -80,6 +80,7 @@ def crawlSite():
     return resp
 
 
+
 @app.route('/categories/search_websites', methods=['GET'])
 @requires_auth
 def searchGoogle():

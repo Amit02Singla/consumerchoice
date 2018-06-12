@@ -1,6 +1,7 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
-#TODO rating pending: could not get which website is this ask amit
+#TODO Done
+# http://www.yscam.com/blackpeoplemeet-com-08
 class Yscam():
     def __init__(self):
         pass

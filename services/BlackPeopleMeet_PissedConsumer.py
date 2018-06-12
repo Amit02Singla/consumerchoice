@@ -18,7 +18,7 @@ class BlackPeopleMeet_PissedConsumer():
         for node in response.xpath("//div[@class='middleware-review-container'][1]/div/div[@class='f-component-info']/div[@class='f-component-text']/div[@class='overflow-text']"):
             reviews.append(node.xpath('string()').extract());
         ratings = response.xpath("//body/section[@class='row body inside']/section[@class='comments-block']/section[@class='commentblock  ']/div[@class='comment  ']/ul[@class='postby']/li[2]/span[@class='smallStars']/@data-score").extract()
-        dates = response.xpath("div[@class='middleware-review-container']/div/div[@class='f-component-info']/div[@class='f-component-info-header']/time[@class='post-time secondary-info']/text()").extract()
+        dates = response.xpath("//div[@class='middleware-review-container']/div/div[@class='f-component-info']/div[@class='f-component-info-header']/time[@class='post-time secondary-info']/text()").extract()
         website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], None,

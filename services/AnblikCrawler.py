@@ -4,7 +4,7 @@ from scrapy import Spider, Request
 
 
 class AnblikCrawler(Spider):
-
+    # http: // www.anblik.com / reviews / sitebuilder - com
     def __init__(self):
         pass
     def parsing(self, response):

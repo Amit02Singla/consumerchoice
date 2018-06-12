@@ -61,7 +61,7 @@ def fetch_listing():
         product_url = get_url(item)
         data = ParseReviews(product_url)
       #  product_price = get_price(item)
-        data
+        #data
         data.update({'Product URL': format_url(product_url,url),
                      "Listing URL":format_url(url,url),
                      "Product Image":product_image,

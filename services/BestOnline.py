@@ -30,7 +30,7 @@ class BestOnline():
                 rate.append("5")
         i=0
         while(i<len(rate)):
-            ratings.append(str((int(rate[i])+int(rate[i+1])+int(rate[i+2])+int(rate[i+3])+int(rate[i+4])+int(rate[i+5]))/6))
+            ratings.append(str(round((float(rate[i])+float(rate[i+1])+float(rate[i+2])+float(rate[i+3])+float(rate[i+4])+float(rate[i+5]))/6.0, 1)))
             i= i+6
 
 
