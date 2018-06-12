@@ -43,7 +43,6 @@ class NetBusinessRating(Spider):
             ratings2[i] = map(lambda foo: foo.replace('-', ''), ratings2[i])
             j=0
             c = 0
-            print len(ratings2[i])
             while j< len(ratings2[i]):
                 if(ratings2[i][j]=='3'):
                     c= c+1

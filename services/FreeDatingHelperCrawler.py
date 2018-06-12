@@ -16,7 +16,6 @@ class FreeDatingHelperCrawler():
         reviews=[]
         ratings =[]
         data = response.xpath("//section[@id='comment-wrap']/ol[@class='commentlist clearfix']").extract()
-        print data
         for content in data:
             # content = content.replace('<br>', '$')
             root = etree.HTML(content)

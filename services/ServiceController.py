@@ -8,9 +8,9 @@ from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
 from twisted.internet import reactor
 
-from VirtualBanking import VirtualBanking
-from ViewPoints import ViewPoints
-from TrustPilot import TrustPilot
+from services.VirtualBanking import VirtualBanking
+from services.ViewPoints import ViewPoints
+from services.TrustPilot import TrustPilot
 from services.NetBusinessRating import NetBusinessRating
 from services.TravelSiteCritic import TravelSiteCritic
 from services.InfluensterCrawler import InfluensterCrawler
