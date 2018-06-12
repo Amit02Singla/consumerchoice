@@ -8,11 +8,12 @@ import threading
 
 from flask import Flask, Response
 from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
-
 from restapis.Login import MyThread
 import json
 from functools import wraps
 import os
+
+from threading import Thread
 
 from utils.GoogleSearch import search
 
@@ -58,27 +59,17 @@ def do_admin_login():
         return jsonify(request.json['message'])
 
 
-@app.route('/schedule', methods=['GET'])
-@requires_auth
-def crawl():
-    thread = MyThread("","")
-    thread.start()
-    resp = "Schedule Success"
-    return resp
-
-
-@app.route('/schedule', methods=['POST'])
+@app.route('/business_items/scrape', methods=['GET'])
 @requires_auth
 def crawlSite():
-    request_json = request.get_json()
-    url = request_json.get("url")
-    responseURL = request_json.get("responseURL")
-    thread = MyThread(url,responseURL)
+    id = request.args.get("id")
+    categoryName = request.args.get("category_name")
+    url = request.args.get("scrapping_website_url")
+    callback_url = request.args.get("callback_url")
+    thread = MyThread(id,categoryName,url,callback_url)
     thread.start()
-
     resp = "Schedule Success"
     return resp
-
 
 
 @app.route('/categories/search_websites', methods=['GET'])
@@ -93,6 +84,12 @@ def searchGoogle():
     t1.start()
     response ="Searching Scheduled"
     return response
+
+
+@app.route('/categories/search_websites', methods=['POST'])
+def searchGoogle1():
+    print(request.data)
+    return ""
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port="5001")
