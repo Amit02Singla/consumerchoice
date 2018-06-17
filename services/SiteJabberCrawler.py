@@ -1,10 +1,19 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 
-class SiteJabberCrawler(Spider):
+class SiteJabberCrawler(BaseSiteURLCrawler):
 
-    def __init__(self):
+    def __init__(self,category,servicename,url):
+
+        self.category = category
+        self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(SiteJabberCrawler,self).__init__()
+        self.createCategory(self.link)
         pass
     def parsing(self, response):
         return self.crawl(response,self.category,self.servicename)
@@ -13,6 +22,8 @@ class SiteJabberCrawler(Spider):
         reviews = []
         self.category = category
         self.servicename = servicename
+
+
         # https://www.sitejabber.com/reviews/zoosk.com
         for node in response.xpath('//div[@class="review "]/p'):
             reviews.append(node.xpath('string()').extract());
@@ -33,11 +44,11 @@ class SiteJabberCrawler(Spider):
         for item in range(0, len(reviews)):
             servicename1 =ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], category,
                           servicename, reviews[item], None,website_name);
-            servicename1.save()
-        next_page = response.xpath("// div[ @class ='paginator_next']/span/a[@class ='button outline']/@href").extract()
-        if next_page is not None:
-            next_page_url ="".join(next_page)
-            if next_page_url and next_page_url.strip():
-                #print(type(next_page_url))
-                #print(next_page_url)
-                yield response.follow(url=next_page_url, callback=self.parsing)
+            self.save(servicename1)
+
+        next_page1 = response.xpath("//div[ @class ='paginator_next']/span/a[@class ='button outline']/@href").extract()
+        if next_page1 is not None:
+            next_page_url1 ="".join(next_page1)
+            if next_page_url1 and next_page_url1.strip():
+                yield response.follow(url=next_page_url1, callback=self.parsing)
+        self.pushToServer()
