@@ -3,7 +3,8 @@ import os
 import requests
 import json
 from product.ProductController import crawlAmazon
-from services.ServiceController import crawl_services
+from services.siteservices.SiteServiceListController import crawl_services1
+
 param = {
   "email": "data_miner@example.com",
   "password": "ATBdm9",
@@ -42,7 +43,7 @@ def crawling():
       website_list.append({"ServiceName": "Bluehost"+str(i),
                          "Category": "Hosting Service"+str(i),
                          "url": element['url']})
-  crawl_services(website_list)
+  crawl_services1(website_list)
   crawlAmazon(amazon_list)
 def google_search_post(callbackurl,search):
   data = login()
@@ -59,7 +60,7 @@ def crawlURL(url,responseURL,categoryName):
                                  "url": url})
     global  custom_base_url
     custom_base_url = responseURL
-    crawl_services(website_list)
+    crawl_services1(website_list)
     crawlAmazon(amazon_list)
 
 class MyThread(threading.Thread):

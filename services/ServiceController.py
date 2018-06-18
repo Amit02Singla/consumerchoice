@@ -126,8 +126,6 @@ class ServiceController(scrapy.Spider):
             crawler = HostAdviceCrawler()
         elif ('whoishostingthis.com' in response.url):
             crawler = WhoIsHostingCrawler()
-        elif ('sitejabber.com' in response.url):
-            crawler = SiteJabberCrawler()
         elif ('bestvpn.com'in response.url):
            crawler = BestVPN()
         elif ('resellerratings.com' in response.url):
