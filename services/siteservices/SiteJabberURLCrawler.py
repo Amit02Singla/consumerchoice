@@ -51,7 +51,8 @@ class SiteJabberURLCrawler(Spider):
                 # print(url[i][j])
                 j = j+1
             i=i+1
-        next_page = response.xpath("div[@id='left_column']/div[@class='navigation']/div[@class='paginator_next']/span/a[@class='button outline']/@href").extract()
+            next_page = response.xpath(
+                "//div[@id='left_column']/div[@class='navigation']/div[@class='paginator_next']/span/a[@class='button outline']/@href").extract()
         if next_page is not None:
             next_page_url = "".join(next_page)
             if next_page_url and next_page_url.strip():
