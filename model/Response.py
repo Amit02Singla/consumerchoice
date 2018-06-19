@@ -112,8 +112,8 @@ class Response():
         return {"business_item_data": {
             "business_type":self.buisnessType,
             "absolute_url": self.URL,
-            "category": self.Category,
-            "name": self.Service_Name +"-" +self.Category,
+            "category": string1[0]["category"] if len(string1)>0 else self.Category,
+            "name": self.Service_Name,
             "sub_category": self.Sub_Category,
             "picture_urls": self.Image,
             "original_price": self.original_price,

@@ -37,7 +37,7 @@ class BaseSiteURLCrawler(Spider):
                              "response": responselist}
             buisness_units.append(dictionary[k])
             restapis.Login.postReview({"business_units":buisness_units})
-        with open(v["response"].URL.replace('https://www.sitejabber.com/reviews/',""),'w') as f:
+        with open(v["response"].URL.replace('https://www.sitejabber.com/reviews/',"")+".json",'w') as f:
             json.dump({"business_units":buisness_units},f)
 
 

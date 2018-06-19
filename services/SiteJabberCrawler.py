@@ -22,7 +22,15 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
         reviews = []
         self.category = category
         self.servicename = servicename
-
+        name = response.xpath("//div[@id='view_category']/div[@class='crumbtrail']/a/text()").extract()
+        i = 0;
+        categoryName = "";
+        while i < len(name):
+            if (i == len(name) - 1):
+                categoryName = categoryName + name[i];
+            else:
+                categoryName = categoryName + name[i] + " > ";
+            i = i + 1;
 
         # https://www.sitejabber.com/reviews/zoosk.com
         for node in response.xpath('//div[@class="review "]/p'):
@@ -39,11 +47,13 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
                     authors.append(element.text)
             else:
                 authors.append(root.text)
-        website_name = response.xpath("//div[@id='header_top']/a[@id='header_logo']/picture/img/@alt").extract()
-        #print(authors)
+        website = response.xpath("//div[@id='header_top']/a[@id='header_logo']/picture/img/@alt").extract()
+        website_name = website[0];
+        # print(authors)
         for item in range(0, len(reviews)):
-            servicename1 =ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], category,
-                          servicename, reviews[item], None,website_name);
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
+                                         categoryName,
+                                         servicename, reviews[item], None, website_name);
             self.save(servicename1)
 
         next_page1 = response.xpath("//div[ @class ='paginator_next']/span/a[@class ='button outline']/@href").extract()
