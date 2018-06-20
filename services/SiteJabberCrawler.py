@@ -49,11 +49,14 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
                 authors.append(root.text)
         website = response.xpath("//div[@id='header_top']/a[@id='header_logo']/picture/img/@alt").extract()
         website_name = website[0];
+        headings = list(map(lambda foo: foo.replace('...', ''), headings))
+        headings = list(map(lambda foo: foo.replace(u'\u201c', ''), headings))
+        headings = list(map(lambda foo: foo.replace(u'\u201d', ''), headings))
         # print(authors)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
                                          categoryName,
-                                         servicename, reviews[item], None, website_name);
+                                         servicename, reviews[item], None, website_name)
             self.save(servicename1)
 
         next_page1 = response.xpath("//div[ @class ='paginator_next']/span/a[@class ='button outline']/@href").extract()
