@@ -24,12 +24,9 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
         self.servicename = servicename
         name = response.xpath("//div[@id='view_category']/div[@class='crumbtrail']/a/text()").extract()
         i = 0;
-        categoryName = "";
+        categoryName = category;
         while i < len(name):
-            if (i == len(name) - 1):
-                categoryName = categoryName + name[i];
-            else:
-                categoryName = categoryName + name[i] + " > ";
+            categoryName =  categoryName + " > "+ name[i]
             i = i + 1;
 
         # https://www.sitejabber.com/reviews/zoosk.com
