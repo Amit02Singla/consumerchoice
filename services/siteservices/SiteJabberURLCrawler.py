@@ -7,17 +7,17 @@ from services.siteservices.SiteJabberURLWebHosting import SiteJabberURLWebHostin
 
 urlssss = []
 class SiteJabberURLCrawler(Spider):
-    def __init__(self):
+    def __init__(self,category):
         self.url_list = []
+        self.category = category
     def parsing(self, response):
-        return self.crawl(response, self.category)
-    def crawl(self, response, category):
+        return self.crawl(response)
+    def crawl(self, response):
         url = []
         urlnext = []
         servicelistnext = []
         serviceList= []
 
-        self.category = category
         # https://www.sitejabber.com/reviews/zoosk.com
         url1 = response.xpath("//div[@id='content']/div[@id='search']/div[@id='content_wrapper']/div[@id='left_column']").extract()
         servicelist1 = response.xpath("//div[@id='content']/div[@id='search']/div[@id='content_wrapper']/div[@id='left_column']/div[@class='review']/div[@class='info left']/div[@class='url track-search']").extract()
@@ -31,7 +31,7 @@ class SiteJabberURLCrawler(Spider):
                 "//div[@class='categories ']/div[@class='category']/div[@class='info_cat']/div[@class='name']/a/@href")[
                 0]
             print("[pageeeeee   ", page)
-            sss = SiteJabberURLWebHosting(category)
+            sss = SiteJabberURLWebHosting(self.category)
             yield response.follow(page, callback=sss.parsing)
 
         for content1 in servicelist1:

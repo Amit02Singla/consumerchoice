@@ -47,8 +47,7 @@ def crawling():
   crawl_services1(website_list)
   crawlAmazon(amazon_list)
 def google_search_post(callbackurl,search):
-  data = login()
-  header = {'Content-Type': 'application/json', 'Authorization': 'bearer ' + data['data']['token']['access_token']}
+  header = {'Content-Type': 'application/json'}
   requests.post(callbackurl, data=json.dumps(search), headers=header)
 def crawlURL(url,responseURL,categoryName):
     website_list = []

@@ -16,22 +16,20 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
         self.createCategory(self.link)
         pass
     def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+        return self.crawl(response)
 
-    def crawl(self, response, category, servicename):
+    def crawl(self, response):
         reviews = []
-        self.category = category
-        self.servicename = servicename
         name = response.xpath("//div[@id='view_category']/div[@class='crumbtrail']/a/text()").extract()
-        i = 0;
-        categoryName = category;
+        i = 0
+        categoryName = self.category;
         while i < len(name):
             categoryName =  categoryName + " > "+ name[i]
-            i = i + 1;
+            i = i + 1
 
         # https://www.sitejabber.com/reviews/zoosk.com
         for node in response.xpath('//div[@class="review "]/p'):
-            reviews.append(node.xpath('string()').extract());
+            reviews.append(node.xpath('string()').extract())
         ratings = response.xpath("//div[@class='star_rating']/@title").extract()
         dates = response.xpath("//div[@class='time tiny_text faded_text']/text()").extract()
         headings = response.xpath("//div[@class='review_title']/a/text()").extract()
@@ -53,7 +51,7 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
                                          categoryName,
-                                         servicename, reviews[item], None, website_name)
+                                         self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
 
         next_page1 = response.xpath("//div[ @class ='paginator_next']/span/a[@class ='button outline']/@href").extract()
