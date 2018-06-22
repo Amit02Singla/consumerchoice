@@ -36,11 +36,12 @@ def parse_results(html, keyword):
         description = result.find('span', attrs={'class': 'st'})
         if link and title:
             link = link['href']
-            title = title.get_text()
-            description = description.get_text()
-            if link != '#':
-                found_results.append({"url":link, "name": title})
-                rank += 1
+            if(title != None):
+                title = title.get_text()
+                description = description.get_text()
+                if link != '#':
+                    found_results.append({"url":link, "name": title})
+                    rank += 1
     return found_results
 def scrape_google(search_term, number_results, language_code):
     try:
