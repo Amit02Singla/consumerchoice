@@ -38,7 +38,6 @@ def parse_results(html, keyword):
             link = link['href']
             if(title != None):
                 title = title.get_text()
-                description = description.get_text()
                 if link != '#':
                     found_results.append({"url":link, "name": title})
                     rank += 1
