@@ -3,7 +3,10 @@ import random
 from datetime import datetime
 from urlparse import urlparse
 
+from time import sleep
 import eventlet
+
+from utils import GetProxyList
 
 requests = eventlet.import_patched('requests.__init__')
 time = eventlet.import_patched('time')
@@ -21,6 +24,7 @@ num_requests = 0
 
 def make_request(url, return_soup=True):
     # global request building and response handling
+    GetProxyList.getProxy();
 
     url = format_url(url,get_host(url))
 
@@ -32,11 +36,13 @@ def make_request(url, return_soup=True):
         raise Exception("Reached the max number of requests: {}".format(settings.max_requests))
 
     proxies = get_proxy()
+    print(proxies)
     try:
         r = requests.get(url, headers=settings.headers, proxies=proxies)
     except RequestException as e:
+        sleep(5)
         log("WARNING: Request for {} failed, trying again.".format(url))
-        return make_request(url)  # try request again, recursively
+        return make_request(url,return_soup)  # try request again, recursively
 
     num_requests += 1
 

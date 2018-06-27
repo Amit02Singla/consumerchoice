@@ -4,11 +4,10 @@ from datetime import datetime
 
 import eventlet
 
-import restapis
 from product.amazon import settings
 from product.amazon.Amazon import ParseReviews
 from product.amazon.extractors import get_url, get_primary_img
-from product.amazon.helpers import make_request, log, format_url, enqueue_url, dequeue_url,get_host
+from product.amazon.helpers import make_request, log, format_url, enqueue_url, dequeue_url, get_host
 
 crawl_time = datetime.now()
 
@@ -17,7 +16,6 @@ pile = eventlet.GreenPile(pool)
 
 
 def begin_crawl(url):
-
     page, html = make_request(url)
     count = 0
     # look for subcategory links on this page
@@ -33,11 +31,10 @@ def begin_crawl(url):
             continue
         link = link["href"]
         count += 1
-        enqueue_url(link,url)
+        enqueue_url(link, url)
 
 
 def fetch_listing():
-
     global crawl_time
     url = dequeue_url()
     if not url:
@@ -58,19 +55,19 @@ def fetch_listing():
             log("No product image detected, skipping")
             continue
 
-       # product_title = get_title(item)
+        # product_title = get_title(item)
         product_url = get_url(item)
         data = ParseReviews(product_url)
-      #  product_price = get_price(item)
-        #data
-        data.update({'Product URL': format_url(product_url,url),
-                     "Listing URL":format_url(url,url),
-                     "Product Image":product_image,
+        #  product_price = get_price(item)
+        # data
+        data.update({'Product URL': format_url(product_url, url),
+                     "Listing URL": format_url(url, url),
+                     "Product Image": product_image,
                      })
-        restapis.Login.postReview({"business_units": data})
-        
-        f = open('data.json','a')
-        json.dump(data,f,indent=4)
+        # restapis.Login.postReview({"business_units": data})
+
+        f = open('data.json', 'a')
+        json.dump(data, f, indent=4)
 
         # download_image(product_image, product_id)
 
@@ -78,12 +75,11 @@ def fetch_listing():
     next_link = page.find("a", id="pagnNextLink")
     if next_link:
         log(" Found 'Next' link on {}: {}".format(url, next_link["href"]))
-        enqueue_url(next_link["href"],url)
+        enqueue_url(next_link["href"], url)
         pile.spawn(fetch_listing)
 
 
 def crawlamazon(url):
-
     begin_crawl(url)  # put a bunch of subcategory URLs into the queue
     log("Beginning crawl at {}".format(crawl_time))
     [pile.spawn(fetch_listing) for _ in range(settings.max_threads)]

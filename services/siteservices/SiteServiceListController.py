@@ -35,7 +35,7 @@ class SiteServiceListController(scrapy.Spider):
             if('reviews' in response.url):
                 service  = response.url.split("/");
                 serviceName = service[len(service)-1];
-                # print(" Servicesssss   ", serviceName)
+                print(" Servicesssss   ", serviceName)
                 crawler = SiteJabberCrawler( dict_url[response.url]["Category"],serviceName,response.url)
             else:
                 crawler = SiteJabberURLCrawler(dict_url[response.url]["Category"])

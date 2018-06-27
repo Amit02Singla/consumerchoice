@@ -12,8 +12,12 @@ from time import sleep
 import requests
 from dateutil import parser as dateparser
 from lxml import html
+from requests import RequestException
 
+from product.amazon import settings
+from product.amazon.helpers import get_proxy, log
 from utils import utils
+from product.amazon.helpers import make_request
 
 
 def ParseReviews(url):
@@ -23,19 +27,18 @@ def ParseReviews(url):
     #Todo: check for subcategory and append it in json
     amazon_url =  url
     print(url)
-    # Add some recent user agent to prevent amazon from blocking the request 
+    # Add some recent user agent to prevent amazon from blocking the request
     # Find some chrome user agent strings  here https://udger.com/resources/ua-list/browser-detail?browser=Chrome
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'}
-    page = requests.get(amazon_url, headers=headers, verify=False)
-    page_response = page.text
 
+
+    page = make_request(url, False)
+    page_response = page.text
     parser = html.fromstring(page_response)
     XPATH_AGGREGATE = '//span[@id="acrCustomerReviewText"]'
     XPATH_REVIEW_SECTION_1 = '//div[contains(@id,"reviews-summary")]'
     XPATH_REVIEW_SECTION_2 = '//div[@data-hook="review"]'
     XPATH_AGGREGATE_RATING = '//table[@id="histogramTable"]//tr'
-    XPATH_PRODUCT_NAME = '//h1//span[@id="productTitle"]//text()'
+    XPATH_PRODUCT_NAME = '//div[@id="product-title"]/h1//text()'
     XPATH_PRODUCT_PRICE = '//span[@id="priceblock_ourprice"]/text()'
     XPATH_PRODUCT_AVAILABILITY = '//div[@id="availability"]/span/text()'
     XPATH_PRODUCT_CATEGORY = '//div[@id="wayfinding-breadcrumbs_feature_div"]/ul[@class="a-unordered-list a-horizontal a-size-small"]/li[1]/span[@class="a-list-item"]/a[@class="a-link-normal a-color-tertiary"]/text()'
@@ -64,6 +67,7 @@ def ParseReviews(url):
         reviews = parser.xpath(XPATH_REVIEW_SECTION_2)
     ratings_dict = {}
     reviews_list = []
+    details = []
 
     # grabing the rating  section in product page
     for ratings in total_ratings:
@@ -75,16 +79,86 @@ def ParseReviews(url):
             if rating_key:
                 ratings_dict.update({rating_key: rating_value})
 
-    # Parsing individual reviews
+    #getting url for all reviews
+    next_page = parser.xpath(
+        ".//div[@id='reviewsMedley']/div[@class='a-column a-span8']/div[@id='cr-medley-top-reviews-wrapper']/div[@id='reviews-medley-footer']/div[@class='a-row a-spacing-large']/a[@class='a-link-emphasis a-text-bold']/@href")
+    print("next_page url intially     ", next_page)
+    next_page = parser.xpath(
+        "//div[@id='reviewsMedley']/div[@class='a-column a-span8']/div[@id='cr-medley-top-reviews-wrapper']/div[@id='reviews-medley-footer']/div[@class='a-row a-spacing-large']/a[@class='a-link-emphasis a-text-bold']/@href")
+    print("next_page url intially     ", next_page)
+    if(len(next_page)>0):
+        print("on first page", product_name, category)
+        details =  gettingIndividualReviews("https://www.amazon.com"+next_page[0], settings.headers, category, product_name)
+
+
+
+        # Parsing individual reviews
+
+
+    data = {"business_units":[{"response": [{"business_item_data": {
+            "business_type": "",
+            "absolute_url": amazon_url,
+            "category": category,
+            "name": product_name,
+            "sub_category": "",
+            "picture_urls": "",
+            "original_price": product_price,
+            "sale_price": list_price,
+            "availability": availability,
+            "specifications": "",
+            "website_name": "",
+            "description": ""
+        },
+            "reviews": details}],
+
+        "scrapping_website_url": url,
+        "scrapping_website_name": "amazon.com"}]}
+    print("details", len(data), data)
+
+    return data
+    #     except ValueError:
+    #         print("Retrying to get the correct response")
+
+    # return {"error":"failed to process the page","asin":asin}
+
+
+def ReadAsin():
+    # Add your own ASINs here
+    AsinList = ['B01K6FEU1I']
+    extracted_data = []
+    for asin in AsinList:
+        print("Downloading and processing page http://www.amazon.com/dp/" + asin)
+        extracted_data.append(ParseReviews(asin))
+        sleep(5)
+    f = open('data.json', 'w')
+    json.dump(extracted_data, f, indent=4)
+
+def gettingIndividualReviews(page_url, headers, category, product_name):
+    page = make_request(page_url, False)
+    sleep(3)
+    page_response = page.text
+    parser = html.fromstring(page_response)
+    reviews_list = []
+    next_page = parser.xpath(
+        ".//div[@id='cm_cr-review_list']/div[@class='a-form-actions a-spacing-top-extra-large']/span[@class='a-declarative']/div[@id='cm_cr-pagination_bar']/ul[@class='a-pagination']/li[@class='a-last']/a/@href")
+    print("next_page url in nexted     ", next_page, len(next_page))
+    if len(next_page) > 0:
+        reviews_list = gettingIndividualReviews("https://www.amazon.com" + next_page[0], headers, category, product_name)
+
+    XPATH_REVIEW_SECTION_1 = '//div[contains(@id,"reviews-summary")]'
+    XPATH_REVIEW_SECTION_2 = '//div[@data-hook="review"]'
+    reviews = parser.xpath(XPATH_REVIEW_SECTION_1)
+    if not reviews:
+        reviews = parser.xpath(XPATH_REVIEW_SECTION_2)
 
     for review in reviews:
         XPATH_RATING = './/i[@data-hook="review-star-rating"]//text()'
         XPATH_REVIEW_HEADER = './/a[@data-hook="review-title"]//text()'
         XPATH_REVIEW_POSTED_DATE = './/span[@data-hook="review-date"]//text()'
-        XPATH_REVIEW_TEXT_1 = './/div[@data-hook="review-collapsed"]//text()'
+        XPATH_REVIEW_TEXT_1 = '//span[@data-hook="review-body"]//text()'
         XPATH_REVIEW_TEXT_2 = './/div//span[@data-action="columnbalancing-showfullreview"]/@data-columnbalancing-showfullreview'
         XPATH_REVIEW_COMMENTS = './/span[@data-hook="review-comment"]//text()'
-        XPATH_AUTHOR = './/span[contains(@class,"profile-name")]//text()'
+        XPATH_AUTHOR = './/span[@data-hook="review-author"]/a//text()'
         XPATH_REVIEW_TEXT_3 = './/div[contains(@id,"dpReviews")]/div/text()'
 
 
@@ -136,42 +210,7 @@ def ParseReviews(url):
 
         }
         reviews_list.append(review_dict)
-
-    data =  {"business_item_data": {
-            "business_type": "",
-            "absolute_url": amazon_url,
-            "category": category,
-            "name": product_name,
-            "sub_category": "",
-            "picture_urls": "",
-            "original_price": product_price,
-            "sale_price": list_price,
-            "availability": availability,
-            "specifications": "",
-            "website_name": "",
-            "description": ""
-        },
-            "reviews": reviews_list
-
-        }
-
-    return data
-    #     except ValueError:
-    #         print("Retrying to get the correct response")
-
-    # return {"error":"failed to process the page","asin":asin}
-
-
-def ReadAsin():
-    # Add your own ASINs here
-    AsinList = ['B01K6FEU1I']
-    extracted_data = []
-    for asin in AsinList:
-        print("Downloading and processing page http://www.amazon.com/dp/" + asin)
-        extracted_data.append(ParseReviews(asin))
-        sleep(5)
-    f = open('data.json', 'w')
-    json.dump(extracted_data, f, indent=4)
+    return reviews_list
 
 
 if __name__ == '__main__':

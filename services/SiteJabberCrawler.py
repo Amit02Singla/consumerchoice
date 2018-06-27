@@ -28,26 +28,54 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
             i = i + 1
 
         # https://www.sitejabber.com/reviews/zoosk.com
-        for node in response.xpath('//div[@class="review "]/p'):
-            reviews.append(node.xpath('string()').extract())
-        ratings = response.xpath("//div[@class='star_rating']/@title").extract()
-        dates = response.xpath("//div[@class='time tiny_text faded_text']/text()").extract()
-        headings = response.xpath("//div[@class='review_title']/a/text()").extract()
-        authors1 = response.xpath("//div[@class='author_name']").extract()
+        # for node in response.xpath('//div[@class="review "]/p'):
+        #     reviews.append(node.xpath('string()').extract())
+
+        data = response.xpath("//div[@id='left_side']/div[@id='reviews_container']/div[@class='review_row url_home loggedout last']").extract();
+        data1 = response.xpath("//div[@id='left_side']/div[@id='reviews_container']/div[@class='review_row url_home loggedout ']").extract();
         authors = []
-        for content in authors1:
-            root = etree.fromstring(content)
-            if(root.text == None ):
-                for element in root:
-                    authors.append(element.text)
-            else:
-                authors.append(root.text)
+        headings = []
+        ratings = []
+        dates = []
+        for content1 in data:
+            content1 = content1.replace("...", "")
+            root = etree.HTML(content1)
+            if(len(root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']/a"))):
+                authors.append(root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']/a/text()")[0])
+            elif (len(root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']"))):
+                authors.append(
+                    root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']/text()")[0])
+
+            headings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/div[@class='review_title']/a/text()")[0])
+            dates.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/div[@class='stars']/div[@class='time tiny_text faded_text']/text()")[0])
+            reviews.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/text()")[0])
+            ratings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/@data-rating")[0])
+        for content2 in data1:
+            content2 = content2.replace("...", "")
+            root = etree.HTML(content2)
+            if (len(root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']/a"))):
+                authors.append(
+                    root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']/a/text()")[0])
+            elif (len(root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']"))):
+                authors.append(
+                    root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']/text()")[0])
+            headings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/div[@class='review_title']/a/text()")[0])
+            dates.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/div[@class='stars']/div[@class='time tiny_text faded_text']/text()")[0])
+            reviews.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/text()")[0])
+            ratings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/@data-rating")[0])
+
         website = response.xpath("//div[@id='header_top']/a[@id='header_logo']/picture/img/@alt").extract()
         website_name = website[0];
-        headings = list(map(lambda foo: foo.replace('...', ''), headings))
+        authors = list(map(lambda foo: foo.replace(u'\xa0', ' '), authors))
         headings = list(map(lambda foo: foo.replace(u'\u201c', ''), headings))
         headings = list(map(lambda foo: foo.replace(u'\u201d', ''), headings))
-        # print(authors)
+        dates = map(lambda  foo: foo.replace("\n\t\t\t\t\t", ""), dates)
+        dates = map(lambda foo: foo.replace("\t\t\t\t", ""), dates)
+        # print("athors ", len(authors), authors)
+        # print("ratings ",len(ratings),ratings)
+        # print("headings ", len(headings), headings)
+        print("dates ", len(dates))
+        # print("reviews ", len(reviews), reviews)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
                                          categoryName,
