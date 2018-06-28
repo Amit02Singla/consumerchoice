@@ -57,13 +57,13 @@ def fetch_listing():
 
         # product_title = get_title(item)
         product_url = get_url(item)
-        data = ParseReviews(product_url)
+        data = ParseReviews(product_url, product_image)
         #  product_price = get_price(item)
         # data
-        data.update({'Product URL': format_url(product_url, url),
-                     "Listing URL": format_url(url, url),
-                     "Product Image": product_image,
-                     })
+        # data.update({'Product URL': format_url(product_url, url),
+        #              "Listing URL": format_url(url, url),
+        #              "Product Image": product_image,
+        #              })
         # restapis.Login.postReview({"business_units": data})
 
         f = open('data.json', 'a')
