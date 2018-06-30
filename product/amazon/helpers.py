@@ -36,19 +36,24 @@ def make_request(url, return_soup=True):
         raise Exception("Reached the max number of requests: {}".format(settings.max_requests))
 
     proxies = get_proxy()
+    log(proxies)
     try:
-        r = requests.get(url, headers=settings.headers, proxies=proxies)
+        navigator = settings.getheaders()
+        log(navigator)
+        r = requests.get(url, headers=navigator, proxies=proxies)
     except RequestException as e:
-        sleep(5)
         log("WARNING: Request for {} failed, trying again.".format(url))
+        sleep(5)
         return make_request(url,return_soup)  # try request again, recursively
 
     num_requests += 1
 
     if r.status_code != 200:
         os.system('say "Got non-200 Response"')
+        sleep(5)
         log("WARNING: Got a {} status code for URL: {}".format(r.status_code, url))
-        return None
+        return make_request(url, return_soup)  # try request again, recursively
+
 
     if return_soup:
         return BeautifulSoup(r.text), r.text

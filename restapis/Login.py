@@ -4,6 +4,7 @@ import requests
 import json
 from product.ProductController import crawlAmazon
 #from services.siteservices.SiteServiceListController import crawl_services1
+from services.siteservices.SiteServiceListController import crawl_services1
 
 param = {
   "email": "data_miner@example.com",
@@ -67,7 +68,7 @@ def crawlURL(url,responseURL,categoryName):
         website_list.append({"ServiceName": "",
                                  "Category": categoryName,
                                  "url": url})
-    global  custom_base_url
+    global custom_base_url
     custom_base_url = responseURL
     crawl_services1(website_list)
     crawlAmazon(amazon_list)

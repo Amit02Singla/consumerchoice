@@ -1,9 +1,12 @@
 import json
 import sys
 from datetime import datetime
+from time import sleep
 
 import eventlet
+from requests import RequestException
 
+import restapis
 from product.amazon import settings
 from product.amazon.Amazon import ParseReviews
 from product.amazon.extractors import get_url, get_primary_img
@@ -57,16 +60,20 @@ def fetch_listing():
 
         # product_title = get_title(item)
         product_url = get_url(item)
-        data = ParseReviews(product_url, product_image)
+        data = ReviewForProducts(product_url,product_image)
         #  product_price = get_price(item)
         # data
         # data.update({'Product URL': format_url(product_url, url),
         #              "Listing URL": format_url(url, url),
         #              "Product Image": product_image,
         #              })
-        # restapis.Login.postReview({"business_units": data})
-
-        f = open('data.json', 'a')
+        try:
+            restapis.Login.postReview(data)
+        except RequestException as e:
+            pass
+        name  = "_".join(data["business_units"][0]["response"][0]["business_item_data"]["name"].split(" "))
+        log("dumping >>>>>>>>" + name)
+        f = open(name+'.json', 'w')
         json.dump(data, f, indent=4)
 
         # download_image(product_image, product_id)
@@ -78,7 +85,13 @@ def fetch_listing():
         enqueue_url(next_link["href"], url)
         pile.spawn(fetch_listing)
 
-
+def ReviewForProducts(product_url, product_image):
+    data = ParseReviews(product_url, product_image)
+    if data is None:
+        sleep(60)
+        return ReviewForProducts(product_url, product_image)
+    else:
+        return data
 def crawlamazon(url):
     begin_crawl(url)  # put a bunch of subcategory URLs into the queue
     log("Beginning crawl at {}".format(crawl_time))
