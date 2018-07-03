@@ -67,11 +67,11 @@ def fetch_listing():
         #              "Listing URL": format_url(url, url),
         #              "Product Image": product_image,
         #              })
-        try:
-            restapis.Login.postReview(data)
-        except RequestException as e:
-            pass
-        name  = "_".join(data["business_units"][0]["response"][0]["business_item_data"]["name"].split(" "))
+        # try:
+        #     restapis.Login.postReview(data)
+        # except RequestException as e:
+        #     pass
+        name  = "_".join(data["business_units"][0]["response"][0]["business_item_data"]["name"].split(" ")).replace(".","").replace(":","").replace("/","")
         log("dumping >>>>>>>>" + name)
         f = open(name+'.json', 'w')
         json.dump(data, f, indent=4)

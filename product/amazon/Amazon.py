@@ -131,7 +131,7 @@ def ParseReviews(url, productImage):
             "picture_urls": product_image,
             "original_price": product_price,
             "sale_price": list_price,
-            "availability": avail,
+            "availability": bool(avail),
             "specifications": [],
             "website_name": get_host(url),
             "description": product_description
