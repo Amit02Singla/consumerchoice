@@ -1,16 +1,28 @@
 from model.Servicemodel import ServiceRecord
 from utils.utils import getStarts
+
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 # https://www.seniordatingexpert.com/reviews/senior-people-meet/
 #TODO Done
-class SeniorDatingExpert():
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+class SeniorDatingExpert(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
-        print("review from seniordatingexpert.com")
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(SeniorDatingExpert,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+
+        print("review from seniordatingexpert.com    ",self.link["url"] )
         # https://www.seniordatingexpert.com/reviews/silversingles-review/
 
         for node in response.xpath("//div[@id='main-inner']/ul[@id='user-reviews']/li/div[@class='userrev']/div[@class='user-review']"):
@@ -36,14 +48,14 @@ class SeniorDatingExpert():
             c= authors1[j].split(" By ")
             authors.append(c[1])
             j= j+1
-        # print(" Reviews ", len(reviews), reviews)
-        # print(" rating ", len(ratings1), ratings1)
-        # print(" authors ", len(authors), authors)
-        # print(" website_name ", len(website_name), website_name)
+        print(" Reviews ", len(reviews), reviews)
+        print(" rating ", len(ratings1), ratings1)
+        print(" authors ", len(authors), authors)
+        print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], category,
-                          servicename, reviews[item],None,website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], "",
+                          self.servicename, reviews[item],None,website_name);
+            self.save(servicename1)
 
         next_page = response.xpath("//div[@class='pagination-container']/ul[@class='pagination']/li[7]/a/@href").extract()
         if next_page is not None:
@@ -53,3 +65,4 @@ class SeniorDatingExpert():
                 print(next_page_url)
                 # yield Request(url=next_page_url, callback=self.parse, dont_filter=True)
                 yield response.follow(next_page_url, callback=self.parsing)
+        self.pushToServer()

@@ -1,19 +1,27 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 
+# TODO: need to check last url
+class HighYaCrawler(BaseSiteURLCrawler):
 
-class HighYaCrawler():
-    def __init__(self):
-        pass
+    def __init__(self,category,servicename,url):
 
-    def parsing(self, response):
-        return self.crawl(response, self.category, self.servicename)
-
-    def crawl(self, response, category, servicename):
-        reviews = []
         self.category = category
         self.servicename = servicename
-        # print("review from HighYa.com")
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(HighYaCrawler,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+
+        print("review from HighYa.com  ", self.link["url"])
         # https://www.highya.com/coinbase-reviews
         for node in response.xpath(
                 "//div[@class='left-col col-lg-8 col-lg']/div[@id='reviews']/ul[@class='no-list list-review']/li/span/div[@class='description']"):
@@ -40,18 +48,20 @@ class HighYaCrawler():
         for content in authors1:
             root = etree.HTML(content)
             if (root.xpath("//a/span")):
-                authors.append(root.xpath("//a/span/text()"))
+                authors.append(root.xpath("//a/span/text()")[0])
             else:
-                authors.append(root.xpath("//span[@itemprop='name']/text()"))
-        website_name = response.xpath("//html/head/meta[7]/@content").extract()
+                authors.append(root.xpath("//span[@itemprop='name']/text()")[0])
+        website_name = response.xpath("//html/head/meta[7]/@content").extract()[0]
 
+        print("reviews  ", len(reviews))
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         category, servicename, reviews[item], None, website_name)
-            servicename1.save()
+                                         "", self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
 
         next_page = response.xpath("//div[@class='pagination']/a[@class='next']/@href").extract()
         if next_page is not None:
             next_page_url = "".join(next_page)
             if next_page_url and next_page_url.strip():
                 yield response.follow(url=next_page_url, callback=self.parsing)
+        self.pushToServer()

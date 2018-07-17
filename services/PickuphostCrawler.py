@@ -1,14 +1,22 @@
 from model.Servicemodel import ServiceRecord
 
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class PickuphostCrawler(BaseSiteURLCrawler):
 
-class PickuphostCrawler():
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
-    def crawl(self, response, category, servicename):
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(PickuphostCrawler,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
         reviews = []
         #http://pickuphost.com/review/bluehost/#customer_review_shap
         for node in response.xpath("//div[@class='one_rew']/div[@class='rewiwer_post']/span"):
@@ -20,9 +28,9 @@ class PickuphostCrawler():
         name = response.xpath("//div[@class='navbar-header']/a/@href").extract()
         website_name = name[0].split(".")[0].split("/")[-1]
         for item in range(1, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], category,
-                          servicename, reviews[item],"",website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
+                          self.servicename, reviews[item],"",website_name);
+            self.save(servicename1)
         next_page = response.xpath("//div[@class='row']/div[@class='col-lg-8 col-lg-offset-3']/ul[@class='pagecount']/li[8]/a[@class='next page-numbers custom_page_link']/@href").extract()
         if next_page is not None:
             next_page_url = "".join(next_page)
@@ -31,3 +39,4 @@ class PickuphostCrawler():
                 print(next_page_url)
                 # yield Request(url=next_page_url, callback=self.parse, dont_filter=True)
                 yield response.follow(next_page_url, callback=self.parsing)
+        self.pushToServer()

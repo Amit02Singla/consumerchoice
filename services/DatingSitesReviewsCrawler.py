@@ -1,13 +1,23 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
-class DatingSitesReviewsCrawler(Spider):
-    def __init__(self):
-        pass
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class DatingSitesReviewsCrawler(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(DatingSitesReviewsCrawler,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
         reviews = []
         # https://www.datingsitesreviews.com/staticpages/index.php?page=BlackPeopleMeet-Reviews&query=blackpeoplemeet
         for node in response.xpath("//div[@id='comments']/div[@class='block-comment-content level-0']/div[@class='comment_content']"):
@@ -30,8 +40,14 @@ class DatingSitesReviewsCrawler(Spider):
 
         headings =  response.xpath("//div[@id='comments']/div[@class='block-comment-content level-0']/ul[@class='comment_status']/li[@class='comment_title']/text()").extract()
         website_name =  response.xpath("/html/head/title").extract()[0].split(" - ")[1]
-
+        print(" headings ", len(headings))
+        print("dates ", len(dates))
+        print(" Reviews ", len(reviews))
+        # print(" headings ", len(headings), headings)
+        print(" authors ", len(authors))
+        print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, None, headings[item], dates[item], authors[item], category,
-                          servicename, reviews[item],None,website_name)
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, None, headings[item], dates[item], authors[item], "",
+                          self.servicename, reviews[item],None,website_name)
+            self.save(servicename1)
+        self.pushToServer()

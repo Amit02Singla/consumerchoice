@@ -1,33 +1,74 @@
 from model.Servicemodel import ServiceRecord
+from lxml import etree
 # http://www.totallyonlinedating.com/usa-online-dating-services/senior-dating-sites/seniorpeoplemeet.com-review.html
 #Todo: redo
-class TotallyOnlineDating():
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class TotallyOnlineDating(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(TotallyOnlineDating,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+        reviews1 = []
+        headings = []
+        authors = []
+        ratings = []
+        dates = []
         print("review from totallyonlinedating.com")
+        node = response.xpath("//div/table[@class='showcomment']").extract()
+        for content in node:
+            root = etree.HTML(content)
+            if len(root.xpath(".//tr/td[@class='contcomment']"))>0:
+                reviews.append(root.xpath(".//tr/td[@class='contcomment']/text()"))
+            else:
+                reviews.append("")
+            if(len(root.xpath(".//td[@class='contcomment']/b/text()"))>0):
+                headings.append(root.xpath(".//td[@class='contcomment']/b/text()")[0])
+            else:
+                headings.append("")
+            if (len(root.xpath(".//td[@class='commentid']/i/text()")) > 0):
+                authors.append(root.xpath(".//td[@class='commentid']/i/text()")[0])
+            else:
+                authors.append("")
+            if (len(root.xpath(".//td[@class='star']/img/@src")) > 0):
+                ratings.append(len(root.xpath(".//td[@class='star']/img/@src")))
+            else:
+                ratings.append("")
+
+
+
         # http://www.totallyonlinedating.com/usa-online-dating-services/senior-dating-sites/seniorpeoplemeet.com-review.html
-        for node in response.xpath("//div/table[@class='showcomment']/tbody/tr[2]/td[@class='contcomment']"):
-            reviews.append(node.xpath('string()').extract());
-        ratings = response.xpath("//div[@class='rating-md']/p/span/span[@itemprop='ratingValue']/@content").extract()
-        headings = response.xpath("//div[@class='review-content']/h3/text()").extract()
-        authors = response.xpath("//div/table[@class='showcomment']/tbody/tr[1]/td[@class='commentid']/i/text()").extract()
+        # for node in response.xpath("//tr/td[@class='contcomment']"):
+        #     reviews.append(node.xpath('string()').extract());
+        # ratings = response.xpath("//div[@class='rating-md']/p/span/span[@itemprop='ratingValue']/@content").extract()
+        # headings = response.xpath("//td[@class='contcomment']/b/text()").extract()
+        # authors = response.xpath("//td[@class='commentid']/i/text()").extract()
         img_src =  response.xpath("//div[@class='item-header-img']/span[@class='item-header-img-container']/img/@src").extract()
-        website_name =  response.xpath("/html/head/meta[7]/@content").extract()
+        website_name =  "totallyonlinedating.com"
         dates = response.xpath("//div[@class='review-content']/div[@class='rating-md']/p/meta/@content").extract()
-        #print("dates ", len(dates), dates)
-        #print(" Reviews ", len(reviews), reviews)
-        #print(" headings ", len(headings), headings)
-        #print(" authors ", len(authors), authors)
-        #print(" website_name ", len(website_name), website_name)
+        # i=0
+
+
+        print(" Ratings ", len(ratings), ratings)
+        print(" Reviews ", len(reviews), reviews)
+        print(" headings ", len(headings), headings)
+        print(" authors ", len(authors), authors)
+        print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], category,
-                          servicename, reviews[item],img_src,website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], self.category,
+                          self.servicename, [''.join(reviews[item]).strip()],img_src,website_name);
+            self.save(servicename1)
 
         next_page = response.xpath("//div[@class='pagination-container']/ul[@class='pagination']/li[7]/a/@href").extract()
         if next_page is not None:
@@ -37,3 +78,4 @@ class TotallyOnlineDating():
                 #print(next_page_url)
                 # yield Request(url=next_page_url, callback=self.parse, dont_filter=True)
                 yield response.follow(next_page_url, callback=self.parsing)
+        self.pushToServer()

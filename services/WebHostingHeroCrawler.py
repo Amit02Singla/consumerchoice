@@ -4,22 +4,28 @@ from lxml import etree
 from utils.utils import getStarts
 # https://www.webhostinghero.com/reviews/bluehost/
 #TODO Done
-class WebHostingHeroCrawler(Spider):
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class WebHostingHeroCrawler(BaseSiteURLCrawler):
 
-    def __init__(self):
+    def __init__(self,category,servicename,url):
+
+        self.category = category
+        self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(WebHostingHeroCrawler,self).__init__()
+        self.createCategory(self.link)
         pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+    def parsing(self, response1):
+        return self.crawl(response1)
 
-    def crawl(self, response, category, servicename):
+    def crawl(self, response):
         reviews = []
         headings = []
         authors = []
         dates = []
         ratings1 = []
-        self.category = category
-        self.servicename = servicename
-
         nodes = response.xpath("//div[@class='row user-review']").extract();
 
         for content in nodes:
@@ -67,12 +73,14 @@ class WebHostingHeroCrawler(Spider):
             i = i + 1;
 
         for item in range(0, len(reviews)):
-            servicename1 =ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], category,
-                          servicename, reviews[item], "",website_name)
-            servicename1.save()
+            servicename1 =ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], self.category,
+                          self.servicename, [reviews[item]], "",website_name[0])
+            self.save(servicename1)
         next_page = response.xpath("//div[@class='col-12']/div[@class='row']/div[@class='col-12 navigator align-center']/a[last()]/@href").extract()
         if next_page is not None:
-            next_page_url = "".join(next_page[0])
-            print(next_page_url)
-            if next_page_url and next_page_url.strip():
-                yield Request(url=next_page_url,  callback=self.parsing)
+            if len(next_page)>0:
+                next_page_url = "".join(next_page[0])
+                print(next_page_url)
+                if next_page_url and next_page_url.strip():
+                    yield Request(url=next_page_url,  callback=self.parsing)
+        self.pushToServer()

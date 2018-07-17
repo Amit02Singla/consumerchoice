@@ -2,19 +2,24 @@ from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from utils.utils import getStarts
 # https://www.virtualbanking.com/reviews/localbitcoins-review/
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class VirtualBanking(BaseSiteURLCrawler):
 
-class VirtualBanking(Spider):
+    def __init__(self,category,servicename,url):
 
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
-
-    def crawl(self, response, category, servicename):
-        reviews = []
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(VirtualBanking,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
 
+    def crawl(self, response):
+        reviews = []
         for node in response.xpath("//div[@id='user-reviews-wrap']/ul[@id='user-reviews']/li/div[@class='user-review']"):
             reviews.append(node.xpath('string()').extract());
         ratings1 = response.xpath("//div[@id='user-reviews-wrap']/ul[@id='user-reviews']/li/div[@class='user-stars']/img/@src").extract()
@@ -31,12 +36,14 @@ class VirtualBanking(Spider):
         j = 0
         while j < len(dates1):
             dates2 = (dates1[j].split(" "))
-            dates.append(dates2[5])
+            dates.append(dates2[len(dates2)-1].strip())
             authors.append(dates2[2])
             j = j+1
         website_name =  response.xpath("//header/div[@class='wrapper']/a[@id='logo']/@href").extract()
+        print("dates", len(dates), dates)
         for item in range(0, len(reviews)):
-            servicename1 =ServiceRecord(response.url, ratings[item],None, dates[item], authors[item], category,
-                          servicename, reviews[item], None,website_name)
-            servicename1.save()
+            servicename1 =ServiceRecord(response.url, ratings[item],None, dates[item], authors[item], "",
+                          self.servicename, reviews[item], None,website_name[0])
+            self.save(servicename1)
+        self.pushToServer()
 

@@ -1,45 +1,63 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
-class FreeDatingHelperCrawler():
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class FreeDatingHelperCrawler(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(FreeDatingHelperCrawler,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
         # http://www.freedatinghelper.com/reviews/fortyplus-singles/
-        #TODO Need to check pick only first review: Refer Sandy
+
         authors = []
         reviews=[]
         ratings =[]
-        data = response.xpath("//section[@id='comment-wrap']/ol[@class='commentlist clearfix']").extract()
+        data = response.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']").extract()
         for content in data:
-            # content = content.replace('<br>', '$')
+            content = content.replace('<br>', '')
+            content = content.replace('<p>','').replace('</p>','')
+
             root = etree.HTML(content)
-            if(len(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/span[@class='fn']/span/text()"))>0):
-                authors.append(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/span[@class='fn']/span/text()")[0])
+            if(len(root.xpath("//div/span[@class='fn']/span/text()"))>0):
+                authors.append(root.xpath("//div/span[@class='fn']/span/text()"))
             else:
                 authors.append("")
-            if(len(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/div[@class='comment_area']/div[@class='comment-content clearfix']/div/span/p/text()"))>0):
-                reviews.append(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/div[@class='comment_area']/div[@class='comment-content clearfix']/div/span/p/text()"))
+            if(len(root.xpath("//div/div[@class='comment_area']/div[@class='comment-content clearfix']/div/span/text()"))>0):
+                reviews.append(root.xpath("//div/div[@class='comment_area']/div[@class='comment-content clearfix']/div/span/text()"))
             else:
                 reviews.append("")
-            if(len(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/table[@class='ratings']/tbody/tr/td[@class='rating_value']/div/text()"))>0):
-                ratings = root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/table[@class='ratings']/tbody/tr/td[@class='rating_value']/div/text()")
+            # if(len(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div[2]/table[@class='ratings']/tbody/tr/td[@class='rating_value']/div/text()"))>0):
+            #     ratings.append(root.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']/div/table[@class='ratings']/tbody/tr/td[@class='rating_value']/div/text()"))
+            # el
+            if(len(root.xpath("//div[2]/table[@class='ratings']/tr/td[@class='rating_value']/div/span/text()"))>0):
+                ratings.append(root.xpath("//div[2]/table[@class='ratings']/tr/td[@class='rating_value']/div/span/text()"))
             else:
                 ratings.append("")
 
-        website_name= response.xpath("//html/head/meta[8]/@content").extract()[0]
-        # print("Reviews ", len(reviews), reviews)
-        # # print("Headings ", len(headings), headings)
-        # print("Authors ", len(authors), authors)
-        # print("Rating ", len(ratings), ratings)
-        # # print("Dates ", len(dates), dates)
-        # # print("Img_src ", len(img_src), img_src)
+        website_name= "freedatinghelper.com"
+        # if(len(authors)>0):
+        #     authors = authors[0]
+        # if len(reviews)>0:
+        #     reviews = reviews[0]
+        print("Reviews ", len(reviews[0]), reviews)
+        # print("Headings ", len(headings), headings)
+        print("Authors ", len(authors[0]), authors)
+        print("Rating ", len(ratings[0]), ratings)
+        # print("Dates ", len(dates), dates)
+        print("website ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, None, authors[item],
-                                         category, servicename, reviews[item], None, website_name)
-            servicename1.save()
+                                         "", self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
+        self.pushToServer()

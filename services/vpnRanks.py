@@ -1,15 +1,23 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
-class vpnRanks():
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class vpnRanks(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(vpnRanks,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
         #print("review from vpnranks.com")
         # https://www.highya.com/coinbase-reviews
         for node in response.xpath("//div[@class='comment-body']"):
@@ -30,10 +38,11 @@ class vpnRanks():
         for i in range(len(authors)/2 + 1):
            if i != 0 :
                 del authors[i]
-        website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
+        website_name = "vpnranks.com"
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item],
-                                         category, servicename, reviews[item], None, website_name)
-            servicename1.save()
+                                         self.category, self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
+        self.pushToServer()
 
 

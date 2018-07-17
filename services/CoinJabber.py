@@ -1,21 +1,27 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from utils.utils import getStarts
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 
+class CoinJabber(BaseSiteURLCrawler):
 
-class CoinJabber(Spider):
+    def __init__(self,category,servicename,url):
 
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
-
-    def crawl(self, response, category, servicename):
-        reviews = []
-        reviews1 = []
         self.category = category
         self.servicename = servicename
-        # https: // www.webhostinghero.com / reviews / bluehost /
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(CoinJabber,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+        reviews1 = []
+
         for node in response.xpath(
                 "//div[@id='review_anchor']/ul[@class='review_list']/li/p[2]"):
             reviews.append(node.xpath('string()').extract());
@@ -51,16 +57,17 @@ class CoinJabber(Spider):
         website_name2 = website_name1[0].split("|")
         website_name = []
         website_name.append(website_name2[1])
-        print("Reviews ", len(reviews), reviews)
-        print("Authors ", len(authors), authors)
+        print("Reviews ", len(reviews))
+        print("Authors ", len(authors))
         print("Rating ", len(ratings), ratings)
-        print("Dates ", len(dates), dates)
+        print("Dates ", len(dates))
         # print("img_src ", len(img_src), img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], category,
-                                         servicename, reviews[item], None, website_name)
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], "",
+                                         self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
+        self.pushToServer()
 
 
 

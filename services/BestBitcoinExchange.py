@@ -1,38 +1,48 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
+from lxml import etree
+from product.amazon.helpers import make_request
 from utils.utils import getStarts
-
-# http://www.bestbitcoinexchange.net/en/bittrex-com/
-class BestBitcoinExchange(Spider):
 # TODO Paging pending because of #
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+# http://www.bestbitcoinexchange.net/en/bittrex-com/
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class BestBitcoinExchange(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
-        reviews1 = []
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(BestBitcoinExchange,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
 
-        for node in response.xpath(
-                "//div[@class='box']/ol[@class='comment-list']/li/div"):
-            reviews1.append(node.xpath('string()').extract());
+    def crawl(self, response):
+        reviews = []
+        reviews1 = []
+
+        root = etree.HTML(response)
+        for node in root.xpath(
+                ".//div[@class='box']/ol[@class='comment-list']/li/div"):
+            reviews1.append(node.xpath('string()'))
         i = 0
         rev = []
         authors = []
         dates = []
         while (i < len(reviews1)):
-            revs = (reviews1[i][0].replace("\t\t\n\t\n\t\n\t", "|"))
+            revs = (reviews1[i].replace('\t\t\n\t\n\t\n\t', '|'))
             rev = revs.split("|")
             dateAuthor = rev[0].split(",")
-            authors.append(dateAuthor[0])
+            authors.append(dateAuthor[0].strip())
             dates.append(dateAuthor[1])
-            reviews.append(rev[1])
+            reviews.append([rev[1]])
             i = i + 1
 
-        website_name = response.xpath("////head/meta[8]/@content").extract()
+        website_name = "bestbitcoinexchange.net"
         # website_name2 = website_name1[0].("|")
         # website_name = []
         # website_name.append(website_name2[1])
@@ -43,18 +53,21 @@ class BestBitcoinExchange(Spider):
         # # print("img_src ", len(img_src), img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item], category,
-                                         servicename, reviews[item], None, website_name)
-            servicename1.save()
-        next_page = response.xpath(
-            "//div[@class='box']/nav[@id='comment-nav-below']/div[@class='nav-previous']/a/@href").extract()
+            servicename1 = ServiceRecord(self.link["url"], None, None, dates[item], authors[item], self.category,
+                                         self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
+        next_page = root.xpath(
+            ".//div[@class='box']/nav[@id='comment-nav-below']/div[@class='nav-previous']/a/@href")
         if next_page is not None:
             next_page_url = "".join(next_page)
             if next_page_url and next_page_url.strip():
                 print(type(next_page_url))
                 print(next_page_url)
-                yield Request(next_page_url, callback=self.parsing)
+                r = make_request(next_page_url, False, False)
+                self.crawl(r.content)
+                # yield Request(next_page_url, callback=self.parsing)
                 # yield response.follow(next_page_url, callback=self.parsing)
+        self.pushToServer()
 
 
 

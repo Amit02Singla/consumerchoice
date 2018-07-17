@@ -3,19 +3,26 @@ from scrapy import Spider, Request
 from utils.utils import getStarts
 
 # https://bestvpnprovider.co/vyprvpn-review/
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class BestVPNProvidersCrawler(BaseSiteURLCrawler):
 
-class BestVPNProvidersCrawler(Spider):
+    def __init__(self,category,servicename,url):
 
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
-
-    def crawl(self, response, category, servicename):
-        reviews = []
-        reviews1 = []
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(BestVPNProvidersCrawler,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+        reviews1 = []
+
 
         #TODO: Done
         for node in response.xpath("//div[@class='wpcr3_review_item']/div[@class='wpcr3_item wpcr3_product']/div/blockquote[@class='wpcr3_content']"):
@@ -32,11 +39,12 @@ class BestVPNProvidersCrawler(Spider):
         img_src = response.xpath(
             "//div[@class='columngrid-9']/div[@id='quick']/div[@class='columngrid-3']/div[@class='text-center']/img/@src").extract()
         # headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
-        website_name = response.xpath("///head/meta[10]/@content").extract()
+        website_name = "bestvpnprovider.co"
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], category,
-                                         servicename, reviews[item], img_src, website_name)
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
+                                         self.servicename, reviews[item], img_src, website_name)
+            self.save(servicename1)
+        self.pushToServer()
 
 
 

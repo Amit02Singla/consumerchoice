@@ -1,20 +1,26 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
 
-
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 # http://www.hostingcharges.in/hosting-reviews/fatcow
 # TODO DONE
-class hostingCharges():
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+class hostingCharges(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
-        temp_reviews = []
-        reviews = []
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(hostingCharges,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
         print("review from hostingcharges.in")
         # for item in temp_reviews:
         #     # print (item)
@@ -46,10 +52,16 @@ class hostingCharges():
         img_src = response.xpath("//div[@class='review-cntnr']/div[@class='review-sub-cntnr']/div[@class='logo-img']/a/img/@src").extract()[0]
         authors = response.xpath("//div[@class='review-mid']/h4/text()").extract()
         website_name = response.xpath("//div[@id='bs-example-navbar-collapse-1']/ul[@class='nav navbar-nav navbar-right']/li[@class='dropdown'][1]/a/@href").extract()
-
+        print(" Ratings ", len(ratings))
+        print("dates ", len(dates))
+        print(" Reviews ", len(reviews))
+        # print(" headings ", len(headings), headings)
+        print(" authors ", len(authors))
+        print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         category, servicename, reviews[item], img_src, website_name)
-            servicename1.save()
+                                         "", self.servicename, reviews[item], img_src, website_name)
+            self.save(servicename1)
+        self.pushToServer()
 
 

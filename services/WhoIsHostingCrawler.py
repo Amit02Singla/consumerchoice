@@ -1,17 +1,24 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class WhoIsHostingCrawler(BaseSiteURLCrawler):
 
-class WhoIsHostingCrawler(Spider):
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+    def __init__(self,category,servicename,url):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(WhoIsHostingCrawler,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
         #print("whoishostingthis.com")
         # https://www.whoishostingthis.com/hosting-reviews/bluehost/
         authors = response.xpath("//div[@class='author']/span[@class='name']/text()").extract()
@@ -27,10 +34,11 @@ class WhoIsHostingCrawler(Spider):
                 reviews.append(node.xpath('string()').extract());
         #print("  reviews   ", reviews)
         dates = response.xpath("//div[@class='user-info pure-u-1']/time[@class='published']/text()").extract()
+        print("reviews",len(reviews))
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], category,
-                          servicename, reviews[item],img_src,website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], "",
+                          self.servicename, reviews[item],img_src,website_name);
+            self.save(servicename1)
 
         next_page = response.xpath("//div[@class ='see-more']/a/@ href").extract()
         if len(next_page) == 0:
@@ -42,3 +50,4 @@ class WhoIsHostingCrawler(Spider):
                 #print(next_page_url)
                 #yield Request(url=next_page_url, callback=self.parse, dont_filter=True)
                 yield response.follow(next_page_url, callback=self.parsing)
+        self.pushToServer()

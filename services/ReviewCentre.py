@@ -1,44 +1,77 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from utils.utils import getStarts
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+from lxml import etree
 
 
-class ReviewCentre(Spider):
+class ReviewCentre(BaseSiteURLCrawler):
 
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+    def __init__(self,category,servicename,url):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
         self.category = category
         self.servicename = servicename
-        # https: // www.webhostinghero.com / reviews / bluehost /
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(ReviewCentre,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+
+        print (" ReviewCentre.com    ", self.link["url"])
         for node in response.xpath(
-                "//ol[@class='commentlist clearfix']/li/article/div[@class='comment_postinfo']/div[2]/div[@class='comment_area']/div[@class='comment-content clearfix']/div[1]/span/p"):
+                "//div[@id='ItemReviewsContent']/div/div[@class='ReviewCommentContent']/div[@class='ReviewCommentContentRight']/p[2]"):
             reviews.append(node.xpath('string()').extract());
-        # ratings =  response.xpath("//div[@class='review_result']/div[@class='review_result_content']/div[@class='review_result_item']/div[@class='review-result-rating-main']").extract()
-        # dates = response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div[@class='userComments']/div[@class='userDetails']/div[@class='userLocation']/p[1]/span[@class='pIcn']/text()").extract()
-        authors = response.xpath("//ol[@class='commentlist clearfix']").extract()
+        ratings1 =  response.xpath("//div[@id='ItemReviewsContent']/div/div[@class='ReviewCommentContent']/div[@class='ReviewBoxLeftContent']/div[1]/@class").extract()
+        dates = response.xpath("//div[@id='ItemReviewsContent']/div/div[@class='ReviewCommentContent']/div[@class='ReviewCommentContentRight']/p/span[1]/text()").extract()
+        authors1 = response.xpath("//div/div[@class='ReviewCommentContent']/div[@class='ReviewCommentContentRight']").extract()
+        authors = []
+        ratings = []
+        j = 0
+        while j < len(ratings1):
+            ratings.append(getStarts(ratings1[j]))
+            j = j + 1
+        authors2= []
+        for content in authors1:
+            root = etree.HTML(content)
+            if(len(root.xpath("//p/span[2]/text()"))>0):
+                authors.append(root.xpath("//p/span[2]/text()")[0])
+            else:
+                authors.append("")
+        authors = map(lambda foo: foo.replace('\n        \n            ', ' '), authors)
+        i=0
+        while( i< len(authors)):
+            if( authors[i] == '' ):
+                authors2.append("")
+            else:
+                c=authors[i].split(" ");
+                authors2.append(c[2])
+            i=i+1
         headings = response.xpath("//div[@id='ItemReviewsContent']/div/div[@class='ReviewCommentContent']/div[@class='ReviewCommentContentRight']/h3/a/text()").extract()
-        website_name = response.xpath("/html/head/meta[9]/@content").extract()
-        img_src = response.xpath(
-            "//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
+        website_name = "www.reviewcentre.com"
+
         print("Reviews ", len(reviews), reviews)
         print("Headings ", len(headings), headings)
-        print("Authors ", len(authors), authors)
-        # print("Rating ", len(ratings), ratings)
-        # print("Dates ", len(dates), dates)\
-        # print("Img_src ", len(img_src), img_src)
+        print("Authors ", len(authors2), authors2)
+        print("Rating ", len(ratings), ratings)
+        print("Dates ", len(dates), dates)
+
+        print("wenbsite ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, None, headings[item], None, authors[item], category,
-                                         servicename, reviews[item], img_src, website_name)
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, None, headings[item], None, authors2[item], "",
+                                         self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
 
         next_page = response.xpath("//div[@class='pagination']/ul[@id='yw2']/li[@class='next']/a/@href").extract()
         if next_page is not None:
-            next_page_url = "".join(next_page[0])
-            print(next_page_url)
-            if next_page_url and next_page_url.strip():
-                yield response.follow(url=next_page_url, callback=self.parsing)
+            if len(next_page)>0 :
+                next_page_url = "".join(next_page[0])
+                print(next_page_url)
+                if next_page_url and next_page_url.strip():
+                    yield response.follow(url=next_page_url, callback=self.parsing)
+        self.pushToServer();

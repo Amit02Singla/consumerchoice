@@ -1,20 +1,27 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 
+class JoomlaHostingReviews(BaseSiteURLCrawler):
 
-class JoomlaHostingReviews(Spider):
+    def __init__(self,category,servicename,url):
 
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
-
-    def crawl(self, response, category, servicename):
-        reviews = []
-        reviews1 = []
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(JoomlaHostingReviews,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+        reviews1 = []
+
         # https: // www.webhostinghero.com / reviews / bluehost /
         for node in response.xpath(
                 "//div[@class='jr-layout-outer jrRoundedPanelLt']/div[@class='jr-layout-inner jrReviewContainer']/div[@class='jrReviewContent']/div[@class='description jrReviewComment']/p"):
@@ -33,9 +40,10 @@ class JoomlaHostingReviews(Spider):
         # print("img_src ", len(img_src), img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], category,
-                                         servicename, reviews[item], None, website_name)
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], "",
+                                         self.servicename, reviews[item], None, website_name[0])
+            self.save(servicename1)
+        self.pushToServer()
 
 
 

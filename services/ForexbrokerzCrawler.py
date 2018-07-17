@@ -1,23 +1,60 @@
 from model.Servicemodel import ServiceRecord
-
+from lxml import etree
 #URL https://www.forexbrokerz.com/brokers/binance-review
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class ForexbrokerzCrawler(BaseSiteURLCrawler):
 
-class ForexbrokerzCrawler():
+    def __init__(self,category,servicename,url):
 
-    def __init__(self):
+        self.category = category
+        self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(ForexbrokerzCrawler,self).__init__()
+        self.createCategory(self.link)
         pass
+    def parsing(self, response1):
+        return self.crawl(response1)
 
-    def crawl(self, response, category, servicename):
+    def crawl(self, response):
         reviews = []
-        for node in response.xpath('//div[@class="review_top"]/p'):
-            reviews.append(node.xpath('string()').extract());
-        headings = response.xpath("//div[@class='review']/div[@class='review_top']/span/h3/a/text()").extract()
-        dates = response.xpath("//div[@class='review_details']/span/text()").extract()
-        ratings = response.xpath("//div[@class='review_details']/div/div/a/text()").extract()
-        authors = response.xpath("//div[@class='review_details']/span/strong/text()").extract()
-        img_src = response.xpath("//div[@class='broker_img_container']/img/@src").extract()
-        website_name = response.xpath("//div[@class='content'][1]/div[@class='top']/a[@class='logo']/@title").extract()
+        headings = []
+        dates = []
+        ratings = []
+        authors = []
+        data = response.xpath("//div[@id='tab_friends']/div[@class='review']").extract()
+        for content in data:
+            root = etree.HTML(content)
+            reviews.append(''.join(root.xpath('//div[@class="review_top"]/p/text()')).strip())
+            if(len(root.xpath("//div[@class='review']/div[@class='review_top']/span/h3/a/text()"))>0):
+                headings.append(root.xpath("//div[@class='review']/div[@class='review_top']/span/h3/a/text()")[0])
+            else:
+                headings.append("")
+            if (len(root.xpath("//div[@class='review_details']/span/text()")) > 0):
+                dates.append(root.xpath("//div[@class='review_details']/span/text()")[0])
+            else:
+                dates.append("")
+            if (len(root.xpath("//div[@class='review_details']/div/div/a/text()")) > 0):
+                ratings.append(root.xpath("//div[@class='review_details']/div/div/a/text()")[0])
+            else:
+                ratings.append("")
+            if (len(root.xpath("//div[@class='review_details']/span/strong/text()")) > 0):
+                authors.append(root.xpath("//div[@class='review_details']/span/strong/text()")[0])
+            else:
+                authors.append("")
+
+
+        img_src = response.xpath("//div[@class='broker_img_container']/a/img/@src").extract()
+        website_name = "forexbrokerz.com"
+        print("reviews ", len(reviews), reviews)
+        print("ratings ", len(ratings), ratings)
+        print("headings ", len(headings), headings)
+        print("dates ", len(dates), dates)
+        print("authors ", len(authors), authors)
+        print("img_src ", len(img_src), img_src)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings, dates[item], authors[item], category,
-                          servicename, reviews[item], img_src,website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
+                          self.servicename, reviews[item], img_src[0],website_name);
+            self.save(servicename1)
+        self.pushToServer()

@@ -1,17 +1,25 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 #TODO Done
 # http://www.yscam.com/blackpeoplemeet-com-08
-class Yscam():
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+class Yscam(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(Yscam,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
         #print("review from yscam.com")
         for node in response.xpath("//body/section[@class='row body inside']/section[@class='comments-block']/section[@class='commentblock  ']/div[@class='comment  ']/div"):
             reviews.append(node.xpath('string()').extract());
@@ -30,18 +38,14 @@ class Yscam():
         dates = response.xpath("//body/section[@class='row body inside']/section[@class='comments-block']/section[@class='commentblock  ']/div[@class='comment  ']/ul[@class='postby']/li[1]/text()").extract()
         # headings = response.xpath("//div[@class='box col-12 review-title']/h4/text()").extract()
         # authors = response.xpath("//div[@class='cust_review']/table/tbody/tr[3]/td[@class='customer']").extract()
-        website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
+        website_name = "yscam.com"
         # img_src = response.xpath("//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/img[@class='avatar avatar-74 photo']/@src").extract()
-        #print("Reviews ", len(reviews), reviews)
-        # print("Headings ", len(headings), headings)
-        # print("Authors ", len(authors), authors)
-        #print("Rating ", len(ratings), ratings)
-        #print("Dates ", len(dates), dates)
-        # print("Img_src ", len(img_src), img_src)
+        print("dates ", len(dates))
+        print(" Reviews ", len(reviews))
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], None,
-                                         category, servicename, reviews[item], None, website_name)
-            servicename1.save()
+                                         "", self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
 
         next_page = response.xpath("//div[@class ='navigator']/a[7]/@href").extract()
         if next_page is not None:
@@ -51,6 +55,7 @@ class Yscam():
                 #print(next_page_url)
                 # yield Request(url=next_page_url, callback=self.parse, dont_filter=True)
                 yield response.follow(next_page_url, callback=self.parsing)
+        self.pushToServer()
 
 
 

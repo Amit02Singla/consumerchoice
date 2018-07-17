@@ -2,18 +2,26 @@ from model.Servicemodel import ServiceRecord
 from utils.utils import getStarts
 from scrapy import Spider, Request
 from lxml import etree
-
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 # https://www.webshosting.review/fatcow-reviews
-class webshostingFatcow(Spider):
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
-#TODO Done
-    def crawl(self, response, category, servicename):
-        reviews = []
+class webshostingFatcow(BaseSiteURLCrawler):
+
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(webshostingFatcow,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+
         #print("webshostingFatcow.com")
         authors = response.xpath("//div[@class='comment-user-left name']/text()").extract()
         dates = response.xpath("//div[@class='comment-user-left date']/text()").extract()
@@ -57,7 +65,8 @@ class webshostingFatcow(Spider):
 
         for item in range(0, len(reviews)):
 
-            servicename1 = ServiceRecord(response.url, ratings1[item], headings[item], dates[item], authors[item], category,
-                          servicename, reviews[item], None, website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings1[item], headings[item], dates[item], authors[item], self.category,
+                          self.servicename, reviews[item], None, website_name[0]);
+            self.save(servicename1)
+        self.pushToServer()
 

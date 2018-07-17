@@ -16,6 +16,7 @@ class ServiceRecord(object):
         self.website_name = website_name
 
     def save(self):
+        print "service nameeeeeeee",
         response = final_json[self.service_name]["response"]
         response.addRecord(self);
 

@@ -1,16 +1,24 @@
 from model.Servicemodel import ServiceRecord
 from lxml import etree
 #url "https://www.10bestonline.com/top_10_best_online_dating_reviews/eHarmony_customer_reviews/"
-class BestOnline():
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class BestOnline(BaseSiteURLCrawler):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(BestOnline,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
         print("review from 10bestonline.com")
         for node in response.xpath("//div[@class='cust_review']/table/tr[5]/td[@class='comment']"):
             reviews.append(node.xpath('string()').extract());
@@ -38,12 +46,24 @@ class BestOnline():
         dates = response.xpath("//div[@class='customer_reviews']/div/div[@class='cust_review']/table/tr[2]/td[@class='customer']/text()").extract()
         headings = response.xpath("//div[@class='cust_review']/table/tr/th[@class= 'title']/text()").extract()
         authors = response.xpath("//div[@class='cust_review']/table/tr[3]/td[@class='customer']/text()").extract()
-        website_name = response.xpath("//div[@class='wpcr3_item_name']/a/text()").extract()
+        website_name = "10bestonline.com"
         # img_src = response.xpath("//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/img[@class='avatar avatar-74 photo']/@src").extract()
+        if(len(authors) == 1):
+            if authors[0]== "Your Name":
+                reviews = []
+                dates= []
+                authors = []
+                headings = []
+                ratings = []
+        print "reviews ", len(reviews), reviews
+        print "ratings  ", len(ratings), ratings
+        print "dates    ", len(dates), dates
+        print "headings ", len(headings), headings
+        print "authors ", len(authors), authors
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         category, servicename, reviews[item], None, website_name)
-            servicename1.save()
+                                         "", self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
 
         next_page = response.xpath("//div[@class ='navigator']/a[7]/@href").extract()
         if next_page is not None:
@@ -53,6 +73,7 @@ class BestOnline():
                 print(next_page_url)
                 # yield Request(url=next_page_url, callback=self.parse, dont_filter=True)
                 yield response.follow(next_page_url, callback=self.parsing)
+        self.pushToServer()
 
 
 

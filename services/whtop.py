@@ -1,18 +1,26 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 # http://www.whtop.com/review/bluehost.com#reviews
-class whtop():
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
-
 #TODO rating pending and header not found: heading done rating need to discuss with sandy : Done
-    def crawl(self, response, category, servicename):
-        reviews = []
+class whtop(BaseSiteURLCrawler):
+
+    def __init__(self,category,servicename,url):
+
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(whtop,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
         #http://www.whtop.com/review/bluehost.com#reviews
         authors = response.xpath("//div[@property='author']/span[1]/text()").extract()
         dates = response.xpath("//div[@class='review-date']/time/text()").extract()
@@ -71,7 +79,8 @@ class whtop():
                 reviews.append(node.xpath('string()').extract())
 
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], category,
-                          servicename, reviews[item], None, website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], "",
+                          self.servicename, reviews[item], None, website_name);
+            self.save(servicename1)
+        self.pushToServer()
 

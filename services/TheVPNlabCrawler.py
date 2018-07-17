@@ -1,11 +1,22 @@
 from model.Servicemodel import ServiceRecord
 
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class TheVPNlabCrawler(BaseSiteURLCrawler):
 
-class TheVPNlanCrawler():
-    def __init__(self):
+    def __init__(self,category,servicename,url):
+
+        self.category = category
+        self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(TheVPNlabCrawler,self).__init__()
+        self.createCategory(self.link)
         pass
+    def parsing(self, response1):
+        return self.crawl(response1)
 
-    def crawl(self, response, category, servicename):
+    def crawl(self, response):
         reviews = []
         dates= []
         authors= []
@@ -16,11 +27,20 @@ class TheVPNlanCrawler():
         for element in date_authors:
             authors.append(element.split("on")[0].split("By")[1])
             dates.append(element.split("on")[-1])
-        ratings =  response.xpath("//div[@class='user-stars']/div/@id").extract()
-        img_src =  response.xpath("//div[@class='introvoerview']/div[@id='introimg']/img/@src").extract()
-        temp_data = response.xpath("//html/head/script[4]/text()").extract()
-        website_name =  temp_data[0].split(",")[3].split(":")[1]
+        ratings1 =  response.xpath("//div[@class='user-stars']/div/@id").extract()
+        img_src =  response.xpath("//div[@id='introimg']/img/@src").extract()
+        website_name =  "thevpnlab.com"
+        ratings = []
+        i=0
+        while i < len(ratings1):
+            c= ratings1[i].replace('stars-','')
+            ratings.append(c)
+            i = i+1
+
+        print "img_src ", img_src
+        print "ratings ", ratings
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None,dates[item], authors[item], category,
-                          servicename, reviews[item],img_src,website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], None,dates[item], authors[item], self.category,
+                          self.servicename, reviews[item],img_src[0],website_name);
+            self.save(servicename1)
+        self.pushToServer()

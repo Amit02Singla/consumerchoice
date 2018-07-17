@@ -1,15 +1,22 @@
 from model.Servicemodel import ServiceRecord
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class restorePrivacy(BaseSiteURLCrawler):
 
-class restorePrivacy():
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
+    def __init__(self,category,servicename,url):
 
-    def crawl(self, response, category, servicename):
-        reviews = []
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(restorePrivacy,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
         print("review from restoreprivacy.com")
         # https://restoreprivacy.com/expressvpn-review/
         for node in response.xpath("//div[@class='comment-text-inner']"):
@@ -22,7 +29,8 @@ class restorePrivacy():
         website_name = response.xpath("//div[@class='title-area']/p[@class='site-title']/a/text()").extract()
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item],
-                                         category, servicename, reviews[item], None, website_name)
-            servicename1.save()
+                                         "", self.servicename, reviews[item], None, website_name)
+            self.save(servicename1)
+        self.pushToServer()
 
 

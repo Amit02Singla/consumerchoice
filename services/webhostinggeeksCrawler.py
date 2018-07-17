@@ -1,10 +1,22 @@
 from model.Servicemodel import ServiceRecord
 from utils.utils import getStarts
-class webhostinggeeksCrawler():
-    def __init__(self):
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class webhostinggeeksCrawler(BaseSiteURLCrawler):
+
+    def __init__(self,category,servicename,url):
+
+        self.category = category
+        self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(webhostinggeeksCrawler,self).__init__()
+        self.createCategory(self.link)
         pass
-    #TODO Paging pending because of ajax
-    def crawl(self, response,category,servicename):
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
         reviews = []
         # https://webhostinggeeks.com/providers/hostgator?product=shared
         for node in response.xpath('//div[@class="text_description"]'):
@@ -29,12 +41,13 @@ class webhostinggeeksCrawler():
 
             i = i + 1
 
-        # print("Reviews ", len(reviews), reviews)
-        # print("Headings ", len(headings), headings)
-        # print("Authors ", len(authors), authors)
-        # print("Rating ", len(ratings), ratings)
-        # print("Dates ", len(dates), dates)
+        print("Reviews ", len(reviews), reviews)
+        print("Headings ", len(headings), headings)
+        print("Authors ", len(authors), authors)
+        print("Rating ", len(ratings), ratings)
+        print("Dates ", len(dates), dates)
         # print("Img_src ", len(img_src), img_src)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url,None,headings[item],dates[item],authors[item],category,servicename,reviews[item],"",website_name);
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url,None,headings[item],dates[item],authors[item],"",self.servicename,reviews[item],"",website_name);
+            self.save(servicename1)
+        self.pushToServer()

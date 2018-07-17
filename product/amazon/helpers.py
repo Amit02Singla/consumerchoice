@@ -22,9 +22,10 @@ num_requests = 0
 #redis = redis.StrictRedis(host=settings.redis_host, port=settings.redis_port, db=settings.redis_db)
 
 
-def make_request(url, return_soup=True):
+def make_request(url, return_soup=True,needProxy = True):
     # global request building and response handling
-    GetProxyList.getProxy()
+    if needProxy:
+        GetProxyList.getProxy()
 
     url = format_url(url,get_host(url))
     log("formated url "+url)

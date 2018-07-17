@@ -15,7 +15,7 @@ class Influenster(Spider):
         reviews1 = []
         self.category = category
         self.servicename = servicename
-        # https: // www.webhostinghero.com / reviews / bluehost /
+
         for node in response.xpath(
                 "//div[@class='content-item review-item']/div[@class='content-item-body review-item-body']/div[@class='content-item-text review-text']"):
             reviews.append(node.xpath('string()').extract());

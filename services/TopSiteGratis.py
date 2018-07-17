@@ -2,19 +2,26 @@ from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 
 
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+class TopSiteGratis(BaseSiteURLCrawler):
 
-class TopSiteGratis(Spider):
+    def __init__(self,category,servicename,url):
 
-    def __init__(self):
-        pass
-    def parsing(self, response):
-        return self.crawl(response,self.category,self.servicename)
-
-    def crawl(self, response, category, servicename):
-        reviews = []
-        reviews1 = []
         self.category = category
         self.servicename = servicename
+        self.link = {"ServiceName": servicename,
+                "Category": category,
+                "url": url}
+        super(TopSiteGratis,self).__init__()
+        self.createCategory(self.link)
+        pass
+    def parsing(self, response1):
+        return self.crawl(response1)
+
+    def crawl(self, response):
+        reviews = []
+
+
 
         for node in response.xpath(
                 "//div[@class='reviews product-reviews']/div[@class='item']/p[@class='excerpt']"):
@@ -23,7 +30,7 @@ class TopSiteGratis(Spider):
         dates = response.xpath("//div[@class='reviews product-reviews']/div[@class='item']/meta[@itemprop='datePublished']/@content").extract()
         authors = response.xpath("//div[@class='reviews product-reviews']/div[@class='item']/div[@class='author-info']/a/text()").extract()
         img_src = response.xpath(
-            "//div[@class='reviews product-reviews']/div[@class='item']/div[@class='left-block']/div[@class='product-info']/div[@class='img pull-left']/img/@src").extract()
+            "//div[@class='row product']/div[@class='col-md-3 text-center']/img[@class='log_img']/@src").extract()
         # headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
         website_name1 = response.xpath("//div[@class='footer']/div[@class='row']/div[@class='col-md-7 text-right']/text()").extract()
         website_name = []
@@ -34,16 +41,17 @@ class TopSiteGratis(Spider):
             break
             i = i+1
 
-        print("Reviews ", len(reviews), reviews)
-        print("Authors ", len(authors), authors)
-        print("Rating ", len(ratings), ratings)
-        print("Dates ", len(dates), dates)
-        print("img_src ", len(img_src), img_src)
-        print("websites ", len(website_name), website_name)
+        print("Reviews ", len(reviews))
+        print("Authors ", len(authors))
+        print("Rating ", len(ratings))
+        print("Dates ", len(dates))
+        print("img_src ", len(img_src))
+        print("websites ", len(website_name), website_name[0])
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], category,
-                                         servicename, reviews[item], img_src, website_name)
-            servicename1.save()
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], "",
+                                         self.servicename, reviews[item], img_src[0], website_name[0])
+            self.save(servicename1)
+        self.pushToServer()
 
 
 
