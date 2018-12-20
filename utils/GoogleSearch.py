@@ -33,6 +33,8 @@ def parse_results(html, keyword):
 
         link = result.find('a', href=True)
         title = result.find('h3', attrs={'class': 'r'})
+        if(title == None):
+            title = result.find('h3', attrs={'class': 'LC20lb'})
         description = result.find('span', attrs={'class': 'st'})
         if link and title:
             link = link['href']
