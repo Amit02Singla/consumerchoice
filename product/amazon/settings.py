@@ -1,7 +1,6 @@
 import os
 
 from fake_useragent import UserAgent
-from user_agent import generate_user_agent
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 
