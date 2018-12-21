@@ -1,7 +1,7 @@
 import json
 
 from scrapy import Spider
-#import restapis.Login
+import restapis.Login
 from model.Response import Response
 
 
@@ -36,7 +36,7 @@ class BaseSiteURLCrawler(Spider):
             dictionary[k] = {"scrapping_website_name": k, "scrapping_website_url": v["response"].URL,
                              "response": responselist}
             buisness_units.append(dictionary[k])
-            #restapis.Login.postReview({"business_units":buisness_units})
+            restapis.Login.postReview({"business_units":buisness_units})
         with open(v["response"].URL.replace("http:","").replace('https:','').replace("/","").replace(".","_").replace("?","").replace("=","")+".json",'w') as f:
             json.dump({"business_units":buisness_units},f)
 
