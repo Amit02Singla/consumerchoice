@@ -57,7 +57,8 @@ def crawling():
 
 def google_search_post(callbackurl,search):
   header = {'Content-Type': 'application/json'}
-  requests.post(callbackurl, data=json.dumps(search), headers=header)
+  response = requests.post(callbackurl, data=json.dumps(search), headers=header)
+  print("response " + response);
 
 def crawlURL(url,responseURL,categoryName):
     website_list = []
