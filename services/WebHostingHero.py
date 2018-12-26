@@ -18,7 +18,7 @@ class WebHostingHero(BaseSiteURLCrawler):
 
     def crawl(self, response):
         reviews = []
-        #print("review from webhostinghero.com")
+        print("review from webhostinghero.com")
         for node in response.xpath("//div[@class='box col-12 review-detail']"):
             reviews.append(node.xpath('string()').extract());
         ratings1 = response.xpath("//div[@class='box col-12 review-title']/meta[@itemprop='ratingValue']/@content").extract()

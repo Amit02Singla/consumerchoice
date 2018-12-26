@@ -25,17 +25,17 @@ class BestVPN(BaseSiteURLCrawler):
         # ratings = "8.2"
         dates = response.xpath("//ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-metadata']/a/time/text()").extract()
         authors = response.xpath("//ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/b[@class='fn']/text()").extract()
-        img_src = response.xpath("//div[@class='review-excerpt row']/div[@class='col-lg-6'][1]/a/img[@class='logo']/@src").extract()[0]
-        website_name = response.xpath("//div[@class='container flex justify-content-between']/a[@class='logo']/img/@alt").extract()[0]
+        # img_src = response.xpath("//div[@class='review-excerpt row']/div[@class='col-lg-6'][1]/a/img[@class='logo']/@src").extract()[0]
+        website_name = "bestvpn.com"
         print("Reviews ", len(reviews))
         print("Authors ", len(authors), authors)
-        print("img_src ", len(img_src), img_src)
+        # print("img_src ", len(img_src), img_src)
 
         print("Dates ", len(dates), dates)
 
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None,None, dates[item], authors[item], "",
-                          self.servicename, reviews[item], img_src,website_name);
+                          self.servicename, reviews[item], "",website_name);
             self.save(servicename1)
         self.pushToServer()

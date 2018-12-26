@@ -23,7 +23,7 @@ class ReviewCentre(BaseSiteURLCrawler):
     def crawl(self, response):
         reviews = []
 
-        print (" ReviewCentre.com    ", self.link["url"])
+        print ("reviews from ReviewCentre.com    ", self.link["url"])
         for node in response.xpath(
                 "//div[@id='ItemReviewsContent']/div/div[@class='ReviewCommentContent']/div[@class='ReviewCommentContentRight']/p[2]"):
             reviews.append(node.xpath('string()').extract());

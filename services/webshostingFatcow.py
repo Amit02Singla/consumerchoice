@@ -22,7 +22,7 @@ class webshostingFatcow(BaseSiteURLCrawler):
     def crawl(self, response):
         reviews = []
 
-        #print("webshostingFatcow.com")
+        print("reviews from webshostingFatcow.com")
         authors = response.xpath("//div[@class='comment-user-left name']/text()").extract()
         dates = response.xpath("//div[@class='comment-user-left date']/text()").extract()
         website_name = response.xpath("//div[@id='line']/a[1]/img/@alt").extract()

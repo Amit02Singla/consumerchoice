@@ -45,7 +45,7 @@ class SeniorDatingSites(BaseSiteURLCrawler):
                 rat = rat + stars
                 if(i==5):
                     if rat > 0.0:
-                        ratings.append(round(float(rat/6.0)), 1)
+                        ratings.append((round(float(rat/6.0)), 1))
                     else:
                         ratings.append("0.0")
                 i = i+1
