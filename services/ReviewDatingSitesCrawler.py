@@ -25,9 +25,10 @@ class ReviewDatingSitesCrawler(BaseSiteURLCrawler):
             reviews.append(node.xpath('string()').extract())
         ratings =  response.xpath("//div[@class='col-md-9']/h4[@class='m-t-0']/span[@class='stars']/span[@itemprop='ratingValue']/@content").extract()
         authors =   response.xpath("//div[@class='media-body text-center']/div/strong/a[@itemprop='author']/text()").extract()
-        website_name = "reviewsdatingsites.com"
+        website_name = response.xpath("//div[@class='col-md-8 col-sm-7']/h2[@class='product-title']/span[@class='outbound']/a[@class='btn btn-sm btn-default']/@href").extract()[0]
         dates1 = response.xpath("//div[@id='reviews']/div[@class='review']/div[@class='row']/div[@class='col-md-9']/h4[@class='m-t-0']/strong[@class='text-muted date']/text()").extract()
         dates= []
+        website_name = 'http://reviewsdatingsites.com'+website_name
         for content in dates1:
             dates.append(content.strip())
         print("reviews ", len(reviews), reviews)

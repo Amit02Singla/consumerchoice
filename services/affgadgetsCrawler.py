@@ -29,7 +29,7 @@ class affgadgetsCrawler(BaseSiteURLCrawler):
         ratings1 = response.xpath("//div[@class='comment-author-main-meta-info']/div/@class").extract()
         authors =  response.xpath("//div[@class='comname']/cite[@class='fn']/text()").extract()
         dates = response.xpath("//div[@class='comment-author-main-meta-info']/ cite[ @class ='timed'] / text()").extract()
-        website_name = response.xpath("//html/head/meta[21]/@content").extract()[0]
+        website_name = response.xpath("//div[@class='left-sidebar']/section[@class='homepage-info sidebar-clear']/div[@class='sidebar-inner']/div[@class='top-link first-top-link']/a/@href").extract()[0]
         ratings = []
         j = 0
         while j < len(ratings1):

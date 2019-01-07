@@ -29,19 +29,19 @@ class JoomlaHostingReviews(BaseSiteURLCrawler):
         ratings = response.xpath("//div[@class='jr-layout-outer jrRoundedPanelLt']/div[@class='jr-layout-inner jrReviewContainer']/div[@class='jrRatingInfo']/div[@class='jrTableGrid jrRatingTable']/div[@class='jrRow'][1]/div[@class='jrCol jrRatingValue']/text()").extract()
         dates = response.xpath("//div[@class='jr-layout-outer jrRoundedPanelLt']/div[@class='jr-layout-inner jrReviewContainer']/div[@class='jrReviewInfo']/time/text()").extract()
         authors = response.xpath("//div[@class='jr-layout-outer jrRoundedPanelLt']/div[@class='jr-layout-inner jrReviewContainer']/div[@class='jrUserInfo']/span/span/span/text()").extract()
-        # img_src = response.xpath(
-        #     "//div[@id='posted']/div[@class='blc']/div[@class='mc'][1]/a[@class='blcAvatar']/img/@src").extract()
+        img_src = response.xpath(
+            "//div[@class='jr-detail-row1']/div[@class='jr-detail-row1-col1']/div[@class='jr-detail-row1-col1-image']/img/@src").extract()[0]
         headings = response.xpath("//div[@class='jr-layout-outer jrRoundedPanelLt']/div[@class='jr-layout-inner jrReviewContainer']/div[@class='jrReviewContent']/h4[@class='jrReviewTitle']/text()").extract()
         website_name = response.xpath("//div[@class='platform-content']/div[@class='moduletable -footer']/div[@class='custom-footer']/p/a/text()").extract()
         print("Reviews ", len(reviews), reviews)
         print("Authors ", len(authors), authors)
         print("Rating ", len(ratings), ratings)
         print("Dates ", len(dates), dates)
-        # print("img_src ", len(img_src), img_src)
+        print("img_src ", len(img_src), img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], "",
-                                         self.servicename, reviews[item], None, website_name[0])
+                                         self.servicename, reviews[item], img_src, website_name[0])
             self.save(servicename1)
         self.pushToServer()
 

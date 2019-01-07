@@ -369,9 +369,9 @@ class SiteServiceListController(scrapy.Spider):
         elif ('bestvpnz.com' in response.url):
             if '/?s=' not in response.url:
                 service = response.url.split("/")
-                serviceName = service[len(service) - 1]
+                serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = BestVPNZCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = BestVPNZCrawler("", serviceName, response.url)
             else:
                 crawler = BestVpnZURLCrawler(dict_url[response.url]["Category"])
         elif ('webhostingmedia.net' in response.url):
@@ -495,7 +495,7 @@ class SiteServiceListController(scrapy.Spider):
         elif ('virtualbanking.com' in response.url):
             if '/?s=' not in response.url:
                 service = response.url.split("/")
-                serviceName = service[len(service) - 1]
+                serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
                 crawler = VirtualBanking(dict_url[response.url]["Category"], serviceName, response.url)
             else:

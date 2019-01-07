@@ -25,7 +25,7 @@ class affPaying(BaseSiteURLCrawler):
         ratings = response.xpath("//div[@class='s_rate_mid']/span/meta[@itemprop='ratingValue']/@content").extract()
         dates = response.xpath("//div[@class='s_comment_date']/meta[@itemprop='datePublished']/@content").extract()
         authors = response.xpath("//div/dl[@class='s_comment']/h4/span/text()").extract()
-        website_name = "affpaying.com"
+        website_name = response.xpath("//div[@id='s_single_head_left']/div[@id='s_single_head_info']/p/a[@class='s_join_btn']/@href").extract()[0]
         print("Reviews ", len(reviews))
         print("Authors ", len(authors), authors)
         print("ratings ", len(ratings), ratings)

@@ -33,7 +33,7 @@ class SeniorDatingExpert(BaseSiteURLCrawler):
         authors1 = response.xpath("//div[@id='main-inner']/ul[@id='user-reviews']/li/div[@class='userrev']/div[@class='user-name']/text()").extract()
         # authors = response.xpath("//div/table[@class='showcomment']/tbody/tr[1]/td[@class='commentid']/i/text()").extract()
         # img_src =  response.xpath("//div[@class='item-header-img']/span[@class='item-header-img-container']/img/@src").extract()
-        website_name =  response.xpath("//div/header[@id='menu-right']/div[@class='wrapper']/a[@id='logo']/@href").extract()
+        website_name =  response.xpath("//main/div[@id='main-inner']/article/div/div[@class='visitouter clearfix'][1]/div[@class='visitsite']/a[@class='button visit outbound']/@href").extract()[0]
         # dates = response.xpath("//div[@class='review-content']/div[@class='rating-md']/p/meta/@content").extract()
         # print("dates ", len(dates), dates)
         i = 0;

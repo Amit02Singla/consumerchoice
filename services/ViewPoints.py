@@ -37,19 +37,19 @@ class ViewPoints(BaseSiteURLCrawler):
         authors = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-author']/div[@class='pr-review-author-info-wrapper']/p[@class='pr-review-author-name']/span/text()").extract()
         headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
         website_name = response.xpath("//div[@class='grid-container']/div[@class='grid-featured']/div[@class='globalNav']/a[@class='logo header']/img/@alt").extract()
-        # img_src = response.xpath(
-        #     "//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
+        img_src = response.xpath(
+            "//div[@class='productDetails']/div[@class='productControls']/div[@class='productPhotoViewer ']/img[@class='photo']/@src").extract()[0]
 
         print("Reviews ", len(reviews), reviews)
         print("Authors ", len(authors), authors)
         print("ratings ", len(ratings), ratings)
         print("Heading ", len(headings), headings)
         print("Dates ", len(dates), dates)
-
+        print("img src ", img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], "",
-                                         self.servicename, reviews[item], None, website_name)
+                                         self.servicename, reviews[item], img_src, website_name)
             self.save(servicename1)
         next_page = response.xpath(
             "//div[@class='pr-page-nav-wrapper']/p[@class='pr-page-nav']/span[@class='pr-page-next']/a/@href").extract()

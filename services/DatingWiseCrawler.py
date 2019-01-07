@@ -26,7 +26,7 @@ class DatingWiseCrawler(BaseSiteURLCrawler):
         dates = response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div[@class='userComments']/div[@class='userDetails']/div[@class='userLocation']/p[1]/span[@class='pIcn']/text()").extract()
         authors =  response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div[@class='userComments']/div[@class='userDetails']/div[@class='userLocation']/p[1]/span[@class='pIcn']/span/a/text()").extract()
         headings = response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div[@class='userComments']/div[@class='userDetails']/div[@class='userLocation']/p[@class='clear']/span/text()").extract()
-        website_name =  "datingwise.com"
+        website_name =  response.xpath("//div[@class='vsRvwWrp']/span[@class='vstSteRvw']/a/@href").extract()[0]
         # img_src = response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
         print("Reviews ", len(reviews))
         print("Authors ", len(authors))

@@ -56,21 +56,18 @@ class AlterNativeTo(BaseSiteURLCrawler):
         # dates = response.xpath("//div[@class='discussionApp']/div/div[@class='col-xs-11']/div[@class='threadMetaWrapper meta']/div[@class='threadMeta']/span[2]/span/text()").extract()
         # authors = response.xpath("//div[@class='discussionApp']/div/div[@class='col-xs-11']/div[@class='threadMetaWrapper meta']/span[@class='threadMeta']/a/text()").extract()
         img_src = response.xpath(
-            "//div[@class='row']/div[@class='col-sm-12']/div[@class='like-box-wrapper']/div[@class='image-wrapper']/img/@data-src").extract()
-        if(len(img_src)<1):
-            img_src = None
-            print("img_src ",img_src)
-        else:
-            img_src = img_src[0]
-            print("img_src ", len(img_src), img_src)
+            "//div[@class='like-box-wrapper']/div[@class='image-wrapper']/img/@data-src").extract()[0]
+        website_name = response.xpath(
+            "//div[@class='col-xs-12 col-md-6 col-md-push-6 col-sm-5 col-sm-push-7 button-list']/div/a[2]/@href").extract()[
+            0]
         # headings = response.xpath("//div[@class='discussionApp']/div/div[@class='col-xs-11']/h3/text()").extract()
-        website_name = response.xpath("//div[@class='row']/div[@class='col-sm-6 col-lg-4 col-md-5 hidden-xs']/a[@class='brand']/img/@alt").extract()[0]
+        website_name = response.xpath("//div/a[@class='btn btn-success website-link ga_outgoing']/@href").extract()[0]
         print("Reviews ",  len(reviews), reviews)
         print("Authors ", len(authors), authors)
         print("ratings ", len(ratings), ratings)
         print("Heading ", len(headings), headings)
         print("Dates ", len(dates), dates)
-
+        print("imgsrc ", img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, headings[item], dates[item], authors[item], "",

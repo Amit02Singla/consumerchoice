@@ -45,7 +45,9 @@ class ForexbrokerzCrawler(BaseSiteURLCrawler):
                 authors.append("")
 
 
-        # img_src = response.xpath("//div[@class='broker_img_container']/a/img/@src").extract()
+        img_src = response.xpath("//div[@class='center_box borker_box  wbord']/div[@class='broker_img_container']/img/@src").extract()[0]
+        img_src = 'https://www.forexbrokerz.com'+img_src
+        website_name = response.xpath("").extract()[0]
         website_name = "forexbrokerz.com"
         print("reviews ", len(reviews), reviews)
         print("ratings ", len(ratings), ratings)

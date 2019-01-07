@@ -27,6 +27,8 @@ class restorePrivacy(BaseSiteURLCrawler):
         authors = response.xpath("//div[@class='comment-author vcard']/span[@class='fn']/span/text()").extract()
         img_src = response.xpath("//div[@class='comment-author vcard']/img[@class='avatar avatar-50 photo']/@src").extract()
         website_name = response.xpath("//div[@class='title-area']/p[@class='site-title']/a/text()").extract()
+        print "img src ", img_src
+        print "website ", website_name
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item],
                                          "", self.servicename, reviews[item], None, website_name)

@@ -29,9 +29,9 @@ class bestVPNForYou(BaseSiteURLCrawler):
         print("reviews ", reviews)
         img_src = response.xpath("//div[@class='vcard-wrap']/img[@class='avatar avatar-100 wp-user-avatar wp-user-avatar-100 photo avatar-default']/@src").extract()
         # ratings = response.xpath("//div[@class='star_rating']/@title").extract()
-        website_name = response.xpath("///html/head/title/text()").extract()
+        website_name = response.xpath("//div[@class='post-content']/div[@class='post-text']/h2/a/@href").extract()[0]
         # print("img_src   ", img_src)
-        # print("websitesName   ", website_name)
+        print("websitesName   ", website_name)
         for item in range(0, len(reviews)):
             servicename1 =ServiceRecord(response.url, None, None,  dates[item], authors[item], "",
                           self.servicename, reviews[item],  img_src, website_name);

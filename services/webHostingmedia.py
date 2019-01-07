@@ -25,11 +25,12 @@ class webHostingmedia(BaseSiteURLCrawler):
         dates = response.xpath("//div[@class='wpcr_fl wpcr_rname']/span[@class='dtreviewed']/text()").extract()
         # headings = response.xpath("//div[@class='width64 floatleft']/h4[3]").extract()
         authors = response.xpath("//div[@class='wpcr_fl wpcr_rname']/span/span/strong/text()").extract()
-        website_name = "webhostingmedia.net"
+        website_name = response.xpath("//div[@class='col span_6']/div[@class='company-button start-button']/a/@href").extract()[0]
         print("reviews ", len(reviews), reviews)
         print("dates ", len(dates), dates)
         print("ratings ", len(ratings), ratings)
         print("authors ", len(authors), authors)
+        print "website " , website_name
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item],
                                          self.category, self.servicename, reviews[item], None, website_name)

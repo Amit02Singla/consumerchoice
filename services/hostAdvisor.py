@@ -26,7 +26,7 @@ class hostAdvisor(BaseSiteURLCrawler):
         headings = response.xpath("//div[@class='textHolder']/h5/text()").extract()
         #img_src = response.xpath("//div[@class='user-img ']/img/@src").extract()
         authors = response.xpath("//div[@class='hidden-xs']/p[1]/text()").extract()
-        website_name = response.xpath("//html/head/title/text()").extract()[0].split("-")[1]
+        website_name = response.xpath("//div[@class='col-md-9 col-sm-8']/div[@class='reviewBlock']/div[@class='user-review']/ul/li[1]/a/@href").extract()[0]
         authors = map(lambda s: s.strip(), authors)
         authors = list(filter(None, authors))
         # print("Reviews ", len(reviews))
@@ -35,7 +35,8 @@ class hostAdvisor(BaseSiteURLCrawler):
         #
         # print("heading ", len(headings), headings)
         #
-        # print("websites ", len(website_name), website_name)
+        print("websites ", len(website_name), website_name)
+        website_name = 'https://www.hostadvisor.com'+website_name
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item],
                                          "", self.servicename, reviews[item], None, website_name)

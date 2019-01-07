@@ -41,7 +41,6 @@ class BestBitcoinExchange(BaseSiteURLCrawler):
             dates.append(dateAuthor[1])
             reviews.append([rev[1]])
             i = i + 1
-
         website_name = "bestbitcoinexchange.net"
         # website_name2 = website_name1[0].("|")
         # website_name = []

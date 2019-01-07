@@ -48,14 +48,15 @@ class VPNpickCrawler(BaseSiteURLCrawler):
         dates = response.xpath("//div[@class='comment-author vcard']/span[@class='ago']/text()").extract()
         authors =  response.xpath("//div[@id='comments']/ol[@class='commentlist']/li/div/div[@class='comment-author vcard']/span[@class='fn']/span")
         img_src =  response.xpath("//div[@class='thecontent']/p[1]/img[@class='alignright wp-image-3155']/@src").extract()'''
-        website_name =  "vpnpick.com"
+        img_src = response.xpath("//div[@class='post-single-content box mark-links entry-content']/div[@class='thecontent']/p[1]/img[@class='alignright wp-image-3155']/@src").extract()[0]
+        website_name =  response.xpath("//div[@class='post-single-content box mark-links entry-content']/div[@class='thecontent']/p[2]/a/@href").extract()[0]
         print("Reviews ", len(reviews), reviews)
         print("Authors ", len(authors), authors)
-        # print("Rating ", len(ratings), ratings)
+        print("img src ", img_src)
         print("Dates ", len(dates), dates)
-
+        print("website ", website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item], "",
-                          self.servicename, [reviews[item]],None,website_name);
+                          self.servicename, [reviews[item]],img_src,website_name);
             self.save(servicename1)
         self.pushToServer()

@@ -25,7 +25,7 @@ class webhostinggeeksCrawler(BaseSiteURLCrawler):
         headings = response.xpath("//div[@class='info_description']/p[@class='title_description ']/a/text()").extract()
         authors = response.xpath("//div[@class='user-text']/p/text()").extract()
         ratings1 = response.xpath("//li/div[@class='row-comment']/div[@class='card_user']/ul[@class='rating_block']/li/div[@class='rating-stars-empty small-star']/div/@style").extract()
-        website_name =  response.xpath("/html/head/meta[9]/@content").extract()
+        website_name =  response.xpath("//div[@class='center_wrapper']/div[@class='col-sm-6 col-md-4 col-lg-4']/a[@class='btn bg-orange-600 visit-host-link']/@href").extract()[0]
         ratings = []
         j = 0
         i = 0
@@ -46,7 +46,7 @@ class webhostinggeeksCrawler(BaseSiteURLCrawler):
         print("Authors ", len(authors), authors)
         print("Rating ", len(ratings), ratings)
         print("Dates ", len(dates), dates)
-        # print("Img_src ", len(img_src), img_src)
+        print("website ", website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url,None,headings[item],dates[item],authors[item],"",self.servicename,reviews[item],"",website_name);
             self.save(servicename1)

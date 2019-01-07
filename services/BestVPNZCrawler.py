@@ -24,10 +24,12 @@ class BestVPNZCrawler(BaseSiteURLCrawler):
         for node in  response.xpath("//div[@id='comments']/ol[@class='comment-list']/li/article/div[@class='comment-content']"):
             reviews.append(node.xpath('string()').extract());
         dates =  response.xpath("//div[@id='comments']/ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author-info']/div[@class='entry-meta comment-metadata']/a/time/text()").extract()
-        img_src =  response.xpath("//img[@class='attachment-full size-full wp-post-image']/@src").extract()[0]
-        website_name =  "bestvpnz.com"
+        # img_src =  response.xpath("//img[@class='attachment-full size-full wp-post-image']/@src").extract()[0]
+        website_name =  response.xpath("//div[@class='inside-article']/div[@class='entry-content']/p[1]/a[@class='myButton']/@href").extract()[0]
         authors = []
         data = response.xpath("//div[@id='comments']/ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author-info']").extract()
+        # print "imgsrc ", img_src
+        print"website ", website_name
         for content in data:
             root = etree.HTML(content)
             if(root.xpath("//cite")):
@@ -39,6 +41,6 @@ class BestVPNZCrawler(BaseSiteURLCrawler):
 
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item], self.category,
-                          self.servicename, reviews[item],img_src,website_name)
+                          self.servicename, reviews[item],None,website_name)
             self.save(servicename1)
         self.pushToServer()

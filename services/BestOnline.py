@@ -46,8 +46,9 @@ class BestOnline(BaseSiteURLCrawler):
         dates = response.xpath("//div[@class='customer_reviews']/div/div[@class='cust_review']/table/tr[2]/td[@class='customer']/text()").extract()
         headings = response.xpath("//div[@class='cust_review']/table/tr/th[@class= 'title']/text()").extract()
         authors = response.xpath("//div[@class='cust_review']/table/tr[3]/td[@class='customer']/text()").extract()
-        website_name = "10bestonline.com"
-        # img_src = response.xpath("//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/img[@class='avatar avatar-74 photo']/@src").extract()
+        website_name = response.xpath("//div[@class='customer_reviews']/div[@class='button_link button_visit']/a[@class='review_reminder_fancybox']/@href").extract()[0]
+        website_name = 'https://www.10bestonline.com/'+website_name
+        print("website name"+ website_name)
         if(len(authors) == 1):
             if authors[0]== "Your Name":
                 reviews = []

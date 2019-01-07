@@ -71,10 +71,11 @@ class SeniorDatingSites(BaseSiteURLCrawler):
         #     i = i + 1
         #
         # authors = response.xpath("//div[@class='commentlist']/div/div[@class='review-author']/text()").extract()
-        website_name = "top20seniordatingsites.com"
+        website_name = response.xpath("//div[@id='maincontent']/div[@class='post']/div[@class='product-details'][1]/div[@class='content']/center/a/@href").extract()[0]
         print("reviews ", len(reviews), reviews)
         print("ratings  ", len(ratings), ratings)
         print("authors ", len(authors), authors)
+        print("website ",website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, None, authors[item],
                                          self.category, self.servicename, reviews[item], None, website_name)

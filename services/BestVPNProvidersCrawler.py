@@ -37,9 +37,11 @@ class BestVPNProvidersCrawler(BaseSiteURLCrawler):
         dates = response.xpath("//div[@class='wpcr3_item wpcr3_product']/div/div[@class='wpcr3_review_datePublished']/text()").extract()
         authors = response.xpath("//div[@class='wpcr3_item wpcr3_product']/div/div[@class='wpcr3_review_author']/span[@class='wpcr3_caps']/text()").extract()
         img_src = response.xpath(
-            "//div[@class='columngrid-9']/div[@id='quick']/div[@class='columngrid-3']/div[@class='text-center']/img/@src").extract()
+            "//div[@class='columngrid-3']/div[@class='text-center']/img/@src").extract()[0]
         # headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
-        website_name = "bestvpnprovider.co"
+        website_name = response.xpath("//div[@class='row'][1]/div[@class='columngrid-8 pad-small text-right']/a/span[@class='color-sec-ft']/text()").extract()[0]
+        print("imgsrc   ", img_src)
+        print("website name  ", website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
                                          self.servicename, reviews[item], img_src, website_name)

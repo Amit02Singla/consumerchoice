@@ -39,11 +39,13 @@ class VirtualBanking(BaseSiteURLCrawler):
             dates.append(dates2[len(dates2)-1].strip())
             authors.append(dates2[2])
             j = j+1
-        website_name =  response.xpath("//header/div[@class='wrapper']/a[@id='logo']/@href").extract()
+        # website_name =  response.xpath("//header/div[@class='wrapper']/a[@id='logo']/@href").extract()
+        website_name = response.xpath("//article[@class='offer9']/div/div[@id='review-body']/div[@class='visitouter clearfix'][1]/div[@class='visitsite']/a[@class='button visit outbound']/@href").extract()[0]
         print("dates", len(dates), dates)
+        print("websites  ", website_name)
         for item in range(0, len(reviews)):
             servicename1 =ServiceRecord(response.url, ratings[item],None, dates[item], authors[item], "",
-                          self.servicename, reviews[item], None,website_name[0])
+                          self.servicename, reviews[item], None,website_name)
             self.save(servicename1)
         self.pushToServer()
 

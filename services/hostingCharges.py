@@ -49,13 +49,13 @@ class hostingCharges(BaseSiteURLCrawler):
                 sum = sum + int(temp_ratings[i])
 
         dates = response.xpath("//div[@class='review-sub-cntnr']/div[@class='review-one-all']/div[@class='review-profile']/div[@class='review-mid']/p/text()").extract()
-        img_src = response.xpath("//div[@class='review-cntnr']/div[@class='review-sub-cntnr']/div[@class='logo-img']/a/img/@src").extract()[0]
+        img_src = response.xpath("//div[@class='review-cntnr'][1]/div[@class='review-sub-cntnr']/div[@class='logo-img']/a/img/@src").extract()[0]
         authors = response.xpath("//div[@class='review-mid']/h4/text()").extract()
-        website_name = response.xpath("//div[@id='bs-example-navbar-collapse-1']/ul[@class='nav navbar-nav navbar-right']/li[@class='dropdown'][1]/a/@href").extract()
+        website_name = response.xpath("//div[@class='review-cntnr'][1]/div[@class='review-sub-cntnr']/div[@class='revhost-link']/a/@href").extract()
         print(" Ratings ", len(ratings))
         print("dates ", len(dates))
         print(" Reviews ", len(reviews))
-        # print(" headings ", len(headings), headings)
+        print(" imgsrc  ", img_src)
         print(" authors ", len(authors))
         print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):

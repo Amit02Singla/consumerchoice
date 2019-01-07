@@ -25,7 +25,7 @@ class webshostingFatcow(BaseSiteURLCrawler):
         print("reviews from webshostingFatcow.com")
         authors = response.xpath("//div[@class='comment-user-left name']/text()").extract()
         dates = response.xpath("//div[@class='comment-user-left date']/text()").extract()
-        website_name = response.xpath("//div[@id='line']/a[1]/img/@alt").extract()
+        website_name = response.xpath("//div[@id='contentarea2']/div[@id='nav']/div[@class='moduletablehlft']/div[@class='customhlft']/p[1]/a/@href").extract()[0]
         headings = response.xpath("//div[@class='comments_user_comment']/a/text()").extract()
         ratings1 = response.xpath("//div[@class='comment_user_star_rate']/div[@class='comment_user_stars']/img/@src").extract()
         if len(ratings1) == 0:
@@ -62,7 +62,7 @@ class webshostingFatcow(BaseSiteURLCrawler):
             for node in response.xpath('//div[@class="comment pure-u-1 pure-u-lg-2-3 wcc"]'):
                 reviews.append(node.xpath('string()').extract());
 
-
+        print("website ", website_name)
         for item in range(0, len(reviews)):
 
             servicename1 = ServiceRecord(response.url, ratings1[item], headings[item], dates[item], authors[item], self.category,

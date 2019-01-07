@@ -32,7 +32,7 @@ class InfluensterCrawler(BaseSiteURLCrawler):
         ratings1 = response.xpath("//div[@class='review-item-stars']/div[@class='avg-stars  ']/div/@content").extract();
         dates1 = response.xpath("//div[@class='content-item review-item']/div[@class='content-item-body review-item-body']/div[@class='content-item-header review-item-header']/a[@class='date']/text()").extract()
         authors = response.xpath("//div[@class='content-item review-item']/div[@class='content-item-author-info']/a/div[@class='author-name']/text()").extract()
-        # img_src = response.xpath("//div[@class='content-item review-item']/div[@class='content-item-author-info']/a/div[@class='avatar avatar-large']/img/@data-lazy-src").extract()
+        img_src = response.xpath("//div[@class='product-images']/div[@class='product-ugc']/a[@class='product-ugc-media']/img/@src").extract()[0]
         # headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
         website_name = response.xpath("//head/meta[7]/@content").extract()
         dates = []
@@ -46,9 +46,10 @@ class InfluensterCrawler(BaseSiteURLCrawler):
         print("Dates ", len(dates), dates)
         print("reviews ", len(reviews))
         print("websites ", len(website_name), website_name)
+        print('imgsrc ', img_src)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings1[item], None, dates[item], authors[item], "",
-                                         self.servicename, reviews[item], None, website_name)
+                                         self.servicename, reviews[item], img_src, website_name)
             self.save(servicename1)
 
         next_page = response.xpath(

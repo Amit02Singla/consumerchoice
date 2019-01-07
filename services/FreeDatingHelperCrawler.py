@@ -24,6 +24,7 @@ class FreeDatingHelperCrawler(BaseSiteURLCrawler):
         reviews=[]
         ratings =[]
         data = response.xpath("//li/article[@class='comment-body clearfix']/div[@class='comment_postinfo']").extract()
+
         for content in data:
             content = content.replace('<br>', '')
             content = content.replace('<p>','').replace('</p>','')
@@ -44,8 +45,9 @@ class FreeDatingHelperCrawler(BaseSiteURLCrawler):
                 ratings.append(root.xpath("//div[2]/table[@class='ratings']/tr/td[@class='rating_value']/div/span/text()"))
             else:
                 ratings.append("")
+            website_name = root.xpath(
+                "//div[2]/div[@class='comment_area']/center/a[@class='small-button smallorange']/@href").extract()
 
-        website_name= "freedatinghelper.com"
         # if(len(authors)>0):
         #     authors = authors[0]
         # if len(reviews)>0:

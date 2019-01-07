@@ -26,7 +26,11 @@ class PickuphostCrawler(BaseSiteURLCrawler):
         dates = response.xpath("//div[@id='rew_replace_div']/div[@class='one_rew']/span[@class='rewiwer_data']/span[2]/text()").extract()
         authors = response.xpath("//div[@id='rew_replace_div']/div[@class='one_rew']/span[@class='rewiwer_data']/span[1]/text()").extract()
         name = response.xpath("//div[@class='navbar-header']/a/@href").extract()
-        website_name = name[0].split(".")[0].split("/")[-1]
+        website_name = response.xpath("//div[@class='get_it_block']/div[@class='get_it text-center']/div[@class='get_it_button']/a/@href").extract()[0]
+        img_src = response.xpath("//div[@class='col-md-12 artical']/img[@class='img-responsive top2_logo']/@src").extract()[0]
+        website_name = 'http://pickuphost.com'+website_name
+        print "imgsrc ", img_src
+        print "website ", website_name
         for item in range(1, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
                           self.servicename, reviews[item],"",website_name);

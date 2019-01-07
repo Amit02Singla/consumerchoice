@@ -34,17 +34,18 @@ class ReviewOpedia(BaseSiteURLCrawler):
                 authors.append(root.xpath("//div[@class='reviewed-by']/a/text()"))
             else:
                 authors.append(root.xpath("//div[@class='reviewed-by']/text()"))
-        website_name =  response.xpath("/html/head/meta[9]/@content").extract()
-        img_src = response.xpath("//div[@class='review_result']/div[@class='review_result_left']/img[@class='review_author_img']/@src").extract()
+        website_name =  response.xpath("//div[@class='item-info product']/div[@class='item-info-text']/div[@class='prod-block-line'][2]/a/@href").extract()[0]
+        website_name = 'https://www.reviewopedia.com'+website_name
+        # img_src = response.xpath("//div[@class='review_result']/div[@class='review_result_left']/img[@class='review_author_img']/@src").extract()
         print("Reviews ", len(reviews), reviews)
         print("Headings ", len(headings), headings)
         print("Authors ", len(authors), authors)
         print("Rating ", len(ratings), ratings)
         print("Dates ", len(dates), dates)
-        # print("Img_src ", len(img_src), img_src)
+        print("Img_src ", website_name)
         for item in range(0, len(reviews)):
             servicename1 =ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], "",
-                          self.servicename, reviews[item], img_src,website_name)
+                          self.servicename, reviews[item], None,website_name)
             self.save(servicename1)
 
         # next_page = response.xpath("//div[@class='container']/div[@class='navigator']/a[last()]/@href").extract()
