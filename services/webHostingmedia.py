@@ -29,7 +29,6 @@ class webHostingmedia(BaseSiteURLCrawler):
         print("reviews ", len(reviews), reviews)
         print("dates ", len(dates), dates)
         print("ratings ", len(ratings), ratings)
-        print("authors ", len(authors), authors)
         print "website " , website_name
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item],
