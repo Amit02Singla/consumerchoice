@@ -36,8 +36,10 @@ class BaseSiteURLCrawler(Spider):
             dictionary[k] = {"scrapping_website_name": k, "scrapping_website_url": v["response"].URL,
                              "response": responselist}
             buisness_units.append(dictionary[k])
-            restapis.Login.postReview({"business_units":buisness_units})
-        with open(v["response"].URL.replace("http:","").replace('https:','').replace("/","").replace(".","_").replace("?","").replace("=","")+".json",'w') as f:
+            path = '/consumerchoice/current/public/'+v["response"].URL.replace("http:","").replace('https:','').replace("/","").replace(".","_").replace("?","").replace("=","")+".json"
+
+        with open(path,'w') as f:
             json.dump({"business_units":buisness_units},f)
+        restapis.Login.postReview({"json_url": path})
 
 

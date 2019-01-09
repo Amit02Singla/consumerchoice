@@ -25,7 +25,7 @@ class whtop(BaseSiteURLCrawler):
         authors = response.xpath("//div[@property='author']/span[1]/text()").extract()
         dates = response.xpath("//div[@class='review-date']/time/text()").extract()
 
-        website_name = response.xpath("//div[@id='line']/a[1]/img/@alt").extract()
+        website_name = response.xpath("//div[@id='container']/div[@id='main']/div/div[@id='server']/a/@href").extract()[0]
         head = response.xpath("//div[@class='review-main']").extract()
         headings = []
         for content in head:
@@ -72,6 +72,7 @@ class whtop(BaseSiteURLCrawler):
                     sum = 0;
                 j = j + 1
             i = i + 1
+        print("website ", website_name)
         for node in response.xpath("//div[@class='review-content']"):
             reviews.append(node.xpath('string()').extract());
         if len(reviews) == 0:

@@ -27,7 +27,7 @@ class TrustPilot(BaseSiteURLCrawler):
         ratings1 =  response.xpath("//div[@class='card']/div[@class='review-stack']/article/section[@class='review-card__content-section']/section[@class='content-section__review-info']/div[@class='review-info__header']/div[@class='review-info__header__verified']/div[1]/@class").extract()
         dates = response.xpath("//div[@class='header__verified__date']/time[@class='ndate']/@title").extract()
         authors = response.xpath("//div[@class='card']/div[@class='review-stack']/article/section[@class='review-card__content-section']/aside[@class='content-section__consumer-info']/a[@class='consumer-info']/div[@class='consumer-info__details']/h3[@class='consumer-info__details__name']/text()").extract()
-        headings = response.xpath("//div[@class='card']/div[@class='review-stack']/article/section[@class='review-card__content-section']/section[@class='content-section__review-info']/div[@class='review-info__body']/h2[@class='review-info__body__title']/a[@class='link link--large link--dark']/text()").extract()
+        headings = response.xpath("//section[@class='review__content']/div[@class='review-content']/div[@class='review-content__body']/h2[@class='review-content__title']/a[@class='link link--large link--dark']").extract()
         website_name = "trustpilot.com"
         # img_src = response.xpath(
         #     "//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
