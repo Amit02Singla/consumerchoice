@@ -36,7 +36,8 @@ class BaseSiteURLCrawler(Spider):
             dictionary[k] = {"scrapping_website_name": k, "scrapping_website_url": v["response"].URL,
                              "response": responselist}
             buisness_units.append(dictionary[k])
-            path = '../consumerchoice/current/public/'+v["response"].URL.replace("http:","").replace('https:','').replace("/","").replace(".","_").replace("?","").replace("=","")+".json"
+            # ../ consumerchoice / current / public
+            path = 'D:/Consumer/'+v["response"].URL.replace("http:","").replace('https:','').replace("/","").replace(".","_").replace("?","").replace("=","")+".json"
 
         with open(path,'w') as f:
             json.dump({"business_units":buisness_units},f)
