@@ -52,7 +52,6 @@ class HighYaCrawler(BaseSiteURLCrawler):
             else:
                 authors.append(root.xpath("//span[@itemprop='name']/text()")[0])
         website_name = response.xpath("//html/head/meta[7]/@content").extract()[0]
-
         print("reviews  ", len(reviews))
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
