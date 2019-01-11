@@ -227,7 +227,7 @@ class SiteServiceListController(scrapy.Spider):
         elif ('capterra.com' in dict_url["url1"]["url1"]):
             if 'search' not in response.url:
                 service = response.url.split("/")
-                serviceName = service[len(service) - 1]
+                serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
                 crawler = CapterraCrawler(dict_url[response.url]["Category"], serviceName, response.url)
             else:
