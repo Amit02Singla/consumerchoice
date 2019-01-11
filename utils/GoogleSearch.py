@@ -59,7 +59,7 @@ def search(id,categoryName,keywords,callbackurl):
     data = []
     for keyword in keywords:
         try:
-            results = scrape_google(categoryName+ " "+keyword, 10, "en")
+            results = scrape_google(keyword, 10, "en")
             for result in results:
                 data.append(result)
             time.sleep(10)
