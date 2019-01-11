@@ -26,7 +26,10 @@ class CapterraCrawler(BaseSiteURLCrawler):
         ratings = response.xpath("//div[@class='overall-rating-container']/span[@class='overall-rating']/span/text()").extract()
         headings = response.xpath("//div[@class='cell seven-eighths  palm-one-whole']/h3/q/text()").extract()
         dates = response.xpath("//div[@class='grid']/div[@class='cell one-eighth  palm-one-whole']/div[@class='quarter-margin-bottom  micro  color-gray  weight-normal  text-right  palm-text-left']/text()").extract()
-        img_src = response.xpath("//div[@class='spotlight-listing-thumbnail-container']/div[@class='thumbnail  no-hover  listing-thumbnail']/img/@src").extract()[0]
+        if(response.xpath("//div[@class='spotlight-listing-thumbnail-container']/div[@class='thumbnail  no-hover  listing-thumbnail']/img/@src")):
+            img_src = response.xpath("//div[@class='spotlight-listing-thumbnail-container']/div[@class='thumbnail  no-hover  listing-thumbnail']/img/@src").extract()[0]
+        else:
+            img_src = ""
         website_name = "capterra.com"
         authors = response.xpath("//div[@class='reviewer-details']/div[1]/text()").extract()
         print("Reviews ", len(reviews))
