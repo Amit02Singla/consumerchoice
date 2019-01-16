@@ -89,8 +89,8 @@ def search(id,categoryName,keywords,callbackurl):
                     print("error. Code: %d Message: %s" % (
                     srp_response["error"]["code"], srp_response["error"]["message"]))
                 else:
-                    dict = srp_response["results"]
-                    for urlList in dict["organic"]:
+                    dictionary = srp_response["results"]
+                    for urlList in dictionary["organic"]:
                         data.append(urlList["result_url"]);
     time.sleep(10)
     print("urls list count is ", len(data))
