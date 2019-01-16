@@ -57,6 +57,7 @@ def scrape_google(search_term, number_results, language_code):
     except requests.RequestException:
         raise Exception("Appears to be an issue with your connection")
 def search(id,categoryName,keywords,callbackurl):
+    print(" in search method")
     data = []
     i=0;
     post_data = dict()
@@ -69,12 +70,12 @@ def search(id,categoryName,keywords,callbackurl):
             loc_name_canonical="India",
             key=keyword
         )
-
+    print ("before send request")
     response = RestClient.post("/v2/srp_tasks_post", dict(data=post_data))
     if response["status"] == "error":
         print("error. Code: %d Message: %s" % (response["error"]["code"], response["error"]["message"]))
     else:
-        print(response["results"])
+        print("request succesfully  ",response["results"])
         time.sleep(90)
         completed_tasks_response = RestClient.get("/v2/srp_tasks_get")
         if completed_tasks_response["status"] == "error":
@@ -99,3 +100,4 @@ def search(id,categoryName,keywords,callbackurl):
     }
     print(search_data)
     google_search_post(callbackurl,search_data)
+
