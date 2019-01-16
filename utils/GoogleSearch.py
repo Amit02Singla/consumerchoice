@@ -77,26 +77,26 @@ def search(id,categoryName,keywords,callbackurl):
         print("error. Code: %d Message: %s" % (response["error"]["code"], response["error"]["message"]))
     else:
         print("request succesfully  ",response["results"])
-        time.sleep(90)
-        print("after wait")
-        completed_tasks_response = my.get("/v2/srp_tasks_get")
-        if completed_tasks_response["status"] == "error":
-            print("error. Code: %d Message: %s" % (
-                completed_tasks_response["error"]["code"], completed_tasks_response["error"]["message"]))
-        else:
-            results = completed_tasks_response["results"]
-            print("resultssssss     ",results)
-            for result in results:
-                print("before getting response")
-                srp_response = my.get("/v2/srp_tasks_get/%d" % (result["task_id"]))
-                print("after getting response")
-                if srp_response["status"] == "error":
-                    print("error. Code: %d Message: %s" % (
+    time.sleep(90)
+    print("after wait")
+    completed_tasks_response = my.get("/v2/srp_tasks_get")
+    if completed_tasks_response["status"] == "error":
+        print("error. Code: %d Message: %s" % (
+        completed_tasks_response["error"]["code"], completed_tasks_response["error"]["message"]))
+    else:
+        results = completed_tasks_response["results"]
+        print("resultssssss     ", results)
+        for result in results:
+            print("before getting response")
+            srp_response = my.get("/v2/srp_tasks_get/%d" % (result["task_id"]))
+            print("after getting response")
+            if srp_response["status"] == "error":
+                print("error. Code: %d Message: %s" % (
                     srp_response["error"]["code"], srp_response["error"]["message"]))
-                else:
-                    dictionary = srp_response["results"]
-                    for urlList in dictionary["organic"]:
-                        data.append(urlList["result_url"]);
+            else:
+                dictionary = srp_response["results"]
+                for urlList in dictionary["organic"]:
+                    data.append(urlList["result_url"]);
     time.sleep(10)
     print("urls list count is ", len(data))
     search_data ={
