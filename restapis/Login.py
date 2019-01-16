@@ -59,6 +59,7 @@ def crawling():
 
 def google_search_post(callbackurl,search):
   header = {'Content-Type': 'application/json'}
+  print("json.dumps(search)  ", json.dumps(search))
   response = requests.post(callbackurl, data=json.dumps(search), headers=header)
   print("response ",response.status_code);
   print("response ",response.content);
