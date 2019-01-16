@@ -78,13 +78,14 @@ def search(id,categoryName,keywords,callbackurl):
     else:
         print("request succesfully  ",response["results"])
         time.sleep(90)
+        print("after wait")
         completed_tasks_response = my.get("/v2/srp_tasks_get")
         if completed_tasks_response["status"] == "error":
             print("error. Code: %d Message: %s" % (
                 completed_tasks_response["error"]["code"], completed_tasks_response["error"]["message"]))
         else:
             results = completed_tasks_response["results"]
-            print(results)
+            print("resultssssss     ",results)
             for result in results:
                 srp_response = my.get("/v2/srp_tasks_get/%d" % (result["task_id"]))
                 if srp_response["status"] == "error":
