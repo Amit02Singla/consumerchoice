@@ -57,6 +57,7 @@ def scrape_google(search_term, number_results, language_code):
     except requests.RequestException:
         raise Exception("Appears to be an issue with your connection")
 def search(id,categoryName,keywords,callbackurl):
+    my = RestClient()
     print(" in search method")
     data = []
     i=0;
@@ -71,13 +72,13 @@ def search(id,categoryName,keywords,callbackurl):
             key=keyword
         )
     print ("before send request")
-    response = RestClient.post("/v2/srp_tasks_post", dict(data=post_data))
+    response = my.post("/v2/srp_tasks_post", dict(data=post_data))
     if response["status"] == "error":
         print("error. Code: %d Message: %s" % (response["error"]["code"], response["error"]["message"]))
     else:
         print("request succesfully  ",response["results"])
         time.sleep(90)
-        completed_tasks_response = RestClient.get("/v2/srp_tasks_get")
+        completed_tasks_response = my.get("/v2/srp_tasks_get")
         if completed_tasks_response["status"] == "error":
             print("error. Code: %d Message: %s" % (
                 completed_tasks_response["error"]["code"], completed_tasks_response["error"]["message"]))
@@ -85,7 +86,7 @@ def search(id,categoryName,keywords,callbackurl):
             results = completed_tasks_response["results"]
             print(results)
             for result in results:
-                srp_response = RestClient.get("/v2/srp_tasks_get/%d" % (result["task_id"]))
+                srp_response = my.get("/v2/srp_tasks_get/%d" % (result["task_id"]))
                 if srp_response["status"] == "error":
                     print("error. Code: %d Message: %s" % (
                     srp_response["error"]["code"], srp_response["error"]["message"]))
