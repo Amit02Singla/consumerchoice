@@ -1,4 +1,4 @@
-from http.client import HTTPSConnection
+from httplib import HTTPSConnection
 from base64 import b64encode
 from json import loads
 from json import dumps

@@ -195,7 +195,8 @@ class SiteServiceListController(scrapy.Spider):
         elif ('travelsitecritic.com' in response.url):
             if len(response.url.split('/')) > 5:
                 service = response.url.split("/")
-                serviceName = service[len(service) - 1]
+                serviceName = service[len(service) - 2]
+                serviceName = serviceName.replace("-reviews","")
                 print(" Servicesssss   ", serviceName)
                 crawler = TravelSiteCritic(dict_url[response.url]["Category"], serviceName, response.url)
             else:
@@ -220,6 +221,7 @@ class SiteServiceListController(scrapy.Spider):
             if 'search' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
+                serviceName = serviceName.replace("-reviews","")
                 print(" Servicesssss   ", serviceName)
                 crawler = ViewPoints(dict_url[response.url]["Category"], serviceName, response.url)
             else:
@@ -243,9 +245,10 @@ class SiteServiceListController(scrapy.Spider):
         elif ('anblik.com' in response.url):
             if '?s=' not in response.url:
                 service = response.url.split("/")
-                serviceName = service[len(service) - 1]
+                serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = AnblikCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                cat = dict_url["url1"]
+                crawler = AnblikCrawler(dict_url[cat["url1"]]["Category"], serviceName, response.url)
             else:
                 crawler = AnblikCrawlerURLCrawler(dict_url[response.url]["Category"])
         elif ('coinjabber.com' in response.url):
@@ -371,7 +374,8 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = BestVPNZCrawler("", serviceName, response.url)
+                cat = dict_url["url1"]
+                crawler = BestVPNZCrawler(dict_url[cat["url1"]], serviceName, response.url)
             else:
                 crawler = BestVpnZURLCrawler(dict_url[response.url]["Category"])
         elif ('webhostingmedia.net' in response.url):
@@ -496,6 +500,7 @@ class SiteServiceListController(scrapy.Spider):
             if '/?s=' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
+                serviceName.replace("-reviews","")
                 print(" Servicesssss   ", serviceName)
                 crawler = VirtualBanking(dict_url[response.url]["Category"], serviceName, response.url)
             else:
@@ -623,9 +628,11 @@ class SiteServiceListController(scrapy.Spider):
             # if 'search' not in response.url:
             service = response.url.split("/")
             serviceName = service[len(service) - 1]
-            #     print(" Servicesssss   ", serviceName)
+            serviceName = serviceName.replace("-reviews","")
+            print(" Servicesssss   ", serviceName)
             #     crawler = Hellopeter(dict_url[response.url]["Category"], serviceName, response.url)
             # else:
+
             crawler = webshostingFatcow(dict_url[response.url]["Category"], serviceName, response.url)
         elif ('webhostinghero.com' in response.url):
             if 'reviews' in response.url:

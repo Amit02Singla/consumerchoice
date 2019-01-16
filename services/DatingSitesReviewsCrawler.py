@@ -37,9 +37,8 @@ class DatingSitesReviewsCrawler(BaseSiteURLCrawler):
                 data1=data[0].encode("utf-8")
                 data1 = data1.replace('\xc2\xa0', ' ')
                 authors.append(data1.split(":")[1].split(" on ")[0])
-
         headings =  response.xpath("//div[@id='comments']/div[@class='block-comment-content level-0']/ul[@class='comment_status']/li[@class='comment_title']/text()").extract()
-        website_name =  response.xpath("/html/head/title").extract()[0].split(" - ")[1]
+        website_name =  response.xpath("//div[@class='uk-panel-box']/ul/li[@class='uk-text-center']/a/@href").extract()[0]
         print(" headings ", len(headings))
         print("dates ", len(dates))
         print(" Reviews ", len(reviews))

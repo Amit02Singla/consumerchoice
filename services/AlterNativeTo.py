@@ -31,8 +31,8 @@ class AlterNativeTo(BaseSiteURLCrawler):
         print("review from   ", self.link["url"])
         for content in data:
             root = etree.HTML(content)
-            if(len(root.xpath("//div/div[@class='col-xs-11']/div[@class='do-not-break forumText wmd']"))>0):
-                reviews.append(root.xpath("//div/div[@class='col-xs-11']/div[@class='do-not-break forumText wmd']/text()")[0])
+            if(len(root.xpath("//div/div[@class='col-xs-11']/div[@class='do-not-break forumText wmd']/p"))>0):
+                reviews.append(root.xpath("//div/div[@class='col-xs-11']/div[@class='do-not-break forumText wmd']/p/text()")[0])
             if(len(root.xpath("//div/div[@class='col-xs-11']/h3"))>0):
                 headings.append(root.xpath("//div/div[@class='col-xs-11']/h3/text()")[0])
             else:

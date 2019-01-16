@@ -50,7 +50,7 @@ class TravelSiteCritic(BaseSiteURLCrawler):
         while(i<len(reviews1)):
             rev = (reviews1[i][0].split("cast)"))
             # print("rev ", rev)
-            reviews.append(rev[1])
+            reviews.append([rev[1]])
             i = i+1
         ratings = []
         j = 0
@@ -60,14 +60,14 @@ class TravelSiteCritic(BaseSiteURLCrawler):
             ratings.append(round((c)/20.0, 2))
             j = j + 1
 
-        # print("Reviews ", len(reviews), reviews)
-        # # print("Headings ", len(headings), headings)
-        # print("Authors ", len(authors), authors)
-        # print("Rating ", len(ratings), ratings)
-        # print("Dates ", len(dates), dates)
-        # print("websites ", len(website_name), website_name)
+        print("Reviews ", len(reviews), reviews)
+        # print("Headings ", len(headings), headings)
+        print("Authors ", len(authors), authors)
+        print("Rating ", len(ratings), ratings)
+        print("Dates ", len(dates), dates)
+        print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], None,
                                          self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
         self.pushToServer()

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+from restapis.RestClient import RestClient;
 
 #USER_AGENT = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
 from restapis.Login import google_search_post
@@ -57,16 +58,42 @@ def scrape_google(search_term, number_results, language_code):
         raise Exception("Appears to be an issue with your connection")
 def search(id,categoryName,keywords,callbackurl):
     data = []
+    i=0;
+    post_data = dict()
     for keyword in keywords:
-        try:
-            results = scrape_google(keyword, 10, "en")
+        i = i + 1;
+        post_data[i] = dict(
+            priority=1,
+            se_name="google.com",
+            se_language="English",
+            loc_name_canonical="India",
+            key=keyword
+        )
+
+    response = RestClient.post("/v2/srp_tasks_post", dict(data=post_data))
+    if response["status"] == "error":
+        print("error. Code: %d Message: %s" % (response["error"]["code"], response["error"]["message"]))
+    else:
+        print(response["results"])
+        time.sleep(90)
+        completed_tasks_response = RestClient.get("/v2/srp_tasks_get")
+        if completed_tasks_response["status"] == "error":
+            print("error. Code: %d Message: %s" % (
+                completed_tasks_response["error"]["code"], completed_tasks_response["error"]["message"]))
+        else:
+            results = completed_tasks_response["results"]
+            print(results)
             for result in results:
-                data.append(result)
-            time.sleep(10)
-        except Exception as e:
-            print(e)
-        finally:
-            time.sleep(10)
+                srp_response = RestClient.get("/v2/srp_tasks_get/%d" % (result["task_id"]))
+                if srp_response["status"] == "error":
+                    print("error. Code: %d Message: %s" % (
+                    srp_response["error"]["code"], srp_response["error"]["message"]))
+                else:
+                    dict = srp_response["results"]
+                    for urlList in dict["organic"]:
+                        data.append(urlList["result_url"]);
+    time.sleep(10)
+    print("urls list count is ", len(data))
     search_data ={
         "scrapping_websites" : data
     }

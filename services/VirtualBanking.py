@@ -44,7 +44,7 @@ class VirtualBanking(BaseSiteURLCrawler):
         print("dates", len(dates), dates)
         print("websites  ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 =ServiceRecord(response.url, ratings[item],None, dates[item], authors[item], "",
+            servicename1 =ServiceRecord(response.url, ratings[item],None, dates[item], authors[item], self.category,
                           self.servicename, reviews[item], None,website_name)
             self.save(servicename1)
         self.pushToServer()
