@@ -87,7 +87,6 @@ def search(id,categoryName,keywords,callbackurl):
         results = completed_tasks_response["results"]
         print("resultssssss     ", results)
         for result in results:
-            print("before getting response")
             srp_response = my.get("/v2/srp_tasks_get/%d" % (result["task_id"]))
             print("after getting response")
             if srp_response["status"] == "error":

@@ -22,8 +22,7 @@ class RestClient():
             headers = {'Authorization' : 'Basic %s' %  base64_bytes}
             connection.request(method, path, headers=headers, body=data)
             response = connection.getresponse()
-            print("before return")
-            return loads(response.read().decode())
+            return loads(response.read().decode('utf-8'))
         finally:
             connection.close()
 
@@ -31,7 +30,6 @@ class RestClient():
         return self.request(path, 'GET')
 
     def post(self, path, data):
-        print("in post");
         if isinstance(data, str):
             data_str = data
         else:
