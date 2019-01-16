@@ -15,23 +15,19 @@ class RestClient():
 
     def request(self, path, method, data=None):
         connection = HTTPSConnection(self.domain)
-        print("in request")
         try:
             base64_bytes = b64encode(
                 ("%s:%s" % (self.username, self.password)).encode("ascii")
                 ).decode("ascii")
             headers = {'Authorization' : 'Basic %s' %  base64_bytes}
-            print(" before request")
             connection.request(method, path, headers=headers, body=data)
-            print("before get response")
             response = connection.getresponse()
-            print("after response  ")
+            print("before return")
             return loads(response.read().decode())
         finally:
             connection.close()
 
     def get(self, path):
-        # print("in get");
         return self.request(path, 'GET')
 
     def post(self, path, data):
