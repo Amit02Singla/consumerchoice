@@ -29,8 +29,12 @@ class ViewPoints(BaseSiteURLCrawler):
         for content in data:
             root = etree.HTML(content)
             print "length ", len(root.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-main-wrapper']/div[@class='pr-review-text']/p[@class='pr-comments']"))
-            if(len(root.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-main-wrapper']/div[@class='pr-review-text']/p[@class='pr-comments']"))>0):
-                reviews.append(root.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-main-wrapper']/div[@class='pr-review-text']/p[@class='pr-comments']/text()"))
+            i=0
+            while(i<len(root.xpath("//div[@class='pr-review-main-wrapper']/div[@class='pr-review-text']/p[@class='pr-comments']"))>0):
+                reviews.append([root.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-main-wrapper']/div[@class='pr-review-text']/p[@class='pr-comments']/text()")[0]])
+                i=i+1
+
+
 
         ratings =  response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/span[@class='pr-rating pr-rounded']/text()").extract()
         dates = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-author-date pr-rounded']/text()").extract()
@@ -41,15 +45,15 @@ class ViewPoints(BaseSiteURLCrawler):
             "//div[@class='productDetails']/div[@class='productControls']/div[@class='productPhotoViewer ']/img[@class='photo']/@src").extract()[0]
 
         print("Reviews ", len(reviews), reviews)
-        print("Authors ", len(authors), authors)
-        print("ratings ", len(ratings), ratings)
-        print("Heading ", len(headings), headings)
-        print("Dates ", len(dates), dates)
+        print("Authors ", len(authors))
+        print("ratings ", len(ratings))
+        print("Heading ", len(headings))
+        print("Dates ", len(dates))
         print("img src ", img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], "",
-                                         self.servicename, reviews[item], img_src, website_name)
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], self.category,
+                                         self.servicename, reviews[item], img_src, website_name[0])
             self.save(servicename1)
         next_page = response.xpath(
             "//div[@class='pr-page-nav-wrapper']/p[@class='pr-page-nav']/span[@class='pr-page-next']/a/@href").extract()

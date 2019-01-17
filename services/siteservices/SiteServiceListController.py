@@ -500,7 +500,7 @@ class SiteServiceListController(scrapy.Spider):
             if '/?s=' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
-                serviceName.replace("-reviews","")
+                serviceName.replace("-review","")
                 print(" Servicesssss   ", serviceName)
                 crawler = VirtualBanking(dict_url[response.url]["Category"], serviceName, response.url)
             else:
