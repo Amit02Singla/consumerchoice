@@ -181,7 +181,7 @@ class SiteServiceListController(scrapy.Spider):
                 crawler = AlterNativeToURLCrawler(dict_url[response.url]["Category"])
             else:
                 service = response.url.split("/");
-                serviceName = service[len(service) - 1];
+                serviceName = service[len(service) - 2];
                 print(" Servicesssss   ", serviceName)
                 crawler = AlterNativeTo(dict_url[response.url]["Category"], serviceName, response.url)
         elif ('seniordatingexpert.com' in response.url):
