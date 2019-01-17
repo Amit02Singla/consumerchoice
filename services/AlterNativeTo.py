@@ -70,7 +70,7 @@ class AlterNativeTo(BaseSiteURLCrawler):
         print("imgsrc ", img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, None, headings[item], dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, None, headings[item], dates[item], authors[item], self.category,
                                          self.servicename, reviews[item], img_src, website_name)
             self.save(servicename1)
         self.pushToServer()
