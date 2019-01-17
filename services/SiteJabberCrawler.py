@@ -48,7 +48,7 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
 
             headings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/div[@class='review_title']/a/text()")[0])
             dates.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/div[@class='stars']/div[@class='time tiny_text faded_text']/text()")[0])
-            reviews.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/text()")[0])
+            reviews.append([root.xpath("//div[@class='review_container ']/div[@class='review ']/p/text()")[0]])
             ratings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/@data-rating")[0])
         for content2 in data1:
             content2 = content2.replace("...", "")
@@ -61,7 +61,7 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
                     root.xpath("//div[@class='author_info tiny_text']/div[@class='author_name']/text()")[0])
             headings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/div[@class='review_title']/a/text()")[0])
             dates.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/div[@class='stars']/div[@class='time tiny_text faded_text']/text()")[0])
-            reviews.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/text()")[0])
+            reviews.append([root.xpath("//div[@class='review_container ']/div[@class='review ']/p/text()")[0]])
             ratings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/@data-rating")[0])
 
         website = response.xpath("//div[@id='website_info_content']/div[@id='url_address']/a[@class='trackOutboundLink']/@href").extract()[0]
@@ -76,6 +76,7 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
         # print("headings ", len(headings), headings)
         print("dates ", len(dates))
         print("webiste ", website_name)
+        print("reviews ", len(reviews), reviews)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
                                          categoryName,
