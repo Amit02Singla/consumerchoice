@@ -40,7 +40,7 @@ class JoomlaHostingReviews(BaseSiteURLCrawler):
         print("img_src ", len(img_src), img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
                                          self.servicename, reviews[item], img_src, website_name[0])
             self.save(servicename1)
         self.pushToServer()

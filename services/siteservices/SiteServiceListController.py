@@ -540,6 +540,7 @@ class SiteServiceListController(scrapy.Spider):
             if 'search' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
+                serviceName = serviceName.replace("-review.html","")
                 print(" Servicesssss   ", serviceName)
                 crawler = JoomlaHostingReviews(dict_url[response.url]["Category"], serviceName, response.url)
             else:
