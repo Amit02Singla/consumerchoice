@@ -41,20 +41,14 @@ if __name__ == '__main__':
     my = RestClient();
     # you can set as "index of post_data" your ID, string, etc. we will return it with all results.
     post_data = dict()
-    post_data[23] = dict(
-        priority=1,
-        se_name="google.com",
-        se_language="English",
-        loc_name_canonical="India",
-        key="HomeLight"
-    )
     post_data[24] = dict(
         priority=1,
         se_name="google.com",
         se_language="English",
         loc_name_canonical="India",
-        key="norton"
+        key="nortan"
     )
+
 
     response = my.post("/v2/srp_tasks_post", dict(data=post_data))
     if response["status"] == "error":
@@ -62,7 +56,7 @@ if __name__ == '__main__':
     else:
         print(response["results"])
     print("before sleep")
-    time.sleep(90);
+    time.sleep(20);
     print(" after sleep")
     data = []
     completed_tasks_response = my.get("/v2/srp_tasks_get")
