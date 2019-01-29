@@ -74,6 +74,22 @@ def crawlSite():
     resp = "Schedule Success"
     return resp
 
+@app.route('/categories/search_services', methods=['GET'])
+@requires_auth
+def crawlSite():
+    id = request.args.get("id")
+    categoryName = request.args.get("category_name")
+    url1 = request.args.get("website_urls")
+    i = 0
+    while i< len(url1):
+        url  =url1[i]
+        i = i+1
+        callback_url = request.args.get("callback_url")
+        thread = MyThread(id,categoryName,url,callback_url)
+        thread.start()
+    resp = "Serching Service Scheduled"
+    return resp
+
 
 @app.route('/categories/search_websites', methods=['GET'])
 @requires_auth
