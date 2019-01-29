@@ -27,9 +27,9 @@ class SiteJabberURLCrawler(Spider):
                 page = root.xpath(
                 "//div[@class='categories ']/div[@class='category']/div[@class='info_cat']/div[@class='name']/a/@href")[
                 0]
-            print("[pageeeeee   ", page)
-            sss = SiteJabberURLWebHosting(self.category)
-            yield response.follow(page, callback=sss.parsing)
+                print("[pageeeeee   ", page)
+                sss = SiteJabberURLWebHosting(self.category)
+                yield response.follow(page, callback=sss.parsing)
 
         for content1 in servicelist1:
             content1 = content1.replace('<b>', '')

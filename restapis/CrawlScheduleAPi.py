@@ -4,17 +4,15 @@
 # * 'gtrp' and 'gtr' create a GET request with or without query parameters;
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
-import threading
-
-from flask import Flask, Response
-from flask import Flask, flash, redirect, render_template, request, session, abort, jsonify
-from restapis.Login import MyThread
 import json
+import threading
 from functools import wraps
-import os
 
-from threading import Thread
+from flask import Flask, request, jsonify
+from flask import Response
 
+from restapis.Login import MyThread
+from utils.GoogleSearch import dataforSEO
 from utils.GoogleSearch import search
 
 app = Flask(__name__)
@@ -74,32 +72,28 @@ def crawlSite():
     resp = "Schedule Success"
     return resp
 
+
+
 @app.route('/categories/search_services', methods=['GET'])
 @requires_auth
-def crawlSite():
-    id = request.args.get("id")
-    categoryName = request.args.get("category_name")
-    url1 = request.args.get("website_urls")
-    i = 0
-    while i< len(url1):
-        url  =url1[i]
-        i = i+1
-        callback_url = request.args.get("callback_url")
-        thread = MyThread(id,categoryName,url,callback_url)
-        thread.start()
-    resp = "Serching Service Scheduled"
-    return resp
+def googleSearch():
+    websiteUrls = request.args.get("website_urls")
+    callback_url = request.args.get("callback_url")
+    t1 = threading.Thread(target=search, args=(id, websiteUrls, callback_url))
+    t1.start()
+    response = "Searching Scheduled"
+    return response
 
 
 @app.route('/categories/search_websites', methods=['GET'])
 @requires_auth
-def searchGoogle():
+def getDataSEO():
     id = request.args.get('id')
     categoryName =request.args.get('name')
     categoryKeywords = request.args.getlist('keywords')
     callback_url = request.args.get('callback_url')
     print(categoryKeywords , categoryName, callback_url , id)
-    t1 = threading.Thread(target=search,args=(id,categoryName,categoryKeywords,callback_url))
+    t1 = threading.Thread(target=dataforSEO,args=(id,categoryName,categoryKeywords,callback_url))
     t1.start()
     response ="Searching Scheduled"
     return response

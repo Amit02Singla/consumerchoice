@@ -3,10 +3,13 @@ from services.siteservices.SiteServiceListController import crawl_services1
 from utils.GoogleSearch import search
 
 if __name__ == '__main__':
-    # search("85","BitCoin","[u'https://www.coinjabber.com/site/coinmama.com']","http://52.0.49.246/api/v1/categories/85/scrapping_websites")
-    urls = []
-    urls.append({"ServiceName": "Expressvpn",
-                 "Category": "VPN Service",
-                 "url": "https://www.10bestonline.com/top_10_best_online_dating_reviews/SilverSingles_customer_reviews/"})
-
-    crawl_services1(urls)
+    search([[15, "https://www.sadriya.com"], [16, "https://www.sadriya1.com"],
+            [17, "https://www.sadriya2.com"], [14,
+                                               "https://www.google.co.in"]],
+           "http://localhost:3000/admin/categories/scrapping_websites")
+# urls = []
+# urls.append({"ServiceName": "Expressvpn",
+#              "Category": "VPN Service",
+#              "url": "https://www.sitejabber.com/search?page=34&q=dresses"})
+#
+# crawl_services1(urls)

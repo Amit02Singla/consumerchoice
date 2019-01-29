@@ -2,12 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import time
 from restapis.RestClient import RestClient;
+from urlparse import urlparse
 
 #USER_AGENT = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
 from restapis.Login import google_search_post
 
 USER_AGENT = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
-
+superset = [];
 def fetch_results(search_term, number_results, language_code):
 
     print("Searching ", search_term)
@@ -56,7 +57,31 @@ def scrape_google(search_term, number_results, language_code):
         raise Exception("You appear to have been blocked by Google")
     except requests.RequestException:
         raise Exception("Appears to be an issue with your connection")
-def search(id,categoryName,keywords,callbackurl):
+
+def search(websiteUrls, callbackurl):
+        data = []
+        for websiteUrl in websiteUrls:
+            id = websiteUrl[0]
+            parsedURL = urlparse(websiteUrl[1])
+            hostname = parsedURL.hostname.split(".")[1]
+            try:
+                results = scrape_google(hostname, 10, "en")
+                for result in results:
+                    resultParseURL = urlparse(result['url'])
+                    resultParseURLHostName = resultParseURL.hostname
+                    if(resultParseURLHostName in superset):
+                        resultset = {"id":id,
+                                     "name":result['name'],
+                                     "url":result['url']}
+                        data.append(resultset)
+                time.sleep(10)
+            except Exception as e:
+                print(e)
+            finally:
+                time.sleep(10)
+        google_search_post(callbackurl, {"scrapping_websites":data})
+
+def dataforSEO(id,categoryName,keywords,callbackurl):
     my = RestClient()
     print(" in search method")
     data = []
