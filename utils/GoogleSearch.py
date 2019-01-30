@@ -10,8 +10,8 @@ from restapis.Login import google_search_post
 USER_AGENT = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
 superset = [];
 superset.append("https://www.capterra.com")
-superset.append("https://bestvpnprovider.co")
-superset.append("https://bestvpn.com")
+superset.append("https://www.bestvpnprovider.co")
+superset.append("https://www.bestvpn.com")
 def fetch_results(search_term, number_results, language_code):
 
     print("Searching ", search_term)
@@ -72,11 +72,11 @@ def search(websiteUrls, callbackurl):
                 for result in results:
                     resultParseURL = urlparse(result['url'])
                     resultParseURLHostName = resultParseURL.hostname
-                    if(resultParseURLHostName in superset):
-                        resultset = {"website_id":id,
-                                     "name":result['name'],
-                                     "url":result['url']}
-                        data.append(resultset)
+                    # if(resultParseURLHostName in superset):
+                    resultset = {"website_id":id,
+                                 "name":result['name'],
+                                 "url":result['url']}
+                    data.append(resultset)
                 time.sleep(10)
             except Exception as e:
                 print(e)
