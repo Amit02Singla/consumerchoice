@@ -77,7 +77,7 @@ def crawlSite():
 @app.route('/categories/search_websites', methods=['POST'])
 @requires_auth
 def googleSearch():
-    print("request from ror for 2nd step " , request)
+    print("request from ror for 2nd step " , request.data)
     websiteUrls = request.args.get("website_urls")
     callback_url = request.args.get("callback_url")
     t1 = threading.Thread(target=search, args=(websiteUrls, callback_url))
