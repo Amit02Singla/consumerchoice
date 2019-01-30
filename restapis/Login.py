@@ -3,7 +3,7 @@ import os
 import requests
 import json
 from product.ProductController import crawlAmazon
-#from services.siteservices.SiteServiceListController import crawl_services1
+from services.siteservices.SiteServiceListController import crawl_services1
 #from services.siteservices.SiteServiceListController import crawl_services1
 
 param = {
