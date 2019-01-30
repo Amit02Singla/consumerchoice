@@ -123,8 +123,10 @@ def dataforSEO(id,categoryName,keywords,callbackurl):
             else:
                 dictionary = srp_response["results"]
                 for urlList in dictionary["organic"]:
+                    parsedURL = urlparse(urlList["result_url"])
+                    hostname = parsedURL.hostname.split(".")[1]
                     a = {"url": urlList["result_url"],
-                         "name": categoryName}
+                         "name": hostname}
                     data.append(a);
     time.sleep(10)
     print("urls list count is ", len(data))
