@@ -77,12 +77,12 @@ def crawlSite():
 @app.route('/categories/search_websites', methods=['POST'])
 @requires_auth
 def googleSearch():
-    jsn = jsonify(request.data)
-    print("request from ror for 2nd step " , jsn )
-    print("   callbackurl  ", jsn.callback_url)
-    print("   urls  ",jsn.website_urls )
-    websiteUrls = jsn.website_urls
-    callback_url = jsn.callback_url
+    jss = json.loads(request.data)
+    print("request from ror for 2nd step " , jss )
+    print("   callbackurl  ", jss['callback_url'])
+    print("   urls  ", jss['website_urls'])
+    websiteUrls = jss['website_urls']
+    callback_url = jss['callback_url']
     t1 = threading.Thread(target=search, args=(websiteUrls, callback_url))
     t1.start()
     response = "Searching Scheduled"
