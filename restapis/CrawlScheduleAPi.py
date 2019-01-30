@@ -80,8 +80,8 @@ def googleSearch():
     print("request from ror for 2nd step " , request.data)
     print("   callbackurl  ", request.data.callback_url)
     print("   urls  ",request.data.website_urls )
-    websiteUrls = request.data.website_urls
-    callback_url = request.data.callback_url
+    websiteUrls = request.data["WebsiteUrl"]
+    callback_url = request.data["callback_url"]
     t1 = threading.Thread(target=search, args=(websiteUrls, callback_url))
     t1.start()
     response = "Searching Scheduled"
