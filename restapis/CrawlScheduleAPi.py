@@ -78,8 +78,8 @@ def crawlSite():
 @requires_auth
 def googleSearch():
     print("request from ror for 2nd step " , request.data)
-    websiteUrls = request.args.get("website_urls")
-    callback_url = request.args.get("callback_url")
+    websiteUrls = request.data.website_urls
+    callback_url = request.data.callback_url
     t1 = threading.Thread(target=search, args=(websiteUrls, callback_url))
     t1.start()
     response = "Searching Scheduled"
