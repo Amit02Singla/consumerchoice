@@ -79,7 +79,7 @@ def crawlSite():
 def googleSearch():
     websiteUrls = request.args.get("website_urls")
     callback_url = request.args.get("callback_url")
-    t1 = threading.Thread(target=search, args=(id, websiteUrls, callback_url))
+    t1 = threading.Thread(target=search, args=(websiteUrls, callback_url))
     t1.start()
     response = "Searching Scheduled"
     return response
