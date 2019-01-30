@@ -9,6 +9,9 @@ from restapis.Login import google_search_post
 
 USER_AGENT = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
 superset = [];
+superset.append("https://www.capterra.com")
+superset.append("https://bestvpnprovider.co")
+
 def fetch_results(search_term, number_results, language_code):
 
     print("Searching ", search_term)

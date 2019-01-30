@@ -74,7 +74,7 @@ def crawlSite():
 
 
 
-@app.route('/categories/search_services', methods=['GET'])
+@app.route('/categories/search_websites', methods=['GET'])
 @requires_auth
 def googleSearch():
     websiteUrls = request.args.get("website_urls")
@@ -85,7 +85,7 @@ def googleSearch():
     return response
 
 
-@app.route('/categories/search_websites', methods=['GET'])
+@app.route('/categories/search_services', methods=['GET'])
 @requires_auth
 def getDataSEO():
     id = request.args.get('id')
