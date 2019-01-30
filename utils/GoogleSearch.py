@@ -129,7 +129,7 @@ def dataforSEO(id,categoryName,keywords,callbackurl):
     time.sleep(10)
     print("urls list count is ", len(data))
     search_data ={
-        "scrapping_websites" : data
+        "service_websites" : data
     }
     print(search_data)
     google_search_post(callbackurl,search_data)
