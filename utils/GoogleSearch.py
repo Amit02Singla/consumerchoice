@@ -68,7 +68,7 @@ def search(websiteUrls, callbackurl):
             parsedURL = urlparse(websiteUrl[1])
             hostname = parsedURL.hostname.split(".")[1]
             try:
-                results = scrape_google(hostname, 10, "en")
+                results = scrape_google(hostname+" reviews", 10, "en")
                 for result in results:
                     resultParseURL = urlparse(result['url'])
                     resultParseURLHostName = resultParseURL.hostname
