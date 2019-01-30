@@ -73,7 +73,7 @@ def search(websiteUrls, callbackurl):
                     resultParseURL = urlparse(result['url'])
                     resultParseURLHostName = resultParseURL.hostname
                     if(resultParseURLHostName in superset):
-                        resultset = {"id":id,
+                        resultset = {"website_id":id,
                                      "name":result['name'],
                                      "url":result['url']}
                         data.append(resultset)
