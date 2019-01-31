@@ -67,7 +67,9 @@ def crawlSite():
     categoryName = request.args.get("category_name")
     url = request.args.get("scrapping_website_url")
     callback_url = request.args.get("callback_url")
-    thread = MyThread(id,categoryName,url,callback_url)
+    serviceName = request.args.get("website_url")
+    serviceName = serviceName.split(".")[1]
+    thread = MyThread(id,categoryName,url,callback_url, serviceName)
     thread.start()
     resp = "Schedule Success"
     return resp

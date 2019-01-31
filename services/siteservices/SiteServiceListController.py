@@ -131,11 +131,11 @@ final_dict_urls= {}
 dict_url = {}
 class SiteServiceListController(scrapy.Spider):
     start_urls = []
-
-    def __init__(self, link):
+    def __init__(self, link,service):
         if (len(self.start_urls) > 0):
             self.start_urls.pop(0)
         self.start_urls.append(link["url"])
+        self.service = service
         category = link["Category"];
         dict_url[link["url"]] = {"Category": category}
         if(len(link["url1"])>0):
@@ -157,7 +157,7 @@ class SiteServiceListController(scrapy.Spider):
                 service  = response.url.split("/");
                 serviceName = service[len(service)-1];
                 print(" Servicesssss   ", serviceName)
-                crawler = SiteJabberCrawler( dict_url[response.url]["Category"],serviceName,response.url)
+                crawler = SiteJabberCrawler( dict_url[response.url]["Category"],self.service,response.url)
             else:
                 cat = dict_url["url1"]
 
@@ -167,7 +167,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/");
                 serviceName = service[len(service) - 1];
                 print(" Servicesssss   ", serviceName)
-                crawler = HostingFactsCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = HostingFactsCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = HostingFactsURLCrawler(dict_url[response.url]["Category"])
         elif ('highya.com' in response.url):
@@ -175,7 +175,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/");
                 serviceName = service[len(service) - 1];
                 print(" Servicesssss   ", serviceName)
-                crawler = HighYaCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = HighYaCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = HighyaURLCrawler(dict_url[response.url]["Category"])
         elif ('alternativeto.net' in response.url):
@@ -185,13 +185,13 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/");
                 serviceName = service[len(service) - 2];
                 print(" Servicesssss   ", serviceName)
-                crawler = AlterNativeTo(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = AlterNativeTo(dict_url[response.url]["Category"], self.service, response.url)
         elif ('seniordatingexpert.com' in response.url):
             if len(response.url.split('/')) > 5:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = SeniorDatingExpert(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = SeniorDatingExpert(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = SeniorDatingExpertURLCrawler(dict_url[response.url]["Category"])
         elif ('travelsitecritic.com' in response.url):
@@ -200,7 +200,7 @@ class SiteServiceListController(scrapy.Spider):
                 serviceName = service[len(service) - 2]
                 serviceName = serviceName.replace("-reviews","")
                 print(" Servicesssss   ", serviceName)
-                crawler = TravelSiteCritic(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = TravelSiteCritic(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = TravelSiteCriticURLCrawler(dict_url[response.url]["Category"])
         elif ('netbusinessrating.com' in response.url):
@@ -210,13 +210,13 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/");
                 serviceName = service[len(service) - 1];
                 print(" Servicesssss   ", serviceName)
-                crawler = NetBusinessRating(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = NetBusinessRating(dict_url[response.url]["Category"], self.service, response.url)
         elif ('reviewcentre.com' in response.url):
             if('searchstring' not in response.url):
                 service  = response.url.split("/");
                 serviceName = service[len(service)-1];
                 print(" Servicesssss   ", serviceName)
-                crawler = ReviewCentre( dict_url[response.url]["Category"],serviceName,response.url)
+                crawler = ReviewCentre( dict_url[response.url]["Category"],self.service,response.url)
             else:
                 crawler = ReviewCentreURLCrawler(dict_url[response.url]["Category"])
         elif ('viewpoints.com' in response.url):
@@ -225,7 +225,7 @@ class SiteServiceListController(scrapy.Spider):
                 serviceName = service[len(service) - 1]
                 serviceName = serviceName.replace("-reviews","")
                 print(" Servicesssss   ", serviceName)
-                crawler = ViewPoints(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = ViewPoints(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = ViewPointsURLCrawler(dict_url[response.url]["Category"])
         elif ('capterra.com' in dict_url["url1"]["url1"]):
@@ -233,7 +233,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = CapterraCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = CapterraCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = CapterraURLCrawler(dict_url[response.url]["Category"])
         elif ('buybitcoinswithcreditcard.net' in response.url):
@@ -241,7 +241,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = BuyBitcoinsWithCreditCardCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = BuyBitcoinsWithCreditCardCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = BuyBitcoinWithCreditCardURLCrawler(dict_url[response.url]["Category"])
         elif ('anblik.com' in response.url):
@@ -250,7 +250,7 @@ class SiteServiceListController(scrapy.Spider):
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
                 cat = dict_url["url1"]
-                crawler = AnblikCrawler(dict_url[cat["url1"]]["Category"], serviceName, response.url)
+                crawler = AnblikCrawler(dict_url[cat["url1"]]["Category"], self.service, response.url)
             else:
                 crawler = AnblikCrawlerURLCrawler(dict_url[response.url]["Category"])
         elif ('coinjabber.com' in response.url):
@@ -258,7 +258,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = CoinJabber( "",serviceName, response.url)
+                crawler = CoinJabber( "",self.service, response.url)
             else:
                 crawler = CoinJabberURLCrawler(dict_url[response.url]["Category"])
         elif ('hostadvisor.com' in response.url):
@@ -266,13 +266,13 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = hostAdvisor(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = hostAdvisor(dict_url[response.url]["Category"], self.service, response.url)
         elif ('freedatinghelper.com' in response.url):
             if '?s=' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = FreeDatingHelperCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = FreeDatingHelperCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = FreeDatingHelperURLCrawler(dict_url[response.url]["Category"])
         elif ('bestdatingreviews.org' in response.url):
@@ -282,7 +282,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = InfluensterCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = InfluensterCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = InfluensterURLCrawler(dict_url[response.url]["Category"])
         elif ('revex.co' in response.url):
@@ -290,7 +290,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = RevexCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = RevexCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = RevexURLCrawler(dict_url[response.url]["Category"])
         elif ('reviewopedia.com' in response.url):
@@ -298,7 +298,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = ReviewOpedia(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = ReviewOpedia(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = ReviewOpediaURLCrawler(dict_url[response.url]["Category"])
         elif ('affgadgets.com' in response.url):
@@ -306,7 +306,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = affgadgetsCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = affgadgetsCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = AffgadgetsURLCrawler(dict_url[response.url]["Category"])
         elif ('affpaying.com' in response.url):
@@ -314,7 +314,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = affPaying(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = affPaying(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = AffPayingURLCrawler(dict_url[response.url]["Category"])
         elif ('bestvpn.com' in response.url):
@@ -330,7 +330,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = ForexbrokerzCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = ForexbrokerzCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = ForexbrokerzCrawlerURLCrawler(dict_url[response.url]["Category"])
         elif ('hostadvice.com' in response.url):
@@ -338,13 +338,13 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = HostAdviceCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = HostAdviceCrawler(dict_url[response.url]["Category"], self.service, response.url)
         elif ('bestvpnforyou.com' in response.url):
             if '/?s=' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = bestVPNForYou(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = bestVPNForYou(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = BestVpnForYouURLCrawler(dict_url[response.url]["Category"])
         elif ('productreview.com.au' in dict_url["url1"]["url1"]):
@@ -352,7 +352,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = ProductreviewCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = ProductreviewCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = ProductReviewURLCrawler(dict_url[response.url]["Category"])
         elif ('resellerratings.com' in response.url):
@@ -360,7 +360,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = ResellerRatingCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = ResellerRatingCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = ResellerRatingsURLCrawler(dict_url[response.url]["Category"])
         elif ('restoreprivacy.com' in response.url):
@@ -368,7 +368,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = restorePrivacy(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = restorePrivacy(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = RestorePrivacyURLCrawler(dict_url[response.url]["Category"])
         elif ('bestvpnz.com' in response.url):
@@ -377,7 +377,7 @@ class SiteServiceListController(scrapy.Spider):
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
                 cat = dict_url["url1"]
-                crawler = BestVPNZCrawler(dict_url[cat["url1"]], serviceName, response.url)
+                crawler = BestVPNZCrawler(dict_url[cat["url1"]], self.service, response.url)
             else:
                 crawler = BestVpnZURLCrawler(dict_url[response.url]["Category"])
         elif ('webhostingmedia.net' in response.url):
@@ -385,7 +385,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = webHostingmedia(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = webHostingmedia(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = WebHostingMediaURLCrawler(dict_url[response.url]["Category"])
         elif ('thewebmaster.com' in response.url):
@@ -393,7 +393,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = ThewebmasterCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = ThewebmasterCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = ThewebmasterURLCrawler(dict_url[response.url]["Category"])
         elif ('vpnmentor.com' in response.url):
@@ -401,25 +401,25 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = vpnMentor(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = vpnMentor(dict_url[response.url]["Category"], self.service, response.url)
         elif ('webhostinggeeks.com' in response.url):
             if 'search' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = webhostinggeeksCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = webhostinggeeksCrawler(dict_url[response.url]["Category"], self.service, response.url)
         elif ('whoishostingthis.com' in response.url):
             if 'search' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = WhoIsHostingCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = WhoIsHostingCrawler(dict_url[response.url]["Category"], self.service, response.url)
         elif ('whtop.com' in response.url):
             if 'search' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = whtop("", serviceName, response.url)
+                crawler = whtop("", self.service, response.url)
             else:
                 crawler = WhtopURLCrawler(dict_url[response.url]["Category"])
         elif ('yelp.com' in response.url):
@@ -427,7 +427,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = yelpCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = yelpCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = YelpURLCrawler(dict_url[response.url]["Category"])
         elif ('yscam.com' in response.url):
@@ -435,7 +435,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = Yscam(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = Yscam(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = YscamURLCrawler(dict_url[response.url]["Category"])
         elif ('hostingcharges.in' in response.url):
@@ -443,13 +443,13 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = hostingCharges( "",serviceName, response.url)
+                crawler = hostingCharges( "",self.service, response.url)
         elif ('datingsitesreviews.com' in response.url):
             if 'search' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = DatingSitesReviewsCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = DatingSitesReviewsCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = DatingSitesReviewsURLCrawler(dict_url[response.url]["Category"])
         elif ('vpnranks.com' in dict_url["url1"]["url1"]):
@@ -457,7 +457,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = vpnRanks(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = vpnRanks(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = VPNRanksURLCrawler(dict_url[response.url]["Category"])
         elif ('topsitegratis.com.br' in response.url):
@@ -465,7 +465,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = TopSiteGratis(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = TopSiteGratis(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = TopSiteGratisURLCrawler(dict_url[response.url]["Category"])
         elif ('datingwise.com' in response.url):
@@ -473,13 +473,13 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = DatingWiseCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = DatingWiseCrawler(dict_url[response.url]["Category"], self.service, response.url)
         elif ('vpnpick.com' in response.url):
             if '/?s=' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = VPNpickCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = VPNpickCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = VpnPickURLCrawler(dict_url[response.url]["Category"])
         elif ('bestbitcoinexchange.net' in response.url):
@@ -487,7 +487,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = BestBitcoinExchange(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = BestBitcoinExchange(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = BestBitcoinExchangeURLCrawler(dict_url[response.url]["Category"])
         elif ('trustpilot.com' in response.url):
@@ -495,7 +495,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = TrustPilot(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = TrustPilot(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawtler = TrustPilotURLCrawler(dict_url[response.url]["Category"])
         elif ('virtualbanking.com' in response.url):
@@ -504,7 +504,7 @@ class SiteServiceListController(scrapy.Spider):
                 serviceName = service[len(service) - 2]
                 serviceName.replace("-review","")
                 print(" Servicesssss   ", serviceName)
-                crawler = VirtualBanking(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = VirtualBanking(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = VirtualBankingURLCrawler(dict_url[response.url]["Category"])
         elif ('top11hosting.com' in response.url):
@@ -512,7 +512,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = top11Hosting(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = top11Hosting(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = Top11HostingURLCrawler(dict_url[response.url]["Category"])
         elif ('10bestonline.com' in response.url):
@@ -520,7 +520,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = BestOnline(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = BestOnline(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = BestOnlineURLCrawler(dict_url[response.url]["Category"])
         elif ('comparitech.com' in response.url):
@@ -530,7 +530,7 @@ class SiteServiceListController(scrapy.Spider):
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
                 r = make_request(response.url, False, False)
-                crawler = CompariTech(dict_url[response.url]["Category"], serviceName, url)
+                crawler = CompariTech(dict_url[response.url]["Category"], self.service, url)
                 response = r.content
                 crawler.crawl(response)
                 crawler = None
@@ -544,7 +544,7 @@ class SiteServiceListController(scrapy.Spider):
                 serviceName = service[len(service) - 1]
                 serviceName = serviceName.replace("-review.html","")
                 print(" Servicesssss   ", serviceName)
-                crawler = JoomlaHostingReviews(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = JoomlaHostingReviews(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = JoomlaHostingReviewsURLCrawler(dict_url[response.url]["Category"])
         elif ('macupdate.com' in response.url):
@@ -552,7 +552,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = MacUpdate(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = MacUpdate(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = MacUpdateURLCrawler(dict_url[response.url]["Category"])
         elif ('totallyonlinedating.com' in response.url):
@@ -560,7 +560,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = TotallyOnlineDating(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = TotallyOnlineDating(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = TotallyOnlineDatingURLCrawler(dict_url[response.url]["Category"])
         elif ('reviewsdatingsites.com' in response.url):
@@ -568,7 +568,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = ReviewDatingSitesCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = ReviewDatingSitesCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = ReviewDatingSitesCrawlerURLCrawler(dict_url[response.url]["Category"])
         elif ('thevpnlab.com' in response.url):
@@ -576,7 +576,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = TheVPNlabCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = TheVPNlabCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = TheVpnLabCrawlerURLCrawler(dict_url[response.url]["Category"])
         elif ('pickuphost.com' in response.url):
@@ -584,7 +584,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = PickuphostCrawler("", serviceName, response.url)
+                crawler = PickuphostCrawler("", self.service, response.url)
             else:
                 crawler = PickuphostURLCrawler(dict_url[response.url]["Category"])
         elif ('top20seniordatingsites.com' in response.url):
@@ -592,7 +592,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = SeniorDatingSites(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = SeniorDatingSites(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = Top20SeniorDatingSitesURLCrawler(dict_url[response.url]["Category"])
         elif ('hellopeter.com' in response.url):
@@ -600,7 +600,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = Hellopeter(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = Hellopeter(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = HellopeterURLCrawler(dict_url[response.url]["Category"])
         elif ('consumeraffairs.com' in response.url):
@@ -608,7 +608,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = consumerAffairsCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = consumerAffairsCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = ConsumerAffairsURLCrawler(dict_url[response.url]["Category"])
         elif ('pissedconsumer.com' in response.url):
@@ -616,7 +616,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/");
                 serviceName = service[2].split('.')[0];
                 print(" Servicesssss   ", serviceName)
-                crawler = BlackPeopleMeet_PissedConsumer(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = BlackPeopleMeet_PissedConsumer(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = PissedConsumerURLCrawler(dict_url[response.url]["Category"])
         elif ('securethoughts.com' in response.url):
@@ -636,13 +636,13 @@ class SiteServiceListController(scrapy.Spider):
             #     crawler = Hellopeter(dict_url[response.url]["Category"], serviceName, response.url)
             # else:
 
-            crawler = webshostingFatcow(dict_url[response.url]["Category"], serviceName, response.url)
+            crawler = webshostingFatcow(dict_url[response.url]["Category"], self.service, response.url)
         elif ('webhostinghero.com' in response.url):
             if 'reviews' in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = WebHostingHero(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = WebHostingHero(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = WebHostingHeroURLCrawler(dict_url[response.url]["Category"])
         elif ('bestvpnprovider.co' in response.url):
@@ -650,7 +650,7 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = BestVPNProvidersCrawler(dict_url[response.url]["Category"], serviceName, response.url)
+                crawler = BestVPNProvidersCrawler(dict_url[response.url]["Category"], self.service, response.url)
             else:
                 crawler = BestVpnProviderURLCrawler(dict_url[response.url]["Category"])
         else:
@@ -662,27 +662,27 @@ def f(q, ):
     try:
         configure_logging({'LOG_FORMAT': '%(levelname)s: %(message)s'})
         runner = CrawlerRunner()
-        deferred = runner.crawl(SiteServiceListController, q[1])
+        deferred = runner.crawl(SiteServiceListController, q[1],q[2])
         deferred.addBoth(lambda _: reactor.stop())
         reactor.run()
         q[0].put(None)
     except Exception as e:
         q[0].put(e)
 
-def run_spider(urls):
+def run_spider(urls,service):
     q = Queue()
-    p = Process(target=f, args=([q, urls],))
+    p = Process(target=f, args=([q, urls,service],))
     p.start()
     result = q.get()
     p.join()
     if result is not None:
         raise result
-def crawl_services1(urls):
+def crawl_services1(urls,service):
     url = getAjax(urls)
 
     for i in url:
         if callingBeautifulSoap(i) is False:
-            run_spider(i)
+            run_spider(i,service)
 
 def getAjax(urls):
     urllist = []
