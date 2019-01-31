@@ -75,7 +75,7 @@ def crawlURL(url,responseURL,categoryName,serviceName):
                                  "url": url})
     global custom_base_url
     custom_base_url = responseURL
-    crawl_services1(website_list)
+    crawl_services1(website_list, serviceName)
     crawlAmazon(amazon_list)
 
 class MyThread(threading.Thread):
