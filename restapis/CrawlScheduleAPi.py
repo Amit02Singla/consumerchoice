@@ -68,10 +68,12 @@ def crawlSite():
     url = request.args.get("scrapping_website_url")
     callback_url = request.args.get("callback_url")
     serviceName = request.args.get("website_url")
+    print ("service name ", serviceName)
     if("www" in serviceName):
         serviceName = serviceName.split(".")[1]
     else:
         serviceName = serviceName.split("/")[2]
+    print ("service name ", serviceName)
 
     thread = MyThread(id,categoryName,url,callback_url, serviceName)
     thread.start()
