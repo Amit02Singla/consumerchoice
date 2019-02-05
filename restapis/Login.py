@@ -32,7 +32,6 @@ def postReview(review):
     # requests.post(base_url + "data_miner/store_data", data=json.dumps(review), headers=header)
   else:
     header = {'Content-Type': 'application/json'}
-    print("Request sent to server ", json.dumps(review))
     response = requests.post(custom_base_url, data=json.dumps(review), headers=header)
     print("response ",response.status_code);
     print("response ",response.content);
