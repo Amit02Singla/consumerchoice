@@ -39,6 +39,7 @@ class TrustPilot(BaseSiteURLCrawler):
         ratings = map(lambda foo: foo.replace('-', ''), ratings)
 
         # print("Img_src ", len(img_src), img_src)
+        print("reviews count ", len(reviews))
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], "",
                                          self.servicename, reviews[item], None, website_name)

@@ -76,7 +76,7 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
         # print("headings ", len(headings), headings)
         print("dates ", len(dates))
         print("webiste ", website_name)
-        print("reviews ", len(reviews), reviews)
+        print("reviews ", len(reviews))
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
                                          self.category,
