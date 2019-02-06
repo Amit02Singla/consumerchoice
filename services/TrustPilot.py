@@ -22,12 +22,12 @@ class TrustPilot(BaseSiteURLCrawler):
         reviews = []
 
         for node in response.xpath(
-                "//div[@class='card']/div[@class='review-stack']/article/section[@class='review-card__content-section']/section[@class='content-section__review-info']/div[@class='review-info__body']/p[@class='review-info__body__text']"):
+                "//section[@class='review__content']/div[@class='review-content']/div[@class='review-content__body']/p[@class='review-content__text']"):
             reviews.append(node.xpath('string()').extract());
-        ratings1 =  response.xpath("//div[@class='card']/div[@class='review-stack']/article/section[@class='review-card__content-section']/section[@class='content-section__review-info']/div[@class='review-info__header']/div[@class='review-info__header__verified']/div[1]/@class").extract()
-        dates = response.xpath("//div[@class='header__verified__date']/time[@class='ndate']/@title").extract()
-        authors = response.xpath("//div[@class='card']/div[@class='review-stack']/article/section[@class='review-card__content-section']/aside[@class='content-section__consumer-info']/a[@class='consumer-info']/div[@class='consumer-info__details']/h3[@class='consumer-info__details__name']/text()").extract()
-        headings = response.xpath("//section[@class='review__content']/div[@class='review-content']/div[@class='review-content__body']/h2[@class='review-content__title']/a[@class='link link--large link--dark']").extract()
+        ratings1 =  response.xpath("//div[@class='review-content']/div[@class='review-content__header']/div[@class='review-content-header']/div/@class").extract()
+        # dates = response.xpath("//div[@class='review-content-header']/div[@class='review-content-header__dates']/div[@class='v-popover']/span[@class='trigger']/time/@title").extract()
+        authors = response.xpath("//aside[@class='review__consumer-information']/a[@class='consumer-information']/div[@class='consumer-information__details']/div[@class='consumer-information__name']/text()").extract()
+        headings = response.xpath("//section[@class='review__content']/div[@class='review-content']/div[@class='review-content__body']/h2[@class='review-content__title']/a[@class='link link--large link--dark']/text()").extract()
         website_name = "trustpilot.com"
         # img_src = response.xpath(
         #     "//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
@@ -35,17 +35,18 @@ class TrustPilot(BaseSiteURLCrawler):
         i = 0
         while i < len(ratings1):
             ratings.append(getStarts(ratings1[i]))
-            i = i + 1
+            i = i + 3
         ratings = map(lambda foo: foo.replace('-', ''), ratings)
 
         # print("Img_src ", len(img_src), img_src)
         print("reviews count ", len(reviews))
+        print("authors")
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], "",
                                          self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
 
-        next_page = response.xpath("//nav[@class='pagination-container AjaxPager']/a[@class='pagination-page next-page']/@href").extract()
+        next_page = response.xpath("//nav[@class='pagination-container AjaxPager']/a[@class='button button--primary next-page']/@href").extract()
         if next_page is not None:
             next_page_url = "".join(next_page)
             if next_page_url and next_page_url.strip():
