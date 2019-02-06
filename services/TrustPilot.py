@@ -40,9 +40,10 @@ class TrustPilot(BaseSiteURLCrawler):
 
         # print("Img_src ", len(img_src), img_src)
         print("reviews count ", len(reviews))
-        print("authors")
+        print("authors", len(authors))
+        print("ratings ", len(ratings))
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], self.category,
                                          self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
 
