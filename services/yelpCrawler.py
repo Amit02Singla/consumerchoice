@@ -34,7 +34,7 @@ class yelpCrawler(BaseSiteURLCrawler):
         print(" authors ", len(authors))
         print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url,ratings[item],None,dates[item],authors[item],"",self.servicename,reviews[item],"",website_name);
+            servicename1 = ServiceRecord(response.url,ratings[item],None,dates[item],authors[item],"",self.servicename,reviews[item],self.category,website_name);
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class='arrange_unit']/a[@class='u-decoration-none next pagination-links_anchor']/@href").extract()

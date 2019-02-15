@@ -53,7 +53,7 @@ class SeniorDatingExpert(BaseSiteURLCrawler):
         print(" authors ", len(authors), authors)
         print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], self.category,
                           self.servicename, reviews[item],None,website_name);
             self.save(servicename1)
 

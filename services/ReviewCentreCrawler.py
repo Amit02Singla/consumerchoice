@@ -53,8 +53,8 @@ class ReviewCentreCrawler(Spider):
 
         # print("img ", len(img_src), img_src)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates, authors2[item], category,
-                                         servicename, reviews[item], None, website_name)
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates, authors2[item], self.category,
+                                         self.servicename, reviews[item], None, website_name)
             servicename1.save()
 
         # next_page = response.xpath("//div[@class='pagination']/ul[@id='yw2']/li[@class='next']/a/@href").extract()

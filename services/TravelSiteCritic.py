@@ -67,7 +67,7 @@ class TravelSiteCritic(BaseSiteURLCrawler):
         print("Dates ", len(dates), dates)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], None,
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
                                          self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
         self.pushToServer()

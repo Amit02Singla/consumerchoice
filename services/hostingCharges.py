@@ -60,7 +60,7 @@ class hostingCharges(BaseSiteURLCrawler):
         print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         "", self.servicename, reviews[item], img_src, website_name)
+                                         self.category, self.servicename, reviews[item], img_src, website_name)
             self.save(servicename1)
         self.pushToServer()
 

@@ -39,7 +39,7 @@ class HostingFactsCrawler(BaseSiteURLCrawler):
             headings = response.xpath("//p[@class='user-review-title']/text()")[0]
             authors = response.xpath("//p[@class='user-review-name']/a/span/text()")[0]
             servicename1 = ServiceRecord(response1.url, ratings, headings, dates, authors,
-                                     "category", self.servicename, reviews, img_src, website_name);
+                                     self.category, self.servicename, reviews, img_src, website_name);
             self.save(servicename1)
         # print "reviews ", len(reviews)
         # print(" ratings ", len(ratings))

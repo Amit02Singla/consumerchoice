@@ -48,6 +48,6 @@ class webhostinggeeksCrawler(BaseSiteURLCrawler):
         print("Dates ", len(dates), dates)
         print("website ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url,None,headings[item],dates[item],authors[item],"",self.servicename,reviews[item],"",website_name);
+            servicename1 = ServiceRecord(response.url,None,headings[item],dates[item],authors[item],self.category,self.servicename,reviews[item],"",website_name);
             self.save(servicename1)
         self.pushToServer()

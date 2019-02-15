@@ -63,7 +63,7 @@ class ReviewCentre(BaseSiteURLCrawler):
 
         print("wenbsite ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, None, headings[item], None, authors2[item], "",
+            servicename1 = ServiceRecord(response.url, None, headings[item], None, authors2[item], self.category,
                                          self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
 

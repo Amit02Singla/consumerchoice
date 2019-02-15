@@ -35,7 +35,7 @@ class BestVPN(BaseSiteURLCrawler):
 
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, None,None, dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, None,None, dates[item], authors[item], self.category,
                           self.servicename, reviews[item], "",website_name);
             self.save(servicename1)
         self.pushToServer()

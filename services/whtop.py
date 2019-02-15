@@ -80,7 +80,7 @@ class whtop(BaseSiteURLCrawler):
                 reviews.append(node.xpath('string()').extract())
 
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
                           self.servicename, reviews[item], None, website_name);
             self.save(servicename1)
         self.pushToServer()

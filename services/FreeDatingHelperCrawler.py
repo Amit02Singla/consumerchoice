@@ -60,6 +60,6 @@ class FreeDatingHelperCrawler(BaseSiteURLCrawler):
         print("website ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, None, authors[item],
-                                         "", self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
         self.pushToServer()

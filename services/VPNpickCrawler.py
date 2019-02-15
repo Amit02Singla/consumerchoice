@@ -56,7 +56,7 @@ class VPNpickCrawler(BaseSiteURLCrawler):
         print("Dates ", len(dates), dates)
         print("website ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item],self.category,
                           self.servicename, [reviews[item]],img_src,website_name);
             self.save(servicename1)
         self.pushToServer()

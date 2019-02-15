@@ -33,7 +33,7 @@ class bestVPNForYou(BaseSiteURLCrawler):
         # print("img_src   ", img_src)
         print("websitesName   ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 =ServiceRecord(response.url, None, None,  dates[item], authors[item], "",
+            servicename1 =ServiceRecord(response.url, None, None,  dates[item], authors[item], self.category,
                           self.servicename, reviews[item],  img_src, website_name);
             self.save(servicename1)
         next_page = response.xpath("//div[@class='nav-previous']/a/@href").extract()

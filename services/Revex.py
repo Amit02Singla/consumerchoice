@@ -33,8 +33,8 @@ class Revex(Spider):
         print("img_src ", len(img_src), img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], category,
-                                         servicename, reviews[item], img_src, website_name)
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
+                                         self.servicename, reviews[item], img_src, website_name)
             servicename1.save()
 
 

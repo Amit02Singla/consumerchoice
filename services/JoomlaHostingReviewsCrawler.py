@@ -25,8 +25,8 @@ class JoomlaHostingReviews(Spider):
         headings = response.xpath("//div[@class='jr-layout-outer jrRoundedPanelLt']/div[@class='jr-layout-inner jrReviewContainer']/div[@class='jrReviewContent']/h4[@class='jrReviewTitle']/text()").extract()
         website_name = response.xpath("//div[@class='platform-content']/div[@class='moduletable -footer']/div[@class='custom-footer']/p/a/text()").extract()[0].split(".")[1]
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], category,
-                                         servicename, reviews[item], None, website_name)
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
+                                         self.servicename, reviews[item], None, website_name)
             servicename1.save()
 
 

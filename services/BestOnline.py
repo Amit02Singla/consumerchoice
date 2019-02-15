@@ -56,14 +56,14 @@ class BestOnline(BaseSiteURLCrawler):
                 authors = []
                 headings = []
                 ratings = []
-        print "reviews ", len(reviews), reviews
-        print "ratings  ", len(ratings), ratings
-        print "dates    ", len(dates), dates
-        print "headings ", len(headings), headings
-        print "authors ", len(authors), authors
+        print "reviews ", len(reviews)
+        print "ratings  ", len(ratings)
+        print "dates    ", len(dates)
+        print "headings ", len(headings)
+        print "authors ", len(authors)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         "", self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class ='navigator']/a[7]/@href").extract()

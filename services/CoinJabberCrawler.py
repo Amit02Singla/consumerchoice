@@ -47,8 +47,8 @@ class CoinJabberCrawler(Spider):
         website_name = []
         website_name.append(website_name2[1])
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], category,
-                                         servicename, reviews[item], None, website_name)
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
+                                         self.servicename, reviews[item], None, website_name)
             servicename1.save()
 
 

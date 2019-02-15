@@ -48,7 +48,7 @@ class InfluensterCrawler(BaseSiteURLCrawler):
         print("websites ", len(website_name), website_name)
         print('imgsrc ', img_src)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings1[item], None, dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings1[item], None, dates[item], authors[item], self.category,
                                          self.servicename, reviews[item], img_src, website_name)
             self.save(servicename1)
 

@@ -48,7 +48,7 @@ class vpnMentor(BaseSiteURLCrawler):
         print("ratings ", len(ratings))
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         "", self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
         self.pushToServer()
 

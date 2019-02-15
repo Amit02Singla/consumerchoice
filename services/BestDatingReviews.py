@@ -70,7 +70,7 @@ class BestDatingReviews():
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings2[item], headings[item], dates2[item], authors[item],
-                                         category, servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name)
             servicename1.save()
 
         next_page = response.xpath("//div[@class='mid_left']/div[@class='mid_left_site']/div[@class='viciao']/div[@class='page_cut']/a[@class='cur_pageva']/@href").extract()

@@ -37,7 +37,7 @@ class HostAdviceCrawler(BaseSiteURLCrawler):
         website_name = response.xpath("//div[@class='clearfix user-reviews-actions ']/a[@class='button orange large visit-site-btn']/@href").extract()
         print("website  ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], self.category,
                           self.servicename, reviews[item],img_src,website_name)
             self.save(servicename1)
         next_page = response.xpath("//div[@class='row']/div[@class='col-md-offset-2 col-md-4']/a/@href").extract()

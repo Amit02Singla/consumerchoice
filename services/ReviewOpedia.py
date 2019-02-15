@@ -44,7 +44,7 @@ class ReviewOpedia(BaseSiteURLCrawler):
         print("Dates ", len(dates), dates)
         print("Img_src ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 =ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], "",
+            servicename1 =ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], self.category,
                           self.servicename, reviews[item], None,website_name)
             self.save(servicename1)
 

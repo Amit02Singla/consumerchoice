@@ -44,7 +44,7 @@ class Yscam(BaseSiteURLCrawler):
         print(" Reviews ", len(reviews))
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], None,
-                                         "", self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class ='navigator']/a[7]/@href").extract()

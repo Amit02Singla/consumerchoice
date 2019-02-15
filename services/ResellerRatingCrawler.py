@@ -52,7 +52,7 @@ class ResellerRatingCrawler(BaseSiteURLCrawler):
                                              "",
                                              self.servicename, reviews[item], img_src,website_name);
             else:
-                servicename1 = ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], "",
+                servicename1 = ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], self.category,
                           self.servicename, reviews[item],img_src, website_name);
             self.save(servicename1)
         self.pushToServer()

@@ -36,7 +36,7 @@ class WhoIsHostingCrawler(BaseSiteURLCrawler):
         dates = response.xpath("//div[@class='user-info pure-u-1']/time[@class='published']/text()").extract()
         print("reviews",len(reviews))
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], self.category,
                           self.servicename, reviews[item],img_src,website_name);
             self.save(servicename1)
 

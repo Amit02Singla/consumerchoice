@@ -35,7 +35,7 @@ class affPaying(BaseSiteURLCrawler):
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item],
-                                         "", self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
         next_page = response.xpath("//div[@class='comments-nav'][1]/a[@class='prev page-numbers']/@href").extract()
         if next_page is not None:

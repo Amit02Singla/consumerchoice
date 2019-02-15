@@ -31,7 +31,7 @@ class RevexCrawler(BaseSiteURLCrawler):
         authors = response.xpath("//ol[@class='commentlist']/li/div[@class='commbox']/div[@class='comment-author vcard clearfix']/div[@class='comm_meta_wrap']/span[@class='fn']/a/text()").extract()
         website_name = response.xpath("//div[@class='logo_section_wrap']/div[@class='logo-section header_first_style clearfix']/div[@class='logo']/a/@href").extract()[0].split("//")[1]
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
                                          self.servicename, reviews[item], None, website_name)
             self.save(servicename1)
         self.pushToServer()

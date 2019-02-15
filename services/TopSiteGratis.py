@@ -42,7 +42,7 @@ class TopSiteGratis(BaseSiteURLCrawler):
         print("img_src ", len(img_src))
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], "",
+            servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
                                          self.servicename, reviews[item], img_src[0], website_name)
             self.save(servicename1)
         self.pushToServer()

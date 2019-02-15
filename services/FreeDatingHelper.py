@@ -35,7 +35,7 @@ class FreeDatingHelper(BaseSiteURLCrawler):
         print("website ", len(website_name), website_name)
         print("Img_src ", len(img_src), img_src)
         for item in range(0, len(reviews)):
-            servicename1 =ServiceRecord(response.url, None,None, None, authors[item], "",
+            servicename1 =ServiceRecord(response.url, None,None, None, authors[item], self.category,
                           self.servicename, reviews[item], img_src,website_name)
             self.save(servicename1)
 
