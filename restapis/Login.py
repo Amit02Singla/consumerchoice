@@ -16,7 +16,6 @@ SUCCESS_STATUS = 200
 base_url ="http://107.22.109.130/api/v1/"
 custom_base_url = ""
 
-
 def login():
   response = requests.post( base_url+"users/login", param)
   print(response)
