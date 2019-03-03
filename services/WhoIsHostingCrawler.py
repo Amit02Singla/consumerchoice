@@ -21,23 +21,23 @@ class WhoIsHostingCrawler(BaseSiteURLCrawler):
         reviews = []
         #print("whoishostingthis.com")
         # https://www.whoishostingthis.com/hosting-reviews/bluehost/
-        authors = response.xpath("//div[@class='author']/span[@class='name']/text()").extract()
+        authors = response.xpath("//div[@class='group']/div[1]/strong[@class='reviewer-name']/text()").extract()
         img_src = response.xpath("//div[@class='host-info wcc']/a[1]/img[@class=' logo']/@src").extract()
         website_name = response.xpath("//div[@class='mobile']/a[@class='home']/img[@class='logo']/@alt").extract()
         ratings1 = response.xpath("//div[@class='user-info pure-u-1']/img[@class='stars overall']/@alt").extract()
         if len(ratings1) == 0 :
             ratings1 = response.xpath("//div[@class='rating pure-u-1 pure-u-lg-1-3']/img[@class='stars overall']/@alt").extract()
-        for node in response.xpath('//div[@class="comment pure-u-1 wcc"]'):
+        for node in response.xpath("//div[@class='reviews-list']/div/div[@class='comment']"):
             reviews.append(node.xpath('string()').extract());
         if len(reviews) == 0:
             for node in response.xpath('//div[@class="comment pure-u-1 pure-u-lg-2-3 wcc"]'):
                 reviews.append(node.xpath('string()').extract());
         #print("  reviews   ", reviews)
-        dates = response.xpath("//div[@class='user-info pure-u-1']/time[@class='published']/text()").extract()
+        dates = response.xpath("//div[@class='group']/div[@class='star-date']/span[@class='date']/text()").extract()
         print("reviews",len(reviews))
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings1[item], None, None, authors[item], self.category,
-                          self.servicename, reviews[item],img_src,website_name);
+            servicename1 = ServiceRecord(response.url, None, None, None, authors[item], self.category,
+                          self.servicename, reviews[item],None,website_name);
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class ='see-more']/a/@ href").extract()

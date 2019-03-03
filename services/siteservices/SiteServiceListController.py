@@ -319,10 +319,8 @@ class SiteServiceListController(scrapy.Spider):
                 crawler = AffPayingURLCrawler(dict_url[response.url]["Category"])
         elif ('bestvpn.com' in response.url):
             if len(response.url.split('/')) > 5:
-                service = response.url.split("/")
-                serviceName = service[len(service) - 1]
-                print(" Servicesssss   ", serviceName)
-                crawler = BestVPN("", serviceName, response.url)
+                cat = dict_url["url1"]
+                crawler = BestVPN(dict_url[cat["url1"]]["Category"], self.service, response.url)
             else:
                 crawler = BestVPNURLCrawler(dict_url[response.url]["Category"])
         elif ('forexbrokerz.com' in response.url):
@@ -435,7 +433,8 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = Yscam(dict_url[response.url]["Category"], self.service, response.url)
+                cat = dict_url["url1"]
+                crawler = Yscam(dict_url[cat["url1"]]["Category"], self.service, response.url)
             else:
                 crawler = YscamURLCrawler(dict_url[response.url]["Category"])
         elif ('hostingcharges.in' in response.url):
@@ -457,7 +456,8 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = vpnRanks(dict_url[response.url]["Category"], self.service, response.url)
+                cat = dict_url["url1"]
+                crawler = vpnRanks(dict_url[cat["url1"]]["Category"], self.service, response.url)
             else:
                 crawler = VPNRanksURLCrawler(dict_url[response.url]["Category"])
         elif ('topsitegratis.com.br' in response.url):
@@ -681,7 +681,7 @@ def crawl_services1(urls,service):
     url = getAjax(urls)
 
     for i in url:
-        if callingBeautifulSoap(i) is False:
+        if callingBeautifulSoap(i, service) is False:
             run_spider(i,service)
 
 def getAjax(urls):
@@ -695,21 +695,21 @@ def getAjax(urls):
             url = url.copy()
             url["url"] = "https://api-v3.hellopeter.com/search/industries?q="+a
             urllist.append(url)
-        # elif 'capterra.com' in  url["url"]:
+        # elif 'bestvpn.com' in  url["url"]:
         #     a = url["url"].split('search=')[-1]
         #     url["url1"] = url["url"]
         #     url["url"] = "https://ui.customsearch.ai/api/search?q="+a+"&customConfig=3916836352&count=10&offset=0&mkt=en-US&safeSearch=Moderate&textFormat=HTML&textDecorations=true"
         #     urllist.append(url)
-        elif 'consumeraffairs.com' in  url["url"]:
-            a = url["url"].split('?q=')[-1]
-            url["url1"] = url["url"]
-            url["url"] = "https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&rsz=filtered_cse&num=10&hl=en&prettyPrint=false&source=gcsc&gss=.com&sig=4aa0772189af4c17ea7ec181af2bca15&cx=partner-pub-0200629403145096:6869548600&q="+a+"&cse_tok=AF14hliZogyX-UIGsRzeh53SxuUcuVAYLw:1531574501440&googlehost=www.google.com&callback=google.search.Search.apiary18179&nocache=1531574555569"
-            urllist.append(url)
-        elif 'vpnranks.com' in  url["url"]:
-            a = url["url"].split('?q=')[-1]
-            url["url1"] = url["url"]
-            url["url"] = "https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&rsz=filtered_cse&num=10&hl=en&prettyPrint=false&source=gcsc&gss=.com&sig=4aa0772189af4c17ea7ec181af2bca15&cx=017240969328192326971:ou9j9m_tmba&q="+a+"&cse_tok=AF14hlhuQXH7yfX1J17hCZYy8EH5ZtOl8A:1531575399065&googlehost=www.google.com&callback=google.search.Search.apiary5263&nocache=1531575454153"
-            urllist.append(url)
+        # elif 'consumeraffairs.com' in  url["url"]:
+        #     a = url["url"].split('?q=')[-1]
+        #     url["url1"] = url["url"]
+        #     url["url"] = "https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&rsz=filtered_cse&num=10&hl=en&prettyPrint=false&source=gcsc&gss=.com&sig=4aa0772189af4c17ea7ec181af2bca15&cx=partner-pub-0200629403145096:6869548600&q="+a+"&cse_tok=AF14hliZogyX-UIGsRzeh53SxuUcuVAYLw:1531574501440&googlehost=www.google.com&callback=google.search.Search.apiary18179&nocache=1531574555569"
+        #     urllist.append(url)
+        # elif 'vpnranks.com' in  url["url"]:
+        #     a = url["url"].split('?q=')[-1]
+        #     url["url1"] = url["url"]
+        #     url["url"] = "https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&rsz=filtered_cse&num=10&hl=en&prettyPrint=false&source=gcsc&gss=.com&sig=4aa0772189af4c17ea7ec181af2bca15&cx=017240969328192326971:ou9j9m_tmba&q="+a+"&cse_tok=AF14hlhuQXH7yfX1J17hCZYy8EH5ZtOl8A:1531575399065&googlehost=www.google.com&callback=google.search.Search.apiary5263&nocache=1531575454153"
+        #     urllist.append(url)
         elif 'productreview.com.au' in url["url"]:
             a = url["url"].split('search=')[-1]
             a  = a[1].split('&')[0]
@@ -721,16 +721,15 @@ def getAjax(urls):
             urllist.append(url)
     return urllist
 
-def callingBeautifulSoap(dictURL):
+def callingBeautifulSoap(dictURL, service):
     url = dictURL["url"]
     if('comparitech.com' in url):
         print("urllllllllllllll   "+ url);
         if '/?s=' not in url:
-            service = url.split("/")
-            serviceName = service[len(service) - 2]
-            print(" Servicesssss   ", serviceName)
+
+            print(" Servicesssss   "+ service)
             r = make_request(url, False, False)
-            crawler = CompariTech(dictURL["Category"], serviceName, url)
+            crawler = CompariTech(dictURL["Category"],service, url)
             response = r.content
             crawler.crawl(response)
         else:

@@ -26,6 +26,13 @@ class HostAdviceCrawler(BaseSiteURLCrawler):
         headings = response.xpath("//div[@class='review-content']/h3[@class='review_header']/text()").extract()
         authors1 = response.xpath("//div[@class='review-author']").extract()
         authors = []
+        date = response.xpath("//div[@class='review-footer clearfix']/div[@class='when-posted pull-right']/text()").extract()
+        i=0
+        dates = []
+        print("dates ", len(date), date)
+        while(i<len(date)):
+            dates.append(date[i].split("on")[1])
+            i = i+1
         for content in authors1:
             root = etree.fromstring(content)
             for element in root:
@@ -33,11 +40,11 @@ class HostAdviceCrawler(BaseSiteURLCrawler):
                     authors.append(element.text)
                 else:
                     authors.append(element.xpath("//a/strong")[0].text)
-        img_src = response.xpath("//div[@class='col-md-offset-1 col-md-5 col-xs-6']/img[ @class='attachment-post-thumbnail size-post-thumbnail wp-post-image']/@src").extract()
-        website_name = response.xpath("//div[@class='clearfix user-reviews-actions ']/a[@class='button orange large visit-site-btn']/@href").extract()
+        img_src = response.xpath("//div/a/img[@class='attachment-post-thumbnail size-post-thumbnail wp-post-image']/@src").extract()[0]
+        website_name = response.xpath("//div[@class='clearfix user-reviews-actions ']/a[@class='button orange large visit-site-btn']/@href").extract()[0]
         print("website  ", website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], self.category,
+            servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
                           self.servicename, reviews[item],img_src,website_name)
             self.save(servicename1)
         next_page = response.xpath("//div[@class='row']/div[@class='col-md-offset-2 col-md-4']/a/@href").extract()

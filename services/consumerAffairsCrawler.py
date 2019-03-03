@@ -19,24 +19,24 @@ class consumerAffairsCrawler(BaseSiteURLCrawler):
         reviews = []
         print("review from Consumeraffairs.com")
         # https://www.consumeraffairs.com/internet/godaddy.html
-        for node in response.xpath("//div[@class='campaign-reviews__regular-container js-campaign-reviews__regular-container']/div/div[@class='rvw-bd ca-txt-bd-2']/p"):
+        for node in response.xpath("//div[@class='js-paginator-data']/div/div[@class='rvw-bd ca-txt-bd-2']/p[2]"):
             reviews.append(node.xpath('string()').extract());
-        ratings = response.xpath("//div[@class='stars-rtg stars-rtg--sm']/@data-rating").extract()
-        i=0
-        while(i < len(ratings)):
-            ratings.pop(0)
-            i=i+1
-            if (i == 5):
-                break;
+        ratings = response.xpath("//div/div[@class='rvw__hdr']/div[@class='rvw__hdr-stat']/img/@data-rating").extract()
+        # i=0
+        # while(i < len(ratings)):
+        #     ratings.pop(0)
+        #     i=i+1
+        #     if (i == 5):
+        #         break;
 
-        temp_dates = response.xpath("//div[@class='rvw-bd ca-txt-bd-2']/span[@class='ca-txt-cpt ca-txt--clr-gray']/text()").extract()
+        temp_dates = response.xpath("//div/div[@class='rvw-bd ca-txt-bd-2']/span[@class='ca-txt-cpt ca-txt--clr-gray']/text()").extract()
         dates = []
         for date in temp_dates:
             dates.append(date.split(":")[1])
-        authors =  response.xpath("//div[@class='rvw-aut']/div[@class='rvw-aut__inf']/strong[@class='rvw-aut__inf-nm']/text()").extract()
+        authors =  response.xpath("//div/div[@class='rvw-aut']/div[@class='rvw-aut__inf']/strong[@class='rvw-aut__inf-nm']/text()").extract()
         website_name = "consumeraffairs.com"
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item], self.category, self.servicename,
+            servicename1 = ServiceRecord(response.url, ratings, None, dates[item], authors[item], self.category, self.servicename,
                                          reviews[item], None, website_name)
             self.save(servicename1)
         next_page = response.xpath("//div[@class='prf-lst']/nav[@class='prf-pgr js-profile-pager']/a[@class='ca-a-md "

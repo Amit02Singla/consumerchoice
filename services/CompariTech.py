@@ -22,27 +22,25 @@ class CompariTech(BaseSiteURLCrawler):
 
     def crawl(self, response):
         reviews = []
-
-
         root = etree.HTML(response)
         print("review from comparitech.com")
-        for node in root.xpath(".//div[@id='comments']/ul[@class='comment-list']/li/article/div[@class='comment-content']"):
-            reviews.append(node.xpath('string()'));
+        for node in root.xpath(".//ul[@class='comment-list']/li/article/div[@class='comment-content']"):
+            reviews.append([node.xpath('string()')]);
         # ratings = response.xpath("//div[@class='box col-12 review-title']/meta[@itemprop='ratingValue']/@content").extract()
-        dates = root.xpath(".//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-metadata']/a/time/text()")
+        dates = root.xpath(".//ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-metadata']/a/time/text()")
         # headings = root.xpath("//div[@class='box col-12 review-title']/h4/text()").extract()
-        authors1 = root.xpath(".//div[@id='comments']/ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']")
+        authors1 = root.xpath(".//ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/b[@class='fn']")
         website_name = "comparitech.com"
         # img_src = root.xpath(".//div[@class='main wrapper clearfix']/div[@class='section'][2]/div[@class='review--summary full-width large-cta']/div[@class='review-summary-section top']/a[@class='review-summary-column image centered-no-stretch']/@style")
         # img_src = str(img_src[0]).split("'")[1]
         authors = []
         for root1 in authors1:
-            if(len(root1.xpath(".//b/text()"))>0):
-                authors.append(root1.xpath(".//b/text()")[0])
+            if(len(root1.xpath("//b/text()"))>0):
+                authors.append(root1.xpath("//b/text()")[2])
             else:
                 authors.append("")
 
-        print("reviews ", len(reviews))
+        print("reviews ", len(reviews), reviews)
         print("dates ", len(dates))
         print("authors ", len(authors), authors)
         # print("img_src ", len(img_src), img_src)

@@ -10,8 +10,8 @@ if __name__ == '__main__':
     urls = []
     urls.append({"ServiceName": "Expressvpn",
                  "Category": "VPN Service",
-                 "url": "https://www.sitejabber.com/search?page=34&q=dresses"})
-    serviceName= 'https://sitejabber.com/'
+                 "url": "http://www.yscam.com/blackpeoplemeet-com-08"})
+    serviceName= 'https://test.com/'
     if ("www" in serviceName):
         serviceName = serviceName.split(".")[1]
     else:

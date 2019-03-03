@@ -20,22 +20,23 @@ class BestVPN(BaseSiteURLCrawler):
         reviews = []
         # https://www.bestvpn.com/expressvpn-review/
         print("https://www.bestvpn.com/     ", self.link["url"])
-        for node in response.xpath("//ol[@class='comment-list']/li/article/div[@class='comment-content']"):
+        for node in response.xpath("//div[@id='comments-container']/ol[@class='post-comments']/li[@class='comment']/p"):
             reviews.append(node.xpath('string()').extract());
         # ratings = "8.2"
-        dates = response.xpath("//ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-metadata']/a/time/text()").extract()
-        authors = response.xpath("//ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/b[@class='fn']/text()").extract()
-        # img_src = response.xpath("//div[@class='review-excerpt row']/div[@class='col-lg-6'][1]/a/img[@class='logo']/@src").extract()[0]
-        website_name = "bestvpn.com"
+        dates = response.xpath("//div[@id='comments-container']/ol[@class='post-comments']/li[@class='comment']/header/div[@class='mr-auto']/div[@class='comment-author']/div/span/em/text()").extract()
+        authors = response.xpath("//div[@id='comments-container']/ol[@class='post-comments']/li[@class='comment']/header/div[@class='mr-auto']/div[@class='comment-author']/div/h5/text()").extract()
+        img_src = response.xpath("//a[@class='logo-link']/img[@class='provider-logo']/@src").extract()[0]
+        website_name = response.xpath("//a[@class='logo-link']/@href").extract()[0]
+        website_name = "https://www.bestvpn.com"+website_name
         print("Reviews ", len(reviews))
         print("Authors ", len(authors), authors)
-        # print("img_src ", len(img_src), img_src)
+        print("img_src ", len(img_src), img_src)
 
         print("Dates ", len(dates), dates)
 
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None,None, dates[item], authors[item], self.category,
-                          self.servicename, reviews[item], "",website_name);
+                          self.servicename, reviews[item], img_src,website_name);
             self.save(servicename1)
         self.pushToServer()
