@@ -3,3 +3,4 @@ venv
 venv5
 venv1
 venv2
+*.pyc
