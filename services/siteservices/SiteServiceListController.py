@@ -328,7 +328,8 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = ForexbrokerzCrawler(dict_url[response.url]["Category"], self.service, response.url)
+                cat = dict_url["url1"]
+                crawler = ForexbrokerzCrawler(dict_url[cat["url1"]]["Category"], self.service, response.url)
             else:
                 crawler = ForexbrokerzCrawlerURLCrawler(dict_url[response.url]["Category"])
         elif ('hostadvice.com' in response.url):
@@ -349,8 +350,9 @@ class SiteServiceListController(scrapy.Spider):
             if 'search' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
+                cat = dict_url["url1"]
                 print(" Servicesssss   ", serviceName)
-                crawler = ProductreviewCrawler(dict_url[response.url]["Category"], self.service, response.url)
+                crawler = ProductreviewCrawler(dict_url[cat["url1"]], self.service, response.url)
             else:
                 crawler = ProductReviewURLCrawler(dict_url[response.url]["Category"])
         elif ('resellerratings.com' in response.url):
@@ -442,7 +444,8 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = hostingCharges( "",self.service, response.url)
+                cat = dict_url["url1"]
+                crawler = hostingCharges( dict_url[cat["url1"]]["Category"],self.service, response.url)
         elif ('datingsitesreviews.com' in response.url):
             if 'search' not in response.url:
                 service = response.url.split("/")
@@ -710,12 +713,12 @@ def getAjax(urls):
         #     url["url1"] = url["url"]
         #     url["url"] = "https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&rsz=filtered_cse&num=10&hl=en&prettyPrint=false&source=gcsc&gss=.com&sig=4aa0772189af4c17ea7ec181af2bca15&cx=017240969328192326971:ou9j9m_tmba&q="+a+"&cse_tok=AF14hlhuQXH7yfX1J17hCZYy8EH5ZtOl8A:1531575399065&googlehost=www.google.com&callback=google.search.Search.apiary5263&nocache=1531575454153"
         #     urllist.append(url)
-        elif 'productreview.com.au' in url["url"]:
-            a = url["url"].split('search=')[-1]
-            a  = a[1].split('&')[0]
-            url["url1"] = url["url"]
-            url["url"] = "https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&rsz=filtered_cse&num=10&hl=en&prettyPrint=false&source=gcsc&gss=.au&sig=4aa0772189af4c17ea7ec181af2bca15&cx=003361650787787341744:smnuvutjqce&q="+a+"&cse_tok=AF14hljfNW8Na3fY5No5Ifhaq7LepkJN-A:1531575202440&googlehost=www.google.com&callback=google.search.Search.apiary11993&nocache=1531575257715"
-            urllist.append(url)
+        # elif 'productreview.com.au' in url["url"]:
+        #     a = url["url"].split('search=')[-1]
+        #     a  = a[1].split('&')[0]
+        #     url["url1"] = url["url"]
+        #     url["url"] = "https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&rsz=filtered_cse&num=10&hl=en&prettyPrint=false&source=gcsc&gss=.au&sig=4aa0772189af4c17ea7ec181af2bca15&cx=003361650787787341744:smnuvutjqce&q="+a+"&cse_tok=AF14hljfNW8Na3fY5No5Ifhaq7LepkJN-A:1531575202440&googlehost=www.google.com&callback=google.search.Search.apiary11993&nocache=1531575257715"
+        #     urllist.append(url)
         else:
             url["url1"] = url["url"]
             urllist.append(url)

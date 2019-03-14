@@ -25,7 +25,7 @@ class vpnMentor(BaseSiteURLCrawler):
         ratings = []
         reviews = []
         headings = []
-        data = response.xpath("//div[@id='user-review']/span/div[@class='block-content']/div/div[@class='review-item style_prevu_kit ']").extract()
+        data = response.xpath("//div[@id='user-review']/div[@class='block-content']/div/div/div[@class='review-item style_prevu_kit ']").extract()
         for content in data:
             content = content.replace('<br>', '$')
             root = etree.HTML(content)

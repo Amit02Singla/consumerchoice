@@ -20,22 +20,23 @@ class ResellerRatingCrawler(BaseSiteURLCrawler):
         reviews = []
         print("Reviews from Resellerrating.com")
         # https://www.resellerratings.com/store/Nordvpn_com
-        for node in  response.xpath("//div[@class='comment']/p[@class='review-body']/span"):
+        for node in  response.xpath("//div[@class='cell review-body centered-medium']/span"):
             reviews.append(node.xpath('string()').extract());
-        headings1= response.xpath("//div[@class='comment']/p[@class='review-title']").extract()
+        headings1= response.xpath("//div[@class='cell review-title centered-medium']").extract()
+
+        # headings =  response.xpath("//div[@class='comment']/p[@class='review-title']/span/text()").extract()
+        dates =  response.xpath("//div[@class='cell align-right large-3']/span[@class='date']/text()").extract()
+        ratings = response.xpath("///div[@class='cell siteStars large-9']/span[@class='starRating']/strong/text()").extract()
+        authors1 =  response.xpath("//div/a[@class='rr-purple store-link']/strong/text()").extract()
+        website_name = response.xpath("//html/head/meta[15]/@content").extract()
+        authors = []
         headings = []
         for content in headings1:
             root = etree.HTML(content)
-            if len(root.xpath("//span/@text()"))>0:
+            if len(root.xpath("//span/@text()")) > 0:
                 headings.append(root.xpath("//span/text()").strip())[0]
             else:
                 headings.append("")
-        # headings =  response.xpath("//div[@class='comment']/p[@class='review-title']/span/text()").extract()
-        dates =  response.xpath("//div[@class='comment']/div[@class='date fr']/span/text()").extract()
-        ratings = response.xpath("//div[@class='rating siteStars fl']/span[@class='ratingLabel']/span[@class='bold']/text()").extract()
-        authors1 =  response.xpath("//div[@class='avatar']/div[@class='user-column']/a[@class='rr-purple show-for-large']/text()").extract()
-        website_name = response.xpath("//html/head/meta[15]/@content").extract()
-        authors = []
         for cont in authors1:
             authors.append(cont.strip())
         print("Reviews ", len(reviews))

@@ -46,7 +46,7 @@ class TotallyOnlineDating(BaseSiteURLCrawler):
             else:
                 ratings.append("")
 
-
+        website_name = response.xpath("//tr/td[@class='centercolomnart']/center[1]/a//@href").extract()
 
         # http://www.totallyonlinedating.com/usa-online-dating-services/senior-dating-sites/seniorpeoplemeet.com-review.html
         # for node in response.xpath("//tr/td[@class='contcomment']"):
@@ -54,8 +54,8 @@ class TotallyOnlineDating(BaseSiteURLCrawler):
         # ratings = response.xpath("//div[@class='rating-md']/p/span/span[@itemprop='ratingValue']/@content").extract()
         # headings = response.xpath("//td[@class='contcomment']/b/text()").extract()
         # authors = response.xpath("//td[@class='commentid']/i/text()").extract()
-        img_src =  response.xpath("//div[@class='item-header-img']/span[@class='item-header-img-container']/img/@src").extract()
-        website_name =  "totallyonlinedating.com"
+        img_src =  response.xpath("//tr/td[@class='centercolomnart']/center[1]/a/img/@src").extract()
+
         dates = response.xpath("//div[@class='review-content']/div[@class='rating-md']/p/meta/@content").extract()
         # i=0
 
@@ -67,7 +67,7 @@ class TotallyOnlineDating(BaseSiteURLCrawler):
         print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], self.category,
-                          self.servicename, [''.join(reviews[item]).strip()],img_src,website_name);
+                          self.servicename, [''.join(reviews[item]).strip()],img_src[0],website_name[0]);
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class='pagination-container']/ul[@class='pagination']/li[7]/a/@href").extract()

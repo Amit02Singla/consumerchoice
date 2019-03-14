@@ -47,16 +47,12 @@ class ForexbrokerzCrawler(BaseSiteURLCrawler):
 
         img_src = response.xpath("//div[@class='center_box borker_box  wbord']/div[@class='broker_img_container']/img/@src").extract()[0]
         img_src = 'https://www.forexbrokerz.com'+img_src
-        website_name = response.xpath("").extract()[0]
+        # website_name = response.xpath("").extract()[0]
         website_name = "forexbrokerz.com"
-        print("reviews ", len(reviews), reviews)
-        print("ratings ", len(ratings), ratings)
-        print("headings ", len(headings), headings)
-        print("dates ", len(dates), dates)
-        print("authors ", len(authors), authors)
+
         # print("img_src ", len(img_src), img_src)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
-                          self.servicename, reviews[item], "",website_name);
+                          self.servicename, reviews[item], img_src,website_name);
             self.save(servicename1)
         self.pushToServer()
