@@ -106,12 +106,14 @@ class Response():
     def dump(self):
         store_data_dict = {}
         string1 = []
+        website_name = ""
         for item in self.serviceRecord:
             string1.append(item.str11())
+            website_name = item.website_name
             #str(item)
         return {"business_item_data": {
             "business_type":self.buisnessType,
-            "absolute_url": self.URL,
+            "absolute_url": website_name,
             "category": string1[0]["category"] if len(string1)>0 else self.Category,
             "name": self.Service_Name,
             "sub_category": self.Sub_Category,
