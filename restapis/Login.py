@@ -14,9 +14,9 @@ param = {
 url = ""
 SUCCESS_STATUS = 200
 # for production
-# base_url ="http://107.22.109.130/api/v1/"
-# for stagging
-base_url ="http://52.0.49.246/api/v1/"
+base_url ="http://107.22.109.130/api/v1/"
+# Satgging Url
+# base_url ="http://52.0.49.246/api/v1/"
 custom_base_url = ""
 
 def login():
