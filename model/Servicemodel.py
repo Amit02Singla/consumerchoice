@@ -35,7 +35,7 @@ class ServiceRecord(object):
             date = None
 
         return {
-            "absolute_url": self.url,
+            "absolute_url": self.website_name,
             "rating": utils.getStarts(rating),
             "review_title": self.heading,
             "reviewed_at": utils.convertDate(date),
