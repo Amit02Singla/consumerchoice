@@ -114,8 +114,7 @@ def search(websiteUrls, callbackurl):
             if('www' in parsedURL.hostname):
                 hostname = parsedURL.hostname.split(".")[1]
             else:
-                hostname = parsedURL.hostname.split("/")[2]
-                hostname = hostname.split(".")[0]
+                hostname = parsedURL.hostname.split(".")[0]
 
             try:
                 results = scrape_google(hostname+" reviews", 10, "en")
