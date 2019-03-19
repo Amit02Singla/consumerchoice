@@ -16,4 +16,5 @@ if __name__ == '__main__':
         serviceName = serviceName.split(".")[1]
     else:
         serviceName = serviceName.split("/")[2]
+        serviceName = serviceName.split(".")[0]
     crawl_services1(urls, serviceName)

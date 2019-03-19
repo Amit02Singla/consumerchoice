@@ -9,9 +9,53 @@ from restapis.Login import google_search_post
 
 USER_AGENT = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
 superset = [];
-superset.append("https://www.capterra.com")
-superset.append("https://www.bestvpnprovider.co")
-superset.append("https://www.bestvpn.com")
+superset.append("bestbitcoinexchange.net")
+superset.append("affpaying.com")
+superset.append("travelsitecritic.com")
+superset.append("reviewsdatingsites.com")
+superset.append("pickuphost.com")
+superset.append("affgadgets.com")
+superset.append("hostadvisor.com")
+superset.append("coinjabber.com")
+superset.append("capterra.com")
+superset.append("buybitcoinswithcreditcard.net")
+superset.append("datingsitesreviews.com")
+superset.append("top11hosting.com")
+superset.append("securethoughts.com")
+superset.append("restoreprivacy.com")
+superset.append("hostadvice.com")
+superset.append("bestvpnprovider.co")
+superset.append("alternativeto.net")
+superset.append("whtop.com")
+superset.append("viewpoints.com")
+superset.append("totallyonlinedating.com")
+superset.append("top20seniordatingsites.com")
+superset.append("freedatinghelper.com")
+superset.append("datingwise.com")
+superset.append("vpnpick.com")
+superset.append("webhostinggeeks.com")
+superset.append("webhostingmedia.net")
+superset.append("10bestonline.com")
+superset.append("bestvpnforyou.com")
+superset.append("bestvpnz.com")
+superset.append("forexbrokerz.com")
+superset.append("highya.com")
+superset.append("influenster.com")
+superset.append("joomlahostingreviews.com")
+superset.append("reviewopedia.com")
+superset.append("seniordatingexpert.com")
+superset.append("vpnranks.com")
+superset.append("consumeraffairs.com")
+superset.append("yelp.com")
+superset.append("webshosting.review")
+superset.append("virtualbanking.com")
+superset.append("sitejabber.com")
+superset.append("bestvpn.com")
+superset.append("webhostinghero.com")
+superset.append("totallyonlinedating.com")
+superset.append("vpnmentor.com")
+superset.append("thewebmaster.com")
+superset.append("hostingcharges.in")
 def fetch_results(search_term, number_results, language_code):
 
     print("Searching ", search_term)
@@ -70,17 +114,28 @@ def search(websiteUrls, callbackurl):
             if('www' in parsedURL.hostname):
                 hostname = parsedURL.hostname.split(".")[1]
             else:
-                hostname = parsedURL.hostname.split(".")[0]
+                hostname = parsedURL.hostname.split("/")[2]
+                hostname = hostname.split(".")[0]
 
             try:
                 results = scrape_google(hostname+" reviews", 10, "en")
                 for result in results:
+                    serviceName1 = result['url']
+                    serviceName1 = serviceName1.split("/")[2]
+                    is_scrapable = 'Yes'
+                    if ("www" in serviceName1):
+                        serviceName1 = serviceName1.replace("www.",'')
+                    if serviceName1 in superset:
+                        is_scrapable = 'Yes'
+                    else:
+                        is_scrapable = 'No'
                     resultParseURL = urlparse(result['url'])
                     resultParseURLHostName = resultParseURL.hostname
                     # if(resultParseURLHostName in superset):
                     resultset = {"website_id":id,
                                  "name":result['name'],
-                                 "url":result['url']}
+                                 "url":result['url'],
+                                 "is_scrapable" : is_scrapable}
                     data.append(resultset)
                 time.sleep(10)
             except Exception as e:
