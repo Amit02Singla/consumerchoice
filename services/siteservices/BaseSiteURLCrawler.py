@@ -33,7 +33,7 @@ class BaseSiteURLCrawler(Spider):
         for k, v in self.final_json.items():
             responselist = []
             responselist.append(v["response"].dump())
-            dictionary[k] = {"scrapping_website_name": k, "scrapping_website_url": v["response"].URL,
+            dictionary[k] = {"scrapping_website_name": v["response"].serviceRecord[0].name, "scrapping_website_url": v["response"].URL,
                              "response": responselist}
             buisness_units.append(dictionary[k])
             path =v["response"].URL.replace("http:","").replace('https:','').replace("/","").replace(".","_").replace("?","").replace("=","")+".json"

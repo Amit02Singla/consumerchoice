@@ -31,6 +31,7 @@ class TrustPilot(BaseSiteURLCrawler):
         headings = response.xpath("//section[@class='review__content']/div[@class='review-content']/div[@class='review-content__body']/h2[@class='review-content__title']/a[@class='link link--large link--dark']/text()").extract()
         website_name = response.xpath("//div[@class='badges__badges']/div[@class='badge-card']/a/@href").extract()[0]
         parsedURL = urlparse(website_name)
+        name = "trustpilot.com"
         website_name = parsedURL.scheme+'://'+parsedURL.hostname
         # img_src = response.xpath(
         #     "//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
@@ -47,7 +48,7 @@ class TrustPilot(BaseSiteURLCrawler):
         print("ratings ", len(ratings))
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item], self.category,
-                                         self.servicename, reviews[item], None, website_name)
+                                         self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
 
         next_page = response.xpath("//nav[@class='pagination-container AjaxPager']/a[@class='button button--primary next-page']/@href").extract()

@@ -2,7 +2,7 @@ from utils import utils
 
 final_json={}
 class ServiceRecord(object):
-    def __init__(self,url,rating,heading,date,author,category,service_name,reviews,img_src,website_name):
+    def __init__(self,url,rating,heading,date,author,category,service_name,reviews,img_src,website_name, name):
         super(ServiceRecord, self).__init__()
         self.url = url
         self.rating = rating
@@ -14,6 +14,7 @@ class ServiceRecord(object):
         self.reviews = reviews
         self.img_src = img_src
         self.website_name = website_name
+        self.name=name
 
     def save(self):
         print "service nameeeeeeee",
@@ -44,7 +45,7 @@ class ServiceRecord(object):
             "service_name": self.service_name,
             "review_text": self.reviews[0],
             "picture_urls": self.img_src,
-            "website_name":self.website_name}
+            "website_name":self.name}
         #return json.dumps(store_data_dict["review"]).replace("/", "\\/")
 if __name__ == '__main__':
     pass\

@@ -13,7 +13,15 @@ class Response():
         self.availability = ""
         self.specifications = []
         self.description = ""
+        self.name=""
 
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
     @property
     def Service_Name(self):
         return self._Service_Name
@@ -107,9 +115,11 @@ class Response():
         store_data_dict = {}
         string1 = []
         website_name = ""
+        name=""
         for item in self.serviceRecord:
             string1.append(item.str11())
             website_name = item.website_name
+            name=item.name
             #str(item)
         return {"business_item_data": {
             "business_type":self.buisnessType,
