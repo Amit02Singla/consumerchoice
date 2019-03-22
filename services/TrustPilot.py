@@ -3,6 +3,7 @@ from scrapy import Spider, Request
 from utils.utils import getStarts
 # https://www.trustpilot.com/review/kiwi.com
 from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+from urlparse import urlparse
 class TrustPilot(BaseSiteURLCrawler):
 
     def __init__(self,category,servicename,url):
@@ -29,6 +30,8 @@ class TrustPilot(BaseSiteURLCrawler):
         authors = response.xpath("//aside[@class='review__consumer-information']/a[@class='consumer-information']/div[@class='consumer-information__details']/div[@class='consumer-information__name']/text()").extract()
         headings = response.xpath("//section[@class='review__content']/div[@class='review-content']/div[@class='review-content__body']/h2[@class='review-content__title']/a[@class='link link--large link--dark']/text()").extract()
         website_name = response.xpath("//div[@class='badges__badges']/div[@class='badge-card']/a/@href").extract()[0]
+        parsedURL = urlparse(website_name)
+        website_name = parsedURL.scheme+'://'+parsedURL.hostname
         # img_src = response.xpath(
         #     "//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
         ratings = []
