@@ -113,7 +113,7 @@ class Response():
             #str(item)
         return {"business_item_data": {
             "business_type":self.buisnessType,
-            "absolute_url": self.URL,
+            "absolute_url": website_name,
             "category": string1[0]["category"] if len(string1)>0 else self.Category,
             "name": self.Service_Name,
             "sub_category": self.Sub_Category,

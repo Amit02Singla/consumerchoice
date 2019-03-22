@@ -28,7 +28,7 @@ class TrustPilot(BaseSiteURLCrawler):
         # dates = response.xpath("//div[@class='review-content-header']/div[@class='review-content-header__dates']/div[@class='v-popover']/span[@class='trigger']/time/@title").extract()
         authors = response.xpath("//aside[@class='review__consumer-information']/a[@class='consumer-information']/div[@class='consumer-information__details']/div[@class='consumer-information__name']/text()").extract()
         headings = response.xpath("//section[@class='review__content']/div[@class='review-content']/div[@class='review-content__body']/h2[@class='review-content__title']/a[@class='link link--large link--dark']/text()").extract()
-        website_name = "trustpilot.com"
+        website_name = response.xpath("//div[@class='badges__badges']/div[@class='badge-card']/a/@href").extract()[0]
         # img_src = response.xpath(
         #     "//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
         ratings = []
