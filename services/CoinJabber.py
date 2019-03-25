@@ -53,10 +53,9 @@ class CoinJabber(BaseSiteURLCrawler):
         # img_src = response.xpath(
         #     "//div[@class='content-item review-item']/div[@class='content-item-author-info']/a/div[@class='avatar avatar-large']/img/@data-lazy-src").extract()
         # headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
-        website_name1 = response.xpath("//head/meta[7]/@content").extract()
-        website_name2 = website_name1[0].split("|")
-        website_name = []
-        website_name.append(website_name2[1])
+        website_name1 = self.link["url"].split("/")
+        website_name = 'https://' + website_name1[len(website_name1) - 1]
+        name = "coinjabber.com"
         print("Reviews ", len(reviews))
         print("Authors ", len(authors))
         print("Rating ", len(ratings), ratings)
@@ -65,7 +64,7 @@ class CoinJabber(BaseSiteURLCrawler):
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
-                                         self.servicename, reviews[item], None, website_name)
+                                         self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

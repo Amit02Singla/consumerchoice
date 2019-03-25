@@ -34,13 +34,15 @@ class consumerAffairsCrawler(BaseSiteURLCrawler):
         for date in temp_dates:
             dates.append(date.split(":")[1])
         authors =  response.xpath("//div/div[@class='rvw-aut']/div[@class='rvw-aut__inf']/strong[@class='rvw-aut__inf-nm']/text()").extract()
-        website_name = "consumeraffairs.com"
+        website_name1 = self.link["url"].split("/")
+        website_name1 = (website_name1[len(website_name1) - 1]).split(".")
+        website_name = 'https://' +website_name1[0] + '.com'
+        name="consumeraffairs.com"
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings, None, dates[item], authors[item], self.category, self.servicename,
-                                         reviews[item], None, website_name)
+                                         reviews[item], None, website_name, name)
             self.save(servicename1)
-        next_page = response.xpath("//div[@class='prf-lst']/nav[@class='prf-pgr js-profile-pager']/a[@class='ca-a-md "
-                                   "ca-a-uprcs ca-a-blk prf-pgr__nxt js-profile-pager__next']/@href").extract()
+        next_page = response.xpath("//nav[@class='prf-pgr js-profile-pager']/a[@class='ca-a-md ca-a-uprcs ca-a-blk prf-pgr__nxt js-pager-next']/@href").extract()
         if next_page is not None:
             next_page_url = "".join(next_page)
             if next_page_url and next_page_url.strip():

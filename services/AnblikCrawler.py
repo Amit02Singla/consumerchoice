@@ -30,7 +30,7 @@ class AnblikCrawler(BaseSiteURLCrawler):
         authors = response.xpath("//ol[@class='commentlist']/li/div/div[@class='comment-text']/p[@class='meta']/strong[@class='woocommerce-review__author']/text()").extract()
        # img_src = response.xpath("//ol[@class='commentlist']/li/div/div[@class='img-thumbnail']/img/@src").extract()
         # headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
-        website_name = response.xpath("//div[@class='summary entry-summary col-md-6']/div[@class='cart']/a/@href").extract()[0]
+        website_name = response.xpath("//div[@class='row']/div[@class='summary entry-summary col-md-6']/h2[@class='product_title entry-title show-product-nav']/text()").extract()[0]
         parsedURL = urlparse(website_name)
         name = "anblik.com"
         print("Reviews ", len(reviews))
@@ -38,6 +38,7 @@ class AnblikCrawler(BaseSiteURLCrawler):
         print("ratings ", len(ratings))
 
         print("Dates ", len(dates))
+        website_name = 'https://' +website_name.strip()
 
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):

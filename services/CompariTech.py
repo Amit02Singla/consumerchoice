@@ -30,10 +30,12 @@ class CompariTech(BaseSiteURLCrawler):
         dates = root.xpath(".//ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-metadata']/a/time/text()")
         # headings = root.xpath("//div[@class='box col-12 review-title']/h4/text()").extract()
         authors1 = root.xpath(".//ul[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author vcard']/b[@class='fn']")
-        website_name = "comparitech.com"
+        website_name1 = self.link["url"].split("/")
+        website_name = 'https://' + website_name1[len(website_name1) - 2] + '.com'
         # img_src = root.xpath(".//div[@class='main wrapper clearfix']/div[@class='section'][2]/div[@class='review--summary full-width large-cta']/div[@class='review-summary-section top']/a[@class='review-summary-column image centered-no-stretch']/@style")
         # img_src = str(img_src[0]).split("'")[1]
         authors = []
+        name="comparitech.com"
         for root1 in authors1:
             if(len(root1.xpath("//b/text()"))>0):
                 authors.append(root1.xpath("//b/text()")[2])
@@ -46,7 +48,7 @@ class CompariTech(BaseSiteURLCrawler):
         # print("img_src ", len(img_src), img_src)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(self.link["url"], None, None, dates[item], authors[item],
-                                         self.category, self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

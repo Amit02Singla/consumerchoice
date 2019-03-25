@@ -32,7 +32,7 @@ class AlterNativeTo(BaseSiteURLCrawler):
         for content in data:
             root = etree.HTML(content)
             if(len(root.xpath("//div/div[@class='col-xs-11']/div[@class='do-not-break forumText wmd']/p"))>0):
-                reviews.append(root.xpath("//div/div[@class='col-xs-11']/div[@class='do-not-break forumText wmd']/p/text()")[0])
+                reviews.append([root.xpath("//div/div[@class='col-xs-11']/div[@class='do-not-break forumText wmd']/p/text()")[0]])
             if(len(root.xpath("//div/div[@class='col-xs-11']/h3"))>0):
                 headings.append(root.xpath("//div/div[@class='col-xs-11']/h3/text()")[0])
             else:
@@ -64,7 +64,7 @@ class AlterNativeTo(BaseSiteURLCrawler):
         website_name = response.xpath("//div/a[@class='btn btn-success website-link ga_outgoing']/@href").extract()[0]
         parsedURL = urlparse(website_name)
         name = "alternativeto.net"
-        print("Reviews ",  len(reviews))
+        print("Reviews ",  len(reviews), reviews)
         print("Authors ", len(authors))
         print("ratings ", len(ratings))
         print("Heading ", len(headings))
