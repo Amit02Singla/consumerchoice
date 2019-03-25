@@ -38,7 +38,8 @@ class affgadgetsCrawler(BaseSiteURLCrawler):
             else:
                 authors.append("")
         dates = response.xpath("//div[@class='comment-author-main-meta-info']/ cite[ @class ='timed'] / text()").extract()
-        website_name = response.xpath("//section[@class='top-link first-top-link sidebar-clear']/div[@class='sidebar-inner']/a/@href").extract()[0]
+        website_name = response.xpath("//div[@class='sidebar-inner']/a/div[@class='middle-button']/span[@class='middle-button-bottom']/text()").extract()[0]
+        website_name = "https://"+website_name
         parsedURL = urlparse(website_name)
         name = "affgadgets.com"
         # website_name = parsedURL.scheme + '://' + parsedURL.hostname

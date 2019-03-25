@@ -10,7 +10,7 @@ if __name__ == '__main__':
     urls = []
     urls.append({"ServiceName": "Expressvpn",
                  "Category": "VPN Service",
-                 "url": "https://www.forexbrokerz.com/brokers/ShapeShift-Review"})
+                 "url": "https://alternativeto.net/software/radmin-vpn/"})
     serviceName= 'https://test.com/'
     if ("www" in serviceName):
         serviceName = serviceName.split(".")[1]

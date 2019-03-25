@@ -30,7 +30,9 @@ class CapterraCrawler(BaseSiteURLCrawler):
             img_src = response.xpath("//div[@class='spotlight-listing-thumbnail-container']/div[@class='thumbnail  no-hover  listing-thumbnail']/img/@src").extract()[0]
         else:
             img_src = ""
-        website_name = "capterra.com"
+        website_name1 = self.link["url"].split("/")
+        website_name = 'https://'+website_name1[len(website_name1)-2]+'.com'
+        name="capterra.com"
         authors = response.xpath("//div[@class='reviewer-details']/div[1]/text()").extract()
         print("Reviews ", len(reviews))
         print "imgsrccccc   ", img_src
@@ -41,7 +43,7 @@ class CapterraCrawler(BaseSiteURLCrawler):
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             service1 = ServiceRecord(response.url, ratings[item],headings[item], dates[item], authors[item], self.category,
-                          self.servicename, reviews[item], img_src,website_name);
+                          self.servicename, reviews[item], img_src,website_name, name);
             self.save(service1)
         next_page = response.xpath("//div[@class='base-margin-bottom']/a/@data-url").extract()
         if next_page is not None:

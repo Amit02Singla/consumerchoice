@@ -27,14 +27,16 @@ class bestVPNForYou(BaseSiteURLCrawler):
         for node in response.xpath("//div[@class='comment-text']/span"):
             reviews.append(node.xpath('string()').extract());
         print("reviews ", reviews)
-        img_src = response.xpath("//div[@class='vcard-wrap']/img[@class='avatar avatar-100 wp-user-avatar wp-user-avatar-100 photo avatar-default']/@src").extract()
+        img_src = response.xpath("//div[@class='vcard-wrap']/img[@class='avatar avatar-100 wp-user-avatar wp-user-avatar-100 photo avatar-default']/@src").extract()[0]
         # ratings = response.xpath("//div[@class='star_rating']/@title").extract()
         website_name = response.xpath("//div[@class='post-content']/div[@class='post-text']/h2/a/@href").extract()[0]
         # print("img_src   ", img_src)
+        # parsedURL = urlparse(website_name)
+        name = "bestvpnforyou.com"
         print("websitesName   ", website_name)
         for item in range(0, len(reviews)):
             servicename1 =ServiceRecord(response.url, None, None,  dates[item], authors[item], self.category,
-                          self.servicename, reviews[item],  img_src, website_name);
+                          self.servicename, reviews[item],  img_src, website_name, name);
             self.save(servicename1)
         next_page = response.xpath("//div[@class='nav-previous']/a/@href").extract()
         if next_page is not None:

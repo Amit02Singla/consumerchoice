@@ -42,9 +42,10 @@ class BestVPNProvidersCrawler(BaseSiteURLCrawler):
         website_name = response.xpath("//div[@class='row'][1]/div[@class='columngrid-8 pad-small text-right']/a/span[@class='color-sec-ft']/text()").extract()[0]
         print("imgsrc   ", img_src)
         print("website name  ", website_name)
+        name="bestvpnprovider.co";
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
-                                         self.servicename, reviews[item], img_src, website_name)
+                                         self.servicename, reviews[item], img_src, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

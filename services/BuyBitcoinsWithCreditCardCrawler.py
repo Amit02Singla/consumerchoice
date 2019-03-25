@@ -54,10 +54,11 @@ class BuyBitcoinsWithCreditCardCrawler(BaseSiteURLCrawler):
                 ratings.append(round(c,1))
             i = i+1
         website_name = response.xpath("//div[@class='inner']/div[@class='box right']/a[@class='zumanbieter']/@href").extract()[0]
+        name="buybitcoinswithcreditcard.net"
         print("website name   ", website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item],
-                                         self.category, self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

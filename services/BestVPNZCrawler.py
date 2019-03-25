@@ -30,6 +30,7 @@ class BestVPNZCrawler(BaseSiteURLCrawler):
         data = response.xpath("//div[@id='comments']/ol[@class='comment-list']/li/article/footer[@class='comment-meta']/div[@class='comment-author-info']").extract()
         # print "imgsrc ", img_src
         print"website ", website_name
+        name="bestvpnz.com"
         for content in data:
             root = etree.HTML(content)
             if(root.xpath("//cite")):
@@ -41,6 +42,6 @@ class BestVPNZCrawler(BaseSiteURLCrawler):
 
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, None, dates[item], authors[item], self.category,
-                          self.servicename, reviews[item],None,website_name)
+                          self.servicename, reviews[item],None,website_name, name)
             self.save(servicename1)
         self.pushToServer()
