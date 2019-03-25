@@ -5,6 +5,7 @@ from scrapy import Spider, Request
 from lxml import etree
 from utils.utils import getStarts
 from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+from urlparse import urlparse
 
 class affgadgetsCrawler(BaseSiteURLCrawler):
 
@@ -27,9 +28,20 @@ class affgadgetsCrawler(BaseSiteURLCrawler):
         for node in response.xpath('//div[@class="comment-info"]'):
             reviews.append(node.xpath('string()').extract());
         ratings1 = response.xpath("//div[@class='comment-author-main-meta-info']/div/@class").extract()
-        authors =  response.xpath("//div[@class='comname']/cite[@class='fn']/text()").extract()
+
+        author =  response.xpath("//div[@class='comment-author-main-meta']").extract()
+        authors = []
+        for content in author:
+            root = etree.HTML(content)
+            if(root.xpath("//div[@class='comname']")):
+                authors.append(root.xpath("//div[@class='comname']/cite[@class='fn']/text()")[0])
+            else:
+                authors.append("")
         dates = response.xpath("//div[@class='comment-author-main-meta-info']/ cite[ @class ='timed'] / text()").extract()
-        website_name = response.xpath("//div[@class='left-sidebar']/section[@class='homepage-info sidebar-clear']/div[@class='sidebar-inner']/div[@class='top-link first-top-link']/a/@href").extract()[0]
+        website_name = response.xpath("//section[@class='top-link first-top-link sidebar-clear']/div[@class='sidebar-inner']/a/@href").extract()[0]
+        parsedURL = urlparse(website_name)
+        name = "affgadgets.com"
+        # website_name = parsedURL.scheme + '://' + parsedURL.hostname
         ratings = []
         j = 0
         while j < len(ratings1):
@@ -38,13 +50,13 @@ class affgadgetsCrawler(BaseSiteURLCrawler):
             j = j + 1
 
         print("Reviews ", len(reviews))
-        print("Authors ", len(authors), authors)
-        print("ratings ", len(ratings), ratings)
+        print("Authors ", len(authors), )
+        print("ratings ", len(ratings), )
 
         print("Dates ", len(dates), dates)
 
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
-            servicename1 = ServiceRecord(response.url,ratings[item],None,dates[item],authors[item],self.category,self.servicename,reviews[item],"",website_name);
+            servicename1 = ServiceRecord(response.url,ratings[item],None,dates[item],authors[item],self.category,self.servicename,reviews[item],"",website_name, name);
             self.save(servicename1)
         self.pushToServer()

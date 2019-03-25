@@ -41,7 +41,10 @@ class BestBitcoinExchange(BaseSiteURLCrawler):
             dates.append(dateAuthor[1])
             reviews.append([rev[1]])
             i = i + 1
-        website_name = "bestbitcoinexchange.net"
+        website_name = "http://www.bittrex.com"
+        # img_src = root.xpath("//div[@class='box left']/div[@class='post-image-container']/img[@class='post-image provider-logo']/@src").extract()
+        # parsedURL = urlparse(website_name)
+        name = "bestbitcoinexchange.net"
         # website_name2 = website_name1[0].("|")
         # website_name = []
         # website_name.append(website_name2[1])
@@ -53,7 +56,7 @@ class BestBitcoinExchange(BaseSiteURLCrawler):
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(self.link["url"], None, None, dates[item], authors[item], self.category,
-                                         self.servicename, reviews[item], None, website_name)
+                                         self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
         next_page = root.xpath(
             ".//div[@class='box']/nav[@id='comment-nav-below']/div[@class='nav-previous']/a/@href")

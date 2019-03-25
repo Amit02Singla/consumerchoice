@@ -2,7 +2,7 @@ from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 from lxml import etree
-
+from urlparse import urlparse
 # TODO: need to get next page url from javascript
 #https://alternativeto.net/software/cyberghost/reviews/
 class AlterNativeTo(BaseSiteURLCrawler):
@@ -62,16 +62,18 @@ class AlterNativeTo(BaseSiteURLCrawler):
             0]
         # headings = response.xpath("//div[@class='discussionApp']/div/div[@class='col-xs-11']/h3/text()").extract()
         website_name = response.xpath("//div/a[@class='btn btn-success website-link ga_outgoing']/@href").extract()[0]
-        print("Reviews ",  len(reviews), reviews)
-        print("Authors ", len(authors), authors)
-        print("ratings ", len(ratings), ratings)
-        print("Heading ", len(headings), headings)
-        print("Dates ", len(dates), dates)
+        parsedURL = urlparse(website_name)
+        name = "alternativeto.net"
+        print("Reviews ",  len(reviews))
+        print("Authors ", len(authors))
+        print("ratings ", len(ratings))
+        print("Heading ", len(headings))
+        print("Dates ", len(dates))
         print("imgsrc ", img_src)
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, headings[item], dates[item], authors[item], self.category,
-                                         self.servicename, reviews[item], img_src, website_name)
+                                         self.servicename, reviews[item], img_src, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

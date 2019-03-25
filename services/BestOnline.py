@@ -48,6 +48,8 @@ class BestOnline(BaseSiteURLCrawler):
         authors = response.xpath("//div[@class='cust_review']/table/tr[3]/td[@class='customer']/text()").extract()
         website_name = response.xpath("//div[@class='customer_reviews']/div[@class='button_link button_visit']/a[@class='review_reminder_fancybox']/@href").extract()[0]
         website_name = 'https://www.10bestonline.com/'+website_name
+        # parsedURL = urlparse(website_name)
+        name = "10bestonline.com"
         print("website name"+ website_name)
         if(len(authors) == 1):
             if authors[0]== "Your Name":
@@ -63,7 +65,7 @@ class BestOnline(BaseSiteURLCrawler):
         print "authors ", len(authors)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         self.category, self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class ='navigator']/a[7]/@href").extract()

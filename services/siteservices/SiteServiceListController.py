@@ -306,7 +306,8 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = affgadgetsCrawler(dict_url[response.url]["Category"], self.service, response.url)
+                cat = dict_url["url1"]
+                crawler = affgadgetsCrawler(dict_url[cat["url1"]]["Category"], self.service, response.url)
             else:
                 crawler = AffgadgetsURLCrawler(dict_url[response.url]["Category"])
         elif ('affpaying.com' in response.url):
