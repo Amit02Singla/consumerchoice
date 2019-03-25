@@ -36,7 +36,6 @@ class AnblikCrawler(BaseSiteURLCrawler):
         print("Reviews ", len(reviews))
         print("Authors ", len(authors))
         print("ratings ", len(ratings))
-
         print("Dates ", len(dates))
         website_name = 'https://' +website_name.strip()
 
