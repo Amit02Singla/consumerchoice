@@ -33,9 +33,10 @@ class WebHostingHero(BaseSiteURLCrawler):
         ratings1 = response.xpath("//div[@class='user-review-box boxed-content']/div[@class='row']/div[@class='col-12 review-rating']/meta[@itemprop='ratingValue']/@content").extract()
         dates = response.xpath("//div[@class='user-review-box boxed-content']/div[@class='row']/div[@class='col-12 review-meta'][1]/span[@class='review-date']/text()").extract()
         authors = response.xpath("//div[@class='col-sm-12 user-review-container']/div[@class='user-review-box boxed-content']/div[@class='row']/div[@class='col-12 author']/span/text()").extract()
-        website_name = response.xpath("//div[@class='row']/nav[@id='sidebar-reviews']/div[@class='row']/div[@class='col-sm-6 col-lg-12 widget rating-summary']/div[@class='boxed-content']/div[@class='visit-link']/a/@href").extract()
+        website_name = response.xpath("//div[@class='row']/nav[@id='sidebar-reviews']/div[@class='row']/div[@class='col-sm-6 col-lg-12 widget rating-summary']/div[@class='boxed-content']/div[@class='visit-link']/a/@href").extract()[0]
         img_src = response.xpath("//div[@class='row']/nav[@id='sidebar-reviews']/div[@class='row']/div[@class='col-sm-6 col-lg-12 widget rating-summary']/div[@class='boxed-content']/div[@class='visit-link']/a/img/@src").extract()
         ratings = []
+        name = "webhostinghero.com"
         for i in range(len(ratings1)):
             c= int(ratings1[i])/2.0
             ratings.append(str(c))
@@ -48,7 +49,7 @@ class WebHostingHero(BaseSiteURLCrawler):
         print("website ", website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         self.category, self.servicename, reviews[item], img_src[0], website_name[0])
+                                         self.category, self.servicename, reviews[item], img_src[0], website_name, name)
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class ='navigator']/a[7]/@href").extract()

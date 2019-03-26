@@ -51,7 +51,11 @@ class hostingCharges(BaseSiteURLCrawler):
         dates = response.xpath("//div[@class='review-sub-cntnr']/div[@class='review-one-all']/div[@class='review-profile']/div[@class='review-mid']/p/text()").extract()
         img_src = response.xpath("//div[@class='review-cntnr'][1]/div[@class='review-sub-cntnr']/div[@class='logo-img']/a/img/@src").extract()[0]
         authors = response.xpath("//div[@class='review-mid']/h4/text()").extract()
-        website_name = response.xpath("//div[@class='review-cntnr'][1]/div[@class='review-sub-cntnr']/div[@class='revhost-link']/a/@href").extract()
+        website_name = response.xpath("//div[@class='review-cntnr'][1]/div[@class='review-sub-cntnr']/div[@class='revhost-link']/a/@href").extract()[0]
+        website_name1 = website_name.split("/")
+        website_name1 = (website_name1[len(website_name1) - 1]).split("-")
+        website_name = 'https://' + website_name1[0] + ".com"
+        name="hostingcharges.in"
         print(" Ratings ", len(ratings))
         print("dates ", len(dates))
         print(" Reviews ", len(reviews))
@@ -60,7 +64,7 @@ class hostingCharges(BaseSiteURLCrawler):
         print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         self.category, self.servicename, reviews[item], img_src, website_name)
+                                         self.category, self.servicename, reviews[item], img_src, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

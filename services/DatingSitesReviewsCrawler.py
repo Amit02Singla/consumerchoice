@@ -2,6 +2,7 @@ from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
 from lxml import etree
 from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
+from urlparse import urlparse
 class DatingSitesReviewsCrawler(BaseSiteURLCrawler):
 
     def __init__(self,category,servicename,url):
@@ -39,6 +40,9 @@ class DatingSitesReviewsCrawler(BaseSiteURLCrawler):
                 authors.append(data1.split(":")[1].split(" on ")[0])
         headings =  response.xpath("//div[@id='comments']/div[@class='block-comment-content level-0']/ul[@class='comment_status']/li[@class='comment_title']/text()").extract()
         website_name =  response.xpath("//div[@class='uk-panel-box']/ul/li[@class='uk-text-center']/a/@href").extract()[0]
+        parsedURL = urlparse(website_name)
+        website_name = parsedURL.scheme + '://' + parsedURL.hostname
+        name="datingsitesreviews.com"
         print(" headings ", len(headings))
         print("dates ", len(dates))
         print(" Reviews ", len(reviews))
@@ -47,6 +51,6 @@ class DatingSitesReviewsCrawler(BaseSiteURLCrawler):
         print(" website_name ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, headings[item], dates[item], authors[item], self.category,
-                          self.servicename, reviews[item],None,website_name)
+                          self.servicename, reviews[item],None,website_name, name)
             self.save(servicename1)
         self.pushToServer()

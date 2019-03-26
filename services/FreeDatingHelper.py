@@ -34,9 +34,10 @@ class FreeDatingHelper(BaseSiteURLCrawler):
         print("Rating ", len(ratings), ratings)
         print("website ", len(website_name), website_name)
         print("Img_src ", len(img_src), img_src)
+        name="webhostinghero.com"
         for item in range(0, len(reviews)):
             servicename1 =ServiceRecord(response.url, None,None, None, authors[item], self.category,
-                          self.servicename, reviews[item], img_src,website_name)
+                          self.servicename, reviews[item], img_src,website_name, name)
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class='pagination']/ul[@id='yw2']/li[@class='next']/a/@href").extract()

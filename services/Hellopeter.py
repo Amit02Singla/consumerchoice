@@ -34,12 +34,13 @@ class Hellopeter(BaseSiteURLCrawler):
             ratings.append(content["final_rating"])
             dates.append(content["created_at"])
             authors.append(content["author_display_name"])
-
-        website_name = "hellopeter.com"
+            website_name = content["business_name"]
+        name="hellopeter.com"
+        website_name = "https://"+website_name
 
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, None, headings[item], dates[item], authors[item], self.category,
-                                         self.servicename, [reviews[item]], None, website_name)
+                                         self.servicename, [reviews[item]], None, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

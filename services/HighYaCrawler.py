@@ -51,15 +51,15 @@ class HighYaCrawler(BaseSiteURLCrawler):
                 authors.append(root.xpath("//a/span/text()")[0])
             else:
                 authors.append(root.xpath("//span[@itemprop='name']/text()")[0])
-        if(response.xpath("//ul[@class='list-line list-strong-line']/li[2]/a/@href")):
-            website_name = response.xpath("//ul[@class='list-line list-strong-line']/li[2]/a/@href").extract()[0]
-        else:
-            website_name=""
+        website_name1 = self.link["url"].split("/")
+        website_name1 = (website_name1[len(website_name1) - 1]).split("-")
+        website_name = 'https://' + website_name1[0] + ".com"
+        name="highya.com"
         print("reviews  ", len(reviews))
         print ("website ", website_name);
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
-                                         self.category, self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class='pagination']/a[@class='next']/@href").extract()

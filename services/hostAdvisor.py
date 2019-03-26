@@ -36,10 +36,13 @@ class hostAdvisor(BaseSiteURLCrawler):
         # print("heading ", len(headings), headings)
         #
         print("websites ", len(website_name), website_name)
-        website_name = 'https://www.hostadvisor.com'+website_name
+        website_name1 = website_name.split("/")
+        website_name1 = (website_name1[len(website_name1) - 1]).split("-")
+        website_name = 'https://' + website_name1[0] + ".com"
+        name="hostadvisor.com"
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], None, authors[item],
-                                         self.category, self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class='reviewBlock']/nav[@class='text-center']/ul[@class='pagination']/li[21]/a/@href").extract()

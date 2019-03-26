@@ -41,11 +41,14 @@ class HostAdviceCrawler(BaseSiteURLCrawler):
                 else:
                     authors.append(element.xpath("//a/strong")[0].text)
         img_src = response.xpath("//div/a/img[@class='attachment-post-thumbnail size-post-thumbnail wp-post-image']/@src").extract()[0]
-        website_name = response.xpath("//div[@class='clearfix user-reviews-actions ']/a[@class='button orange large visit-site-btn']/@href").extract()[0]
+        website_name1 = self.link["url"].split("/")
+        website_name1 = (website_name1[len(website_name1) - 2]).split("-")
+        website_name = 'https://' + website_name1[0] + ".com"
+        name="hostadvice.com"
         print("website  ", website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
-                          self.servicename, reviews[item],img_src,website_name)
+                          self.servicename, reviews[item],img_src,website_name, name)
             self.save(servicename1)
         next_page = response.xpath("//div[@class='row']/div[@class='col-md-offset-2 col-md-4']/a/@href").extract()
 

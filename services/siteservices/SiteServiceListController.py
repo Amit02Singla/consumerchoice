@@ -600,13 +600,14 @@ class SiteServiceListController(scrapy.Spider):
             else:
                 crawler = Top20SeniorDatingSitesURLCrawler(dict_url[response.url]["Category"])
         elif ('hellopeter.com' in response.url):
-            if 'search' not in response.url:
+            if 'reviews' not in response.url:
                 service = response.url.split("/")
                 serviceName = service[len(service) - 1]
                 print(" Servicesssss   ", serviceName)
-                crawler = Hellopeter(dict_url[response.url]["Category"], self.service, response.url)
-            else:
                 crawler = HellopeterURLCrawler(dict_url[response.url]["Category"])
+            else:
+                crawler = Hellopeter(dict_url[response.url]["Category"], self.service, response.url)
+
         elif ('consumeraffairs.com' in response.url):
             if 'search' not in response.url:
                 service = response.url.split("/")
@@ -646,7 +647,8 @@ class SiteServiceListController(scrapy.Spider):
                 service = response.url.split("/")
                 serviceName = service[len(service) - 2]
                 print(" Servicesssss   ", serviceName)
-                crawler = WebHostingHero(dict_url[response.url]["Category"], self.service, response.url)
+                cat = dict_url["url1"]
+                crawler = WebHostingHero(dict_url[cat["url1"]]["Category"], self.service, response.url)
             else:
                 crawler = WebHostingHeroURLCrawler(dict_url[response.url]["Category"])
         elif ('bestvpnprovider.co' in response.url):
@@ -694,10 +696,10 @@ def getAjax(urls):
         if 'hellopeter.com' in  url["url"]:
             a = url["url"].split('/')[-1]
             url["url1"] = url["url"]
-            url["url"] = "https://api-v3.hellopeter.com/search/businesses?q="+a
+            url["url"] = "https://api-v3.hellopeter.com/businesses/"+a+"/reviews"
             urllist.append(url)
             url = url.copy()
-            url["url"] = "https://api-v3.hellopeter.com/search/industries?q="+a
+            url["url"] = "https://api-v3.hellopeter.com/industries/"+a+"/businesses"
             urllist.append(url)
         # elif 'bestvpn.com' in  url["url"]:
         #     a = url["url"].split('search=')[-1]

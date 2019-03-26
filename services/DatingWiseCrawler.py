@@ -26,8 +26,11 @@ class DatingWiseCrawler(BaseSiteURLCrawler):
         dates = response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div[@class='userComments']/div[@class='userDetails']/div[@class='userLocation']/p[1]/span[@class='pIcn']/text()").extract()
         authors =  response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div[@class='userComments']/div[@class='userDetails']/div[@class='userLocation']/p[1]/span[@class='pIcn']/span/a/text()").extract()
         headings = response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div[@class='userComments']/div[@class='userDetails']/div[@class='userLocation']/p[@class='clear']/span/text()").extract()
-        website_name =  response.xpath("//div[@class='vsRvwWrp']/span[@class='vstSteRvw']/a/@href").extract()[0]
+        website_name1 = self.link["url"].split("/")
+        website_name1 = website_name1[len(website_name1) - 2]
+        website_name = 'https://' + website_name1
         # img_src = response.xpath("//div[@class='tabBody']/ul[@id='commentsul']/li/div/div/div[@class='userAvatar']/img/@src").extract()
+        name="datingwise.com"
         print("Reviews ", len(reviews))
         print("Authors ", len(authors))
         # print("Rating ", len(ratings))
@@ -36,7 +39,7 @@ class DatingWiseCrawler(BaseSiteURLCrawler):
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 =ServiceRecord(response.url, None,headings[item], dates[item], authors[item], self.category,
-                          self.servicename, reviews[item], None,website_name)
+                          self.servicename, reviews[item], None,website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

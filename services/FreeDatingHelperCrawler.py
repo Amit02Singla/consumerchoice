@@ -45,9 +45,11 @@ class FreeDatingHelperCrawler(BaseSiteURLCrawler):
                 ratings.append(root.xpath("//div[2]/table[@class='ratings']/tr/td[@class='rating_value']/div/span/text()"))
             else:
                 ratings.append("")
-            website_name = root.xpath(
-                "//div[2]/div[@class='comment_area']/center/a[@class='small-button smallorange']/@href").extract()
-
+            website_name = response.xpath("//div[2]/div[@class='comment_area']/center/a[@class='small-button smallorange']/@href").extract()[0]
+        website_name1 = website_name.split("/")
+        website_name1 = website_name1[len(website_name1) - 1]
+        website_name = 'https://' + website_name1+ ".com"
+        name="freedatinghelper.com"
         # if(len(authors)>0):
         #     authors = authors[0]
         # if len(reviews)>0:
@@ -60,6 +62,6 @@ class FreeDatingHelperCrawler(BaseSiteURLCrawler):
         print("website ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, None, authors[item],
-                                         self.category, self.servicename, reviews[item], None, website_name)
+                                         self.category, self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
         self.pushToServer()
