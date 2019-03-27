@@ -65,7 +65,8 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
             ratings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/@data-rating")[0])
 
         website = response.xpath("//div[@id='website_info_content']/div[@id='url_address']/a[@class='trackOutboundLink']/@href").extract()[0]
-        website_name = website  ;
+        website_name = website;
+        name="sitejabber.com"
         authors = list(map(lambda foo: foo.replace(u'\xa0', ' '), authors))
         headings = list(map(lambda foo: foo.replace(u'\u201c', ''), headings))
         headings = list(map(lambda foo: foo.replace(u'\u201d', ''), headings))
@@ -80,7 +81,7 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item],
                                          self.category,
-                                         self.servicename, reviews[item], None, website_name)
+                                         self.servicename, reviews[item], None, website_name, name)
             self.save(servicename1)
 
         next_page1 = response.xpath("//div[ @class ='paginator_next']/span/a[@class ='button outline']/@href").extract()
