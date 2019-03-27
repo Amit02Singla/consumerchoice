@@ -1,6 +1,6 @@
 from model.Servicemodel import ServiceRecord
 from scrapy import Spider, Request
-
+# https://www.joomlahostingreviews.com/joomla-hosting/bluehost-review.html
 from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 
 class JoomlaHostingReviews(BaseSiteURLCrawler):
@@ -22,7 +22,7 @@ class JoomlaHostingReviews(BaseSiteURLCrawler):
         reviews = []
         reviews1 = []
 
-        # https: // www.webhostinghero.com / reviews / bluehost /
+
         for node in response.xpath(
                 "//div[@class='jr-layout-outer jrRoundedPanelLt']/div[@class='jr-layout-inner jrReviewContainer']/div[@class='jrReviewContent']/div[@class='description jrReviewComment']/p"):
             reviews.append(node.xpath('string()').extract());
@@ -32,7 +32,10 @@ class JoomlaHostingReviews(BaseSiteURLCrawler):
         img_src = response.xpath(
             "//div[@class='jr-detail-row1']/div[@class='jr-detail-row1-col1']/div[@class='jr-detail-row1-col1-image']/img/@src").extract()[0]
         headings = response.xpath("//div[@class='jr-layout-outer jrRoundedPanelLt']/div[@class='jr-layout-inner jrReviewContainer']/div[@class='jrReviewContent']/h4[@class='jrReviewTitle']/text()").extract()
-        website_name = response.xpath("//div[@class='platform-content']/div[@class='moduletable -footer']/div[@class='custom-footer']/p/a/text()").extract()
+        website_name1 = self.link["url"].split("/")
+        website_name1 =  (website_name1[len(website_name1) - 1]).split("-")
+        website_name =  'https://' +website_name1[0]+ '.com'
+        name="joomlahostingreviews.com"
         print("Reviews ", len(reviews), reviews)
         print("Authors ", len(authors), authors)
         print("Rating ", len(ratings), ratings)
@@ -41,7 +44,7 @@ class JoomlaHostingReviews(BaseSiteURLCrawler):
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
-                                         self.servicename, reviews[item], img_src, website_name[0])
+                                         self.servicename, reviews[item], img_src, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

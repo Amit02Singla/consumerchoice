@@ -28,6 +28,7 @@ class ProductreviewCrawler(BaseSiteURLCrawler):
         authors = response.xpath("//span[@class='flex-shrink-0_37K text-link_1W2 textDecorationHover--underline_1Dc']/span[@class='align-items-center_nNY flex-wrap_1Wl d-inline-flex_2a2']/a/span[@class='cursor--pointer_1MN text-link_1W2 textDecorationHover--underline_1Dc']/text()").extract()
         img_src =  response.xpath("//div[@class='p-1_2ec align-items-center_nNY flex-column_36B justify-content-center_1IB relative_2e- d-flex_b9D card-body_10p']/img[@class=' img-fluid_a42']/@src").extract()
         website_name =  response.xpath("//div[@class='mb-3_2I3 overflow-x-hidden_15c card_134 card-full_3wf card-full-md_2gh']/div[@class='p-4_LM_ card-body_10p']/a/@href").extract()
+        name="productreview.com"
         i=0
         ratings =[]
         while(i< len(rating)):
@@ -41,7 +42,7 @@ class ProductreviewCrawler(BaseSiteURLCrawler):
         print("image ", img_src)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
-                          self.servicename, reviews[item],img_src[0],website_name);
+                          self.servicename, reviews[item],img_src[0],website_name, name);
             self.save(servicename1)
 
         next_page = response.xpath("//div[@class='pagination-container']/ul[@class='pagination']/li[7]/a/@href").extract()

@@ -39,6 +39,7 @@ class NetBusinessRating(BaseSiteURLCrawler):
             "//div[@class='screenshotContainer']/img[@class='screenshot']/@src").extract()[0]
         # headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
         website_name = "netbusinessrating.com"
+        name="netbusinessrating.com"
         ratings2 = []
         ratings = []
         for content in ratings1:
@@ -68,7 +69,7 @@ class NetBusinessRating(BaseSiteURLCrawler):
         print("websites ", len(website_name), website_name)
         for item in range(0, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], None, dates[item], authors[item], self.category,
-                                         self.servicename, reviews[item], img_src, website_name)
+                                         self.servicename, reviews[item], img_src, website_name, name)
             self.save(servicename1)
         self.pushToServer()
 

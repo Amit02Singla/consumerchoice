@@ -25,17 +25,25 @@ class PickuphostCrawler(BaseSiteURLCrawler):
         headings = response.xpath("//div[@id='rew_replace_div']/div[@class='one_rew']/h4/b/text()").extract()
         dates = response.xpath("//div[@id='rew_replace_div']/div[@class='one_rew']/span[@class='rewiwer_data']/span[2]/text()").extract()
         authors = response.xpath("//div[@id='rew_replace_div']/div[@class='one_rew']/span[@class='rewiwer_data']/span[1]/text()").extract()
-        name = response.xpath("//div[@class='navbar-header']/a/@href").extract()
-        website_name = response.xpath("//div[@class='get_it_block']/div[@class='get_it text-center']/div[@class='get_it_button']/a/@href").extract()[0]
+        website_name1 = response.xpath("//div[@class='get_it_block']/div[@class='get_it text-center']/div[@class='get_it_button']/a/@href").extract()[0]
         img_src = response.xpath("//div[@class='col-md-12 artical']/img[@class='img-responsive top2_logo']/@src").extract()[0]
-        website_name = 'http://pickuphost.com'+website_name
+        website_name1 = website_name1.split("/")
+        website_name = "https://" + website_name1[len(website_name1)-2] + ".com"
+        name="pickuphost.com"
         print "imgsrc ", img_src
         print "website ", website_name
+        print("reviews ", len(reviews))
+        print("dates ", len(dates))
+        print("authors ", len(authors))
         for item in range(1, len(reviews)):
             servicename1 = ServiceRecord(response.url, ratings[item], headings[item], dates[item], authors[item], self.category,
-                          self.servicename, reviews[item],"",website_name);
+                          self.servicename, reviews[item],"",website_name, name);
             self.save(servicename1)
-        next_page = response.xpath("//div[@class='row']/div[@class='col-lg-8 col-lg-offset-3']/ul[@class='pagecount']/li[8]/a[@class='next page-numbers custom_page_link']/@href").extract()
+        if(len(response.xpath("//ul[@class='pagecount']/li[8]/a[@class='next page-numbers custom_page_link']/@href"))>0):
+            next_page = response.xpath("//ul[@class='pagecount']/li[8]/a[@class='next page-numbers custom_page_link']/@href").extract()
+        else:
+            next_page = response.xpath(
+                "//ul[@class='pagecount']/li[7]/a[@class='next page-numbers custom_page_link']/@href").extract()
         if next_page is not None:
             next_page_url = "".join(next_page)
             if next_page_url and next_page_url.strip():
