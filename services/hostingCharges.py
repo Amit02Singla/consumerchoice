@@ -34,10 +34,13 @@ class hostingCharges(BaseSiteURLCrawler):
         headings = []
         for content in temp_headings:
             root = etree.HTML(content)
-            if(len(root.xpath("//h4/text()")) == 0 ):
+            if(len(root.xpath("//a/text()"))> 0 ):
                 headings.append(root.xpath("//a/text()")[0])
-            else:
+            elif(len(root.xpath("//h4/text()"))>0):
                 headings.append(root.xpath("//h4/text()")[0])
+            else:
+                headings.append("")
+
         ratings = []
         i=0
         sum = 0
