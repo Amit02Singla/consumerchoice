@@ -39,7 +39,10 @@ class BestVPNProvidersCrawler(BaseSiteURLCrawler):
         img_src = response.xpath(
             "//div[@class='columngrid-3']/div[@class='text-center']/img/@src").extract()[0]
         # headings = response.xpath("//div[@class='pr-review-wrap']/div[@class='pr-review-rating-wrapper']/div[@class='pr-review-rating']/p[@class='pr-review-rating-headline']/text()").extract()
-        website_name = response.xpath("//div[@class='row'][1]/div[@class='columngrid-8 pad-small text-right']/a/span[@class='color-sec-ft']/text()").extract()[0]
+        website_name = response.xpath("//div[@class='row affilio-review']/div[@class='columngrid-9']/a[1]/@href").extract()[0]
+        website_name1 = website_name.split("/")
+        website_name1 = (website_name1[len(website_name1) - 1])
+        website_name = 'https://' + website_name1 + ".com"
         print("imgsrc   ", img_src)
         print("website name  ", website_name)
         name="bestvpnprovider.co";

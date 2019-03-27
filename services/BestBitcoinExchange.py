@@ -41,7 +41,9 @@ class BestBitcoinExchange(BaseSiteURLCrawler):
             dates.append(dateAuthor[1])
             reviews.append([rev[1]])
             i = i + 1
-        website_name = "http://www.bittrex.com"
+        website_name1 = self.link["url"].split("/")
+        website_name1 = (website_name1[len(website_name1) - 2]).split("-")
+        website_name = 'https://' + website_name1[0] + "."+website_name1[1]
         # img_src = root.xpath("//div[@class='box left']/div[@class='post-image-container']/img[@class='post-image provider-logo']/@src").extract()
         # parsedURL = urlparse(website_name)
         name = "bestbitcoinexchange.net"

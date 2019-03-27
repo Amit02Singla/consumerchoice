@@ -54,6 +54,9 @@ class BuyBitcoinsWithCreditCardCrawler(BaseSiteURLCrawler):
                 ratings.append(round(c,1))
             i = i+1
         website_name = response.xpath("//div[@class='inner']/div[@class='box right']/a[@class='zumanbieter']/@href").extract()[0]
+        website_name1 = website_name.split("/")
+        website_name1 = (website_name1[len(website_name1) - 1]).split("-")
+        website_name = 'https://' + website_name1[0] + "." + website_name1[1]
         name="buybitcoinswithcreditcard.net"
         print("website name   ", website_name)
         for item in range(0, len(reviews)):
