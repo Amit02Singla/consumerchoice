@@ -183,7 +183,10 @@ def dataforSEO(id,categoryName,keywords,callbackurl):
                 dictionary = srp_response["results"]
                 for urlList in dictionary["organic"]:
                     parsedURL = urlparse(urlList["result_url"])
-                    hostname = parsedURL.hostname.split(".")[1]
+                    if('www' in parsedURL.hostname):
+                        hostname = parsedURL.hostname.split(".")[1]
+                    else:
+                        hostname = parsedURL.hostname.split(".")[0]
                     a = {"url": urlList["result_url"],
                          "name": hostname}
                     data.append(a);

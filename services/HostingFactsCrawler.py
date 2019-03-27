@@ -25,21 +25,24 @@ class HostingFactsCrawler(BaseSiteURLCrawler):
 
         img_src = response1.xpath(
             "//div[@class='sidebar-padder']/aside/img[@class='img-responsive banner-image center-block']/@src").extract()
-        website_name = response1.xpath("//div[@class='navbar-header']/a[@class='navbar-brand']/text()").extract()
-
+        website_name = response1.xpath("//div[@class='navbar-header']/a[@class='navbar-brand']/text()").extract()[0]
+        website_name="https://"+ website_name
+        name="hostingfacts.com"
+        reviews = []
         for content in data:
             response = etree.HTML(content)
             etree.dump(response)
-            reviews = response.xpath('//div[@class="user-review-content"]/p/text()')
+            reviews1 = response.xpath('//div[@class="user-review-content"]/p/text()')
             reviewdata = ""
-            for review in reviews:
+            for review in reviews1:
                 reviewdata += review + "/n"
-            ratings = response.xpath("//span[@class='user-review-rating']/span[@class='value']/text()")[0]
+            reviews.append(reviewdata)
+            ratings = response.xpath("//span[@class='user-review-rating']/span/text()")[0]
             dates = response.xpath("//span[@class='user-review-meta']/text()")[0]
             headings = response.xpath("//p[@class='user-review-title']/text()")[0]
-            authors = response.xpath("//p[@class='user-review-name']/a/span/text()")[0]
+            authors = response.xpath("//p[@class='user-review-name']/span/text()")[0]
             servicename1 = ServiceRecord(response1.url, ratings, headings, dates, authors,
-                                     self.category, self.servicename, reviews, img_src, website_name);
+                                     self.category, self.servicename, reviews, img_src, website_name, name);
             self.save(servicename1)
         # print "reviews ", len(reviews)
         # print(" ratings ", len(ratings))
