@@ -65,7 +65,7 @@ def google_search_post(callbackurl,search):
   print("response ",response.status_code);
   print("response ",response.content);
 
-def crawlURL(url,responseURL,categoryName,serviceName):
+def crawlURL(url,responseURL,categoryName,serviceName,id):
     website_list = []
     amazon_list = []
     if ("www.amazon." in url):
@@ -73,7 +73,8 @@ def crawlURL(url,responseURL,categoryName,serviceName):
     else:
         website_list.append({"ServiceName": serviceName,
                                  "Category": categoryName,
-                                 "url": url})
+                                 "url": url,
+                             "id":id})
     global custom_base_url
     custom_base_url = responseURL
     crawl_services1(website_list, serviceName)
@@ -86,6 +87,7 @@ class MyThread(threading.Thread):
     self.URL = url
     self.categoryName = categoryName
     self.serviceName = serviceName
+    self.id=id
 
 
   def run(self):
@@ -93,4 +95,4 @@ class MyThread(threading.Thread):
     if(self.URL == ""):
       crawling()
     else:
-      crawlURL(self.URL,self.responseURL,self.categoryName,self.serviceName)
+      crawlURL(self.URL,self.responseURL,self.categoryName,self.serviceName,self.id)

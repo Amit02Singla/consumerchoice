@@ -2,6 +2,7 @@
 from multiprocessing import Process, Queue
 from product.amazon.helpers import make_request
 import scrapy
+import restapis.Login
 from scrapy import Request
 from scrapy.crawler import  CrawlerRunner
 from scrapy.utils.log import configure_logging
@@ -62,6 +63,7 @@ from services.siteservices.HelloPeterURLCrawler import HellopeterURLCrawler
 from services.siteservices.ConsumerAffairsURLCrawler import ConsumerAffairsURLCrawler
 from services.siteservices.VPNRanksURLCrawler import VPNRanksURLCrawler
 from services.siteservices.PissedConsumerURLCrawler import PissedConsumerURLCrawler
+from services.siteservices.BaseSiteURLCrawler import BaseSiteURLCrawler
 
 from services.SiteJabberCrawler import SiteJabberCrawler
 from services.HostingFactsCrawler import HostingFactsCrawler
@@ -136,6 +138,7 @@ class SiteServiceListController(scrapy.Spider):
             self.start_urls.pop(0)
         self.start_urls.append(link["url"])
         self.service = service
+        self.id=link["id"]
         category = link["Category"];
         dict_url[link["url"]] = {"Category": category}
         if(len(link["url1"])>0):
@@ -661,6 +664,16 @@ class SiteServiceListController(scrapy.Spider):
                 crawler = BestVpnProviderURLCrawler(dict_url[response.url]["Category"])
         else:
             print("Found Nothing")
+            crawler=None
+            obj = {
+                "scrapping_website_id":self.id,
+                "scrapping_website_url": response.url,
+                "status":"failed"
+            }
+            restapis.Login.postReview(obj)
+            # BaseSiteURLCrawler.save(obj)
+            # BaseSiteURLCrawler.pushToServer()
+
         if (crawler != None):
             return crawler.crawl(response)
 
