@@ -64,7 +64,11 @@ class SiteJabberCrawler(BaseSiteURLCrawler):
             reviews.append([root.xpath("//div[@class='review_container ']/div[@class='review ']/p/text()")[0]])
             ratings.append(root.xpath("//div[@class='review_container ']/div[@class='review ']/p/@data-rating")[0])
 
-        website = response.xpath("//div[@id='website_info_content']/div[@id='url_address']/a[@class='trackOutboundLink']/@href").extract()[0]
+        if(len(response.xpath("//div[@id='website_info_content']/div[@id='url_address']/a[@class='trackOutboundLink']/@href"))>0):
+            website = response.xpath("//div[@id='website_info_content']/div[@id='url_address']/a[@class='trackOutboundLink']/@href").extract()[0]
+        else:
+            website_name1 = self.link["url"].split("/")
+            website = 'https://' + website_name1[len(website_name1) - 1] + '.com'
         website_name = website;
         name="sitejabber.com"
         authors = list(map(lambda foo: foo.replace(u'\xa0', ' '), authors))
